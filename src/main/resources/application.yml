@@ -1,15 +1,18 @@
 server:
   servlet:
-    context-path: /pessoa-postagem/api
+    context-path: /usuario-postagem/api
+
+spring:    
+  data:
+    mongodb:
+      authentication-database: wakandaAdmin
+      uri: ${MONGO_DB_URI:mongodb+srv://joanersonwakanda:<back123456>@wakandaprodudoro.ghdgrys.mongodb.net/wakandaProdudoro?retryWrites=true&w=majority}
+      auto-index-creation: true
+ 
+ 
+springdoc:
+  swagger-ui:
+    path: /swagger
     
-spring:
-  datasource:
-    url: jdbc:h2:mem:demodb
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-    
-  h2:
-     console:
-      enabled: true
-      path: /h2-console
+  
+ 
