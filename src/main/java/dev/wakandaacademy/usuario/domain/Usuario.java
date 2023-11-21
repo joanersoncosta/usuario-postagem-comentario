@@ -3,9 +3,11 @@ package dev.wakandaacademy.usuario.domain;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import dev.wakandaacademy.usuario.application.api.PessoaNovoRequest;
 import dev.wakandaacademy.usuario.domain.enuns.Sexo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +31,7 @@ public class Usuario {
 	private String nome;
 	@Email
 	@NotNull
+	@UniqueElements
 	private String email;
 	@NotBlank
 	private String telefone;
@@ -40,14 +43,13 @@ public class Usuario {
 	private LocalDateTime momentoDoDacastro;
 	private LocalDateTime dataHoraDaultimaAlteracao;
 
-	public Usuario(UUID idUsuario, String email, String nome, String telefone, String dataNascimento, Sexo sexo,
-			LocalDateTime momentoDoDacastro) {
+	public Usuario(PessoaNovoRequest pessoaRequest) {
 		this.idUsuario = UUID.randomUUID();
-		this.nome = nome;
-		this.email = email;
-		this.telefone = telefone;
-		setSexo(sexo);
-		this.dataNascimento = dataNascimento;
+		this.nome = pessoaRequest.getNome();
+		this.email = pessoaRequest.getEmail();
+		this.telefone = pessoaRequest.getTelefone();
+		setSexo(pessoaRequest.getSexo());
+		this.dataNascimento = pessoaRequest.getDataNascimento();
 		this.momentoDoDacastro = LocalDateTime.now();
 	}
 
@@ -60,5 +62,6 @@ public class Usuario {
 			this.sexo = sexo.getSexo();
 		}
 	}
+
 
 }

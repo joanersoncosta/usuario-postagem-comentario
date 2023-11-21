@@ -15,7 +15,7 @@ public class PessoaNovoRequest {
 	private String email;
 	@NotBlank
 	private String telefone;
-	@NotBlank
+	@NotNull
 	private Sexo sexo;
 	@NotNull
 	private String dataNascimento;
