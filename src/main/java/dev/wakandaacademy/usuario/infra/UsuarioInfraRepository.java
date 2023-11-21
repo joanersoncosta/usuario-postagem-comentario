@@ -1,7 +1,10 @@
 package dev.wakandaacademy.usuario.infra;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
+import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.usuario.application.repository.UsuarioRepository;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +18,14 @@ public class UsuarioInfraRepository implements UsuarioRepository {
 
 	@Override
 	public Usuario salvaUsuario(Usuario usuario) {
+		try {
 			log.info("[inicia] UsuarioInfraRepository - salvaUsuario");
-			Usuario usuarioCriado = UsuarioSpringDataMongoRepository.save(usuario);
+			UsuarioSpringDataMongoRepository.save(usuario);
 			log.info("[finaliza] UsuarioInfraRepository - salvaUsuario");
-			return usuarioCriado;
+		}catch (DataIntegrityViolationException ex) {
+			throw APIException.build(HttpStatus.BAD_REQUEST, "Usuario já cadastrada");
+		}
+		return usuario;
 	}
 
 }

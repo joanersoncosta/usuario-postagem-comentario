@@ -3,9 +3,11 @@ package dev.wakandaacademy.usuario.domain;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import dev.wakandaacademy.usuario.application.api.PessoaNovoRequest;
 import dev.wakandaacademy.usuario.domain.enuns.Sexo;
@@ -26,12 +28,13 @@ import lombok.NoArgsConstructor;
 public class Usuario {
 
 	@Id
+	@MongoId(value = FieldType.STRING)
 	private UUID idUsuario;
 	@NotBlank
 	private String nome;
 	@Email
 	@NotNull
-	@UniqueElements
+	@Indexed(unique=true) 
 	private String email;
 	@NotBlank
 	private String telefone;
