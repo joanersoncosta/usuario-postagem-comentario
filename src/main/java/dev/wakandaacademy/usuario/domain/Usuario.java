@@ -32,8 +32,8 @@ public class Usuario {
 	private String email;
 	@NotBlank
 	private String telefone;
-	@NotBlank
-	private Sexo sexo;
+	@NotNull
+	private String sexo;
 	@NotNull
 	private String dataNascimento;
 
@@ -46,9 +46,19 @@ public class Usuario {
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
-		this.sexo = sexo;
+		setSexo(sexo);
 		this.dataNascimento = dataNascimento;
 		this.momentoDoDacastro = LocalDateTime.now();
+	}
+
+	private Sexo getSexo() {
+		return Sexo.verificaValor(sexo);
+	}
+
+	private void setSexo(Sexo sexo) {
+		if (sexo != null) {
+			this.sexo = sexo.getSexo();
+		}
 	}
 
 }
