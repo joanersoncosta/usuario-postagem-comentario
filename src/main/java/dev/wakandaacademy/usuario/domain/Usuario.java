@@ -25,25 +25,29 @@ public class Usuario {
 
 	@Id
 	private UUID idUsuario;
+	@NotBlank
+	private String nome;
 	@Email
 	@NotNull
 	private String email;
 	@NotBlank
-	private String nome;
-	@NotNull
-	private String dataNascimento;
+	private String telefone;
 	@NotBlank
 	private Sexo sexo;
+	@NotNull
+	private String dataNascimento;
+
 	private LocalDateTime momentoDoDacastro;
 	private LocalDateTime dataHoraDaultimaAlteracao;
 
-	public Usuario(UUID idUsuario, String email, String nome, String dataNascimento, Sexo sexo,
+	public Usuario(UUID idUsuario, String email, String nome, String telefone, String dataNascimento, Sexo sexo,
 			LocalDateTime momentoDoDacastro) {
 		this.idUsuario = UUID.randomUUID();
-		this.email = email;
 		this.nome = nome;
-		this.dataNascimento = dataNascimento;
+		this.email = email;
+		this.telefone = telefone;
 		this.sexo = sexo;
+		this.dataNascimento = dataNascimento;
 		this.momentoDoDacastro = LocalDateTime.now();
 	}
 
