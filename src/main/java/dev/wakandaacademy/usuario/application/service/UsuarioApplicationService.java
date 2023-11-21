@@ -1,7 +1,10 @@
 package dev.wakandaacademy.usuario.application.service;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
+import dev.wakandaacademy.usuario.application.api.UsuarioCriadoResponse;
 import dev.wakandaacademy.usuario.application.api.UsuarioIdResponse;
 import dev.wakandaacademy.usuario.application.api.UsuarioNovoRequest;
 import dev.wakandaacademy.usuario.application.repository.UsuarioRepository;
@@ -24,6 +27,13 @@ public class UsuarioApplicationService implements UsuarioService {
 		return UsuarioIdResponse.builder()
 				.idUsuario(usuario.getIdUsuario())
 				.build();
+	}
+
+	@Override
+	public UsuarioCriadoResponse buscaUsuarioPorId(UUID idUsuario) {
+		log.info("[inicia] UsuarioApplicationService - buscaUsuarioPorId");
+		log.info("[finaliza] UsuarioApplicationService - buscaUsuarioPorId");
+		return null;
 	}
 
 }

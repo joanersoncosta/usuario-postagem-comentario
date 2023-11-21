@@ -25,8 +25,9 @@ public class UsuarioRestController implements UsuarioAPI {
 	@Override
 	public UsuarioCriadoResponse buscaUsuarioPorId(UUID idUsuario) {
 		log.info("[inicia] UsuarioRestController - buscaUsuarioPorId");
+		UsuarioCriadoResponse usuarioResponse = usuarioService.buscaUsuarioPorId(idUsuario);
 		log.info("[finaliza] UsuarioRestController - buscaUsuarioPorId");
-		return null;
+		return usuarioResponse;
 	}
 
 }
