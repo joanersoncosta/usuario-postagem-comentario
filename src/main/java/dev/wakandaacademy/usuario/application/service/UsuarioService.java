@@ -1,10 +1,10 @@
 package dev.wakandaacademy.usuario.application.service;
 
-import dev.wakandaacademy.usuario.application.api.PessoaIdResponse;
-import dev.wakandaacademy.usuario.application.api.PessoaNovoRequest;
+import dev.wakandaacademy.usuario.application.api.UsuarioIdResponse;
+import dev.wakandaacademy.usuario.application.api.UsuarioNovoRequest;
 import jakarta.validation.Valid;
 
 public interface UsuarioService {
-	PessoaIdResponse criaNovoUsuario(@Valid PessoaNovoRequest pessoaRequest);
+	UsuarioIdResponse criaNovoUsuario(@Valid UsuarioNovoRequest pessoaRequest);
 
 }

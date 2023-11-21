@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class PessoaIdResponse {
+public class UsuarioIdResponse {
 	private UUID idUsuario;
 
 }

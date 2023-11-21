@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import dev.wakandaacademy.usuario.application.api.PessoaNovoRequest;
+import dev.wakandaacademy.usuario.application.api.UsuarioNovoRequest;
 import dev.wakandaacademy.usuario.domain.enuns.Sexo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -46,7 +46,7 @@ public class Usuario {
 	private LocalDateTime momentoDoDacastro;
 	private LocalDateTime dataHoraDaultimaAlteracao;
 
-	public Usuario(PessoaNovoRequest pessoaRequest) {
+	public Usuario(UsuarioNovoRequest pessoaRequest) {
 		this.idUsuario = UUID.randomUUID();
 		this.nome = pessoaRequest.getNome();
 		this.email = pessoaRequest.getEmail();

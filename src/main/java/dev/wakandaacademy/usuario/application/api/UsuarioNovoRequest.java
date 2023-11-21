@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class PessoaNovoRequest {
+public class UsuarioNovoRequest {
 	@NotBlank
 	private String nome;
 	@Email
