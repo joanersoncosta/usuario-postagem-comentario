@@ -51,20 +51,23 @@ public class Usuario {
 		this.nome = pessoaRequest.getNome();
 		this.email = pessoaRequest.getEmail();
 		this.telefone = pessoaRequest.getTelefone();
-		setSexo(pessoaRequest.getSexo());
+		this.sexo = setSexo(pessoaRequest.getSexo());
 		this.dataNascimento = pessoaRequest.getDataNascimento();
 		this.momentoDoDacastro = LocalDateTime.now();
 	}
 
-	private Sexo getSexo() {
-		return Sexo.verificaValor(sexo);
+//	public Sexo getSexo() {
+//		return Sexo.verificaValor(sexo);
+//	}
+	public String getSexo() {
+		return this.sexo;
 	}
 
-	private void setSexo(Sexo sexo) {
+	public String setSexo(Sexo sexo) {
 		if (sexo != null) {
 			this.sexo = sexo.getSexo();
 		}
+		return this.sexo;
 	}
-
 
 }

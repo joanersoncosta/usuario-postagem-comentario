@@ -2,8 +2,10 @@ package dev.wakandaacademy.usuario.application.service;
 
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.usuario.application.api.UsuarioCriadoResponse;
 import dev.wakandaacademy.usuario.application.api.UsuarioIdResponse;
 import dev.wakandaacademy.usuario.application.api.UsuarioNovoRequest;
@@ -32,8 +34,12 @@ public class UsuarioApplicationService implements UsuarioService {
 	@Override
 	public UsuarioCriadoResponse buscaUsuarioPorId(UUID idUsuario) {
 		log.info("[inicia] UsuarioApplicationService - buscaUsuarioPorId");
+		UsuarioCriadoResponse usuarioResponse = usuarioRepository.buscaUsuarioPorId(idUsuario)
+				.map(UsuarioCriadoResponse::converteResponseParaUsuario)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Usuario não encontrado!"));
 		log.info("[finaliza] UsuarioApplicationService - buscaUsuarioPorId");
-		return null;
+		return usuarioResponse;
 	}
+
 
 }
