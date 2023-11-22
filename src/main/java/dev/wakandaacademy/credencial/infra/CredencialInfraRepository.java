@@ -11,12 +11,14 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 public class CredencialInfraRepository implements CredencialRepository {
-
+	private final CredencialSpringMongoRepository credencialSpringMongoRepository;
+	
 	@Override
 	public Credencial salvaCredencial(Credencial credencial) {
 		log.info("[inicia] CredencialInfraRepository - salvaCredencial");
+		credencialSpringMongoRepository.save(credencial);
 		log.info("[finaliza] CredencialInfraRepository - salvaCredencial");
-		return null;
+		return credencial;
 	}
 
 }
