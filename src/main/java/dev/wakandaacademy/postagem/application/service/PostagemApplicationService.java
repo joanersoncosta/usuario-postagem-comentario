@@ -21,8 +21,9 @@ public class PostagemApplicationService implements PostagemService {
 	@Override
 	public PostagemIdResponse criarPostagem(String email, PostagemRequest postagemRequest) {
 		log.info("[inicia] UsuarioRestController - criarPostagem");
-		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(email);
-		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(postagemRequest, usuario));
+		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
+		log.info("[usuarioEmail], ", usuarioEmail);
+		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(postagemRequest, usuarioEmail));
 		log.info("[finaliza] UsuarioRestController - criarPostagem");
 		return PostagemIdResponse.builder().idPostagem(postagem.getIdPostagem()).build();
 	}
