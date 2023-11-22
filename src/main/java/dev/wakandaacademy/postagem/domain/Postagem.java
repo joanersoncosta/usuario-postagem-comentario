@@ -41,6 +41,8 @@ public class Postagem {
 	@NotBlank
 	@Size(message = "Campo descrição postagem não pode estar vazio!", min = 3, max = 250)
 	private String descricao;
+	@Builder.Default
+	private int like = 0;
 	private UsuarioPostagem autor;
 
 	public Postagem(String titlo, String descricao, Usuario usuario) {
@@ -48,6 +50,7 @@ public class Postagem {
 		this.data = Date.from(Instant.now());
 		this.titlo = titlo;
 		this.descricao = descricao;
+		this.like = 0; 
 		this.autor = new UsuarioPostagem(usuario);
 	}
 }
