@@ -4,5 +4,6 @@ import dev.wakandaacademy.credencial.domain.Credencial;
 
 public interface CredencialRepository {
 	Credencial salvaCredencial(Credencial credencial);
+	Credencial buscaCredencialPorUsuario(String usuario);
 
 }

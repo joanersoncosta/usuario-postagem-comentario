@@ -24,9 +24,9 @@ public class CredencialApplicationService implements CreadencialService {
 	@Override
 	public Credencial buscaCredencialPorUsuario(String usuario) {
 		log.info("[inicia] CredencialApplicationService - buscaCredencialPorUsuario");
-		
+		Credencial credencial = credencialRepository.buscaCredencialPorUsuario(usuario);
 		log.info("[finaliza] CredencialApplicationService - buscaCredencialPorUsuario");
-		return null;
+		return credencial;
 	}
 
 }
