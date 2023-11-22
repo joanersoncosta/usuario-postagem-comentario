@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import dev.wakandaacademy.usuario.application.api.UsuarioNovoRequest;
 import dev.wakandaacademy.usuario.domain.enuns.Sexo;
 import jakarta.validation.constraints.Email;
@@ -42,8 +44,10 @@ public class Usuario {
 	private String sexo;
 	@NotNull
 	private String dataNascimento;
-
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT")
 	private LocalDateTime momentoDoDacastro;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT")
 	private LocalDateTime dataHoraDaultimaAlteracao;
 
 	public Usuario(UsuarioNovoRequest pessoaRequest) {
@@ -56,9 +60,6 @@ public class Usuario {
 		this.momentoDoDacastro = LocalDateTime.now();
 	}
 
-//	public Sexo getSexo() {
-//		return Sexo.verificaValor(sexo);
-//	}
 	public String getSexo() {
 		return this.sexo;
 	}
