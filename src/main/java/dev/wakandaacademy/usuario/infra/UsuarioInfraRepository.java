@@ -39,4 +39,13 @@ public class UsuarioInfraRepository implements UsuarioRepository {
 		return usuario;
 	}
 
+	@Override
+	public Usuario buscaUsuarioPorEmail(String email) {
+		log.info("[inicia] UsuarioInfraRepository - buscaUsuarioPorEmail");
+		Usuario usuario = UsuarioSpringDataMongoRepository.findByEmail(email).orElseThrow(() -> 
+			APIException.build(HttpStatus.BAD_REQUEST, "Usuario não encontrado para esse email!"));
+		log.info("[finaliza] UsuarioInfraRepository - buscaUsuarioPorEmail");
+		return usuario;
+	}
+
 }
