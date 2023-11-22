@@ -46,16 +46,13 @@ public class Postagem {
 	private int like = 0;
 	private UsuarioPostagem autor;
 
-	public Postagem(String titlo, String descricao, Usuario usuario) {
+	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
 		this.idPostagem = UUID.randomUUID();
+		this.idUsuario = postagemRequest.getIdUsuario();
 		this.data = Date.from(Instant.now());
-		this.titlo = titlo;
-		this.descricao = descricao;
+		this.titlo = postagemRequest.getTitlo();
+		this.descricao = postagemRequest.getDescricao();
 		this.like = 0; 
 		this.autor = new UsuarioPostagem(usuario);
-	}
-
-	public Postagem(PostagemRequest postagemRequest) {
-		// TODO Auto-generated constructor stub
 	}
 }
