@@ -5,4 +5,5 @@ import dev.wakandaacademy.usuario.application.api.UsuarioNovoRequest;
 
 public interface CreadencialService {
 	Credencial salvaCredencial(UsuarioNovoRequest usuario);
+	Credencial buscaCredencialPorUsuario(String usuario);
 }
