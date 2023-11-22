@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import dev.wakandaacademy.credencial.application.service.CreadencialService;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.usuario.application.api.UsuarioCriadoResponse;
 import dev.wakandaacademy.usuario.application.api.UsuarioIdResponse;
@@ -19,11 +20,13 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 public class UsuarioApplicationService implements UsuarioService {
+	private final CreadencialService creadencialService;
 	private final UsuarioRepository usuarioRepository;
 	
 	@Override
 	public UsuarioIdResponse criaNovoUsuario(@Valid UsuarioNovoRequest pessoaRequest) {
 		log.info("[inicia] UsuarioApplicationService - criaNovoUsuario");
+		creadencialService.salvaCredencial(pessoaRequest);
 		Usuario usuario = usuarioRepository.salvaUsuario(new Usuario(pessoaRequest));
 		log.info("[finaliza] UsuarioApplicationService - criaNovoUsuario");
 		return UsuarioIdResponse.builder()
