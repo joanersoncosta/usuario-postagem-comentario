@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -52,5 +53,9 @@ public class Postagem {
 		this.descricao = descricao;
 		this.like = 0; 
 		this.autor = new UsuarioPostagem(usuario);
+	}
+
+	public Postagem(PostagemRequest postagemRequest) {
+		// TODO Auto-generated constructor stub
 	}
 }

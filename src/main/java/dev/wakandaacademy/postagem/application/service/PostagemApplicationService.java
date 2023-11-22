@@ -4,6 +4,9 @@ import org.springframework.stereotype.Service;
 
 import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
+import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
+import dev.wakandaacademy.postagem.domain.Postagem;
+import dev.wakandaacademy.usuario.application.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -11,12 +14,14 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 public class PostagemApplicationService implements PostagemService {
-
+	private final PostagemRepository postagemRepository;
+	private final UsuarioRepository usuarioRepository;
+	
 	@Override
-	public PostagemIdResponse criarPostagem(PostagemRequest postagemRequest) {
+	public PostagemIdResponse criarPostagem(String email, PostagemRequest postagemRequest) {
 		log.info("[inicia] UsuarioRestController - criarPostagem");
+		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(postagemRequest));
 		log.info("[finaliza] UsuarioRestController - criarPostagem");
-		return null;
+		return PostagemIdResponse.builder().idPostagem(postagem.getIdPostagem()).build();
 	}
-
 }

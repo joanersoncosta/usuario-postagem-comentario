@@ -4,6 +4,6 @@ import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 
 public interface PostagemService {
-	PostagemIdResponse criarPostagem(PostagemRequest postagemRequest);
+	PostagemIdResponse criarPostagem(String email,PostagemRequest postagemRequest);
 
 }
