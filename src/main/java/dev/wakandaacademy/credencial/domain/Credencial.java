@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Document(collection = "Credencial")
-public class Credencial {
+public class Credencial{
 	@MongoId(targetType = FieldType.STRING)
 	@Getter
 	private String usuario;

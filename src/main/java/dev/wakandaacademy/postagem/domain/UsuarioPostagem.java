@@ -1,5 +1,6 @@
 package dev.wakandaacademy.postagem.domain;
 
+
 import java.util.UUID;
 
 import dev.wakandaacademy.usuario.domain.Usuario;
