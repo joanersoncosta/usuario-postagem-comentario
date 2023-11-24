@@ -1,9 +1,12 @@
 package dev.wakandaacademy.postagem.application.service;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
+import dev.wakandaacademy.postagem.application.api.PostagemResponse;
 import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
 import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.usuario.application.repository.UsuarioRepository;
@@ -26,5 +29,14 @@ public class PostagemApplicationService implements PostagemService {
 		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(postagemRequest, usuarioEmail));
 		log.info("[finaliza] UsuarioRestController - criarPostagem");
 		return PostagemIdResponse.builder().idPostagem(postagem.getIdPostagem()).build();
+	}
+
+	@Override
+	public PostagemResponse buscaPostagemPorId(UUID idPostagem, String email) {
+		log.info("[inicia] UsuarioRestController - buscaPostagemPorId");
+		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
+		log.info("[usuarioEmail], ", usuarioEmail);
+		log.info("[finaliza] UsuarioRestController - buscaPostagemPorId");
+		return null;
 	}
 }

@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.wakandaacademy.postagem.application.service.PostagemService;
-import dev.wakandaacademy.usuario.application.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -14,7 +13,6 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class PostagemRestController implements PostagemAPI {
 	private final PostagemService postagemService;
-	private final UsuarioService usuarioService;
 
 	
 	@Override
@@ -27,10 +25,11 @@ public class PostagemRestController implements PostagemAPI {
 
 
 	@Override
-	public PosatgemResponse buscaPostagemPorId(UUID idPostagem, String email) {
+	public PostagemResponse buscaPostagemPorId(UUID idPostagem, String email) {
 		log.info("[inicia] UsuarioRestController - buscaPostagemPorId");
+		PostagemResponse postagemResponse = postagemService.buscaPostagemPorId(idPostagem, email);
 		log.info("[finaliza] UsuarioRestController - buscaPostagemPorId");
-		return null;
+		return postagemResponse;
 	}
 
 }

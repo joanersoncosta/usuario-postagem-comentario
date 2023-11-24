@@ -25,5 +25,5 @@ public interface PostagemAPI {
 
 	@GetMapping(value = "/{idPostagem}")
 	@ResponseStatus(code = HttpStatus.OK)
-	PosatgemResponse buscaPostagemPorId(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email")String email);
+	PostagemResponse buscaPostagemPorId(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email")String email);
 }
