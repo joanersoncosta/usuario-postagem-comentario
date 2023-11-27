@@ -9,9 +9,12 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import dev.wakandaacademy.handler.APIException;
+import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import jakarta.validation.constraints.NotBlank;
@@ -28,7 +31,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Document(collection = "Postagem")
 public class Postagem {
-	
+
 	@Id
 	@MongoId(value = FieldType.STRING)
 	private UUID idPostagem;
@@ -44,7 +47,6 @@ public class Postagem {
 	private String descricao;
 	@Builder.Default
 	private int like = 0;
-	private UsuarioPostagem autor;
 
 	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
 		this.idPostagem = UUID.randomUUID();
@@ -52,7 +54,18 @@ public class Postagem {
 		this.data = Date.from(Instant.now());
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
-		this.like = 0; 
-		this.autor = new UsuarioPostagem(usuario);
+		this.like = 0;
+	}
+
+	public void pertenceUsuario(Usuario usuarioEmail) {
+		if (!idUsuario.equals(usuarioEmail.getIdUsuario())) {
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é dono do Post!");
+		}
+
+	}
+
+	public void alteraPostagem(PostagemAlteracaoRequest postagemAlteracaoRequest) {
+		this.titlo = postagemAlteracaoRequest.getTitlo();
+		this.descricao = postagemAlteracaoRequest.getDescricao();
 	}
 }

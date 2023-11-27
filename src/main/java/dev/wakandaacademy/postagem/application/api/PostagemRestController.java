@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.wakandaacademy.postagem.application.service.PostagemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -30,6 +31,15 @@ public class PostagemRestController implements PostagemAPI {
 		PostagemResponse postagemResponse = postagemService.buscaPostagemPorId(idPostagem, email);
 		log.info("[finaliza] UsuarioRestController - buscaPostagemPorId");
 		return postagemResponse;
+	}
+
+
+	@Override
+	public void patchAlteraPost(UUID idPostagem, String email,
+			PostagemAlteracaoRequest postagemAlteracaoRequest) {
+		log.info("[inicia] UsuarioRestController - patchAlteraPost");
+		postagemService.AlteraPostagemPorId(idPostagem, email, postagemAlteracaoRequest);
+		log.info("[finaliza] UsuarioRestController - patchAlteraPost");
 	}
 
 }

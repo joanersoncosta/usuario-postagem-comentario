@@ -2,8 +2,11 @@ package dev.wakandaacademy.postagem.application.service;
 
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import dev.wakandaacademy.handler.APIException;
+import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemResponse;
@@ -36,7 +39,22 @@ public class PostagemApplicationService implements PostagemService {
 		log.info("[inicia] UsuarioRestController - buscaPostagemPorId");
 		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
 		log.info("[usuarioEmail], ", usuarioEmail);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.pertenceUsuario(usuarioEmail);
 		log.info("[finaliza] UsuarioRestController - buscaPostagemPorId");
-		return null;
+		return new PostagemResponse(postagem, usuarioEmail);
+	}
+
+	@Override
+	public void AlteraPostagemPorId(UUID idPostagem, String email, PostagemAlteracaoRequest postagemAlteracaoRequest) {
+		log.info("[inicia] UsuarioRestController - AlteraPostagemPorId");
+		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
+		log.info("[usuarioEmail], ", usuarioEmail);
+		log.info("[idPostagem], ", idPostagem);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.pertenceUsuario(usuarioEmail);
+		postagem.alteraPostagem(postagemAlteracaoRequest);
+		postagemRepository.salvaPostagem(postagem);
+		log.info("[finaliza] UsuarioRestController - AlteraPostagemPorId");
 	}
 }
