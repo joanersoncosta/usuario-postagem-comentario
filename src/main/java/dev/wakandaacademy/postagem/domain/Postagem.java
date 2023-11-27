@@ -71,4 +71,8 @@ public class Postagem {
 	public void incrementaLike() {
 		this.like +=1;
 	}
+
+	public void removeLike() {
+		this.like -=1;
+	}
 }

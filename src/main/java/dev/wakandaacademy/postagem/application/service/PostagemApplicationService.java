@@ -81,4 +81,16 @@ public class PostagemApplicationService implements PostagemService {
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] PostagemApplicationService - incrementaLike");
 	}
+
+	@Override
+	public void removeLike(UUID idPostagem, String email) {
+		log.info("[inicia] PostagemApplicationService - removeLike");
+		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
+		log.info("[usuarioEmail], ", usuarioEmail);
+		log.info("[idPostagem], ", idPostagem);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.removeLike();
+		postagemRepository.salvaPostagem(postagem);
+		log.info("[finaliza] PostagemApplicationService - removeLike");
+	}
 }

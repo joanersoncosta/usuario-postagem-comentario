@@ -42,4 +42,8 @@ public interface PostagemAPI {
 	@PatchMapping(value = "/{idPostagem}/incrementa-like")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void incrementaLike(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
+
+	@PatchMapping(value = "/{idPostagem}/remove-like")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void removeLike(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
 }
