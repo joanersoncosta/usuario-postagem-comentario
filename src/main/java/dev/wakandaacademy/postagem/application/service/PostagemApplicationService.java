@@ -57,4 +57,16 @@ public class PostagemApplicationService implements PostagemService {
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] UsuarioRestController - AlteraPostagemPorId");
 	}
+
+	@Override
+	public void deletaPostPorId(UUID idPostagem, String email) {
+		log.info("[inicia] UsuarioRestController - deletaPostPorId");
+		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
+		log.info("[usuarioEmail], ", usuarioEmail);
+		log.info("[idPostagem], ", idPostagem);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.pertenceUsuario(usuarioEmail);
+		postagemRepository.deletaPost(postagem);
+		log.info("[finaliza] UsuarioRestController - deletaPostPorId");
+	}
 }

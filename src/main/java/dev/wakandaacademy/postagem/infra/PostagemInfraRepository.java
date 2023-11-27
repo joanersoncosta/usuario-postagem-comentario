@@ -31,4 +31,11 @@ public class PostagemInfraRepository implements PostagemRepository {
 		log.info("[finaliza] PostagemInfraRepository - buscaPostagemPorId");
 		return postagem;
 	}
+
+	@Override
+	public void deletaPost(Postagem postagem) {
+		log.info("[inicia] PostagemInfraRepository - buscaPostagemPorId");
+		postagemSpringDataMongoRepository.delete(postagem);
+		log.info("[finaliza] PostagemInfraRepository - buscaPostagemPorId");
+	}
 }

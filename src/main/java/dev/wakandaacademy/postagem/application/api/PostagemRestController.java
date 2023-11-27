@@ -42,4 +42,13 @@ public class PostagemRestController implements PostagemAPI {
 		log.info("[finaliza] UsuarioRestController - patchAlteraPost");
 	}
 
+
+	@Override
+	public void deletaPostPorId(UUID idPostagem, String email) {
+		log.info("[inicia] UsuarioRestController - deletaPostPorId");
+		postagemService.deletaPostPorId(idPostagem, email);
+		log.info("[finaliza] UsuarioRestController - deletaPostPorId");
+		
+	}
+
 }

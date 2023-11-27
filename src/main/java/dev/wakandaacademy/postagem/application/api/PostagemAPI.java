@@ -3,6 +3,7 @@ package dev.wakandaacademy.postagem.application.api;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,4 +34,8 @@ public interface PostagemAPI {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void patchAlteraPost(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email,
 			@RequestBody @Valid PostagemAlteracaoRequest postagemAlteracaoRequest);
+
+	@DeleteMapping(value = "/{idPostagem}/deleta-post")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void deletaPostPorId(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
 }

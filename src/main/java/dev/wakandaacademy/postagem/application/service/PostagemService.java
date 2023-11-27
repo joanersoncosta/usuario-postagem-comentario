@@ -11,4 +11,5 @@ public interface PostagemService {
 	PostagemIdResponse criarPostagem(String email,PostagemRequest postagemRequest);
 	PostagemResponse buscaPostagemPorId(UUID idPostagem, String email);
 	void AlteraPostagemPorId(UUID idPostagem, String email, PostagemAlteracaoRequest postagemAlteracaoRequest);
+	void deletaPostPorId(UUID idPostagem, String email);
 }
