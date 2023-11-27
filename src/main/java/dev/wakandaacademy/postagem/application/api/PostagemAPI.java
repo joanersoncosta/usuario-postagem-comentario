@@ -38,4 +38,8 @@ public interface PostagemAPI {
 	@DeleteMapping(value = "/{idPostagem}/deleta-post")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void deletaPostPorId(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
+
+	@PatchMapping(value = "/{idPostagem}/incrementa-like")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void incrementaLike(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
 }

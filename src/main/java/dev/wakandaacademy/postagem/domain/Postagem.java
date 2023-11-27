@@ -37,7 +37,6 @@ public class Postagem {
 	private UUID idPostagem;
 	@Indexed
 	private UUID idUsuario;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	private Date data;
 	@NotBlank
 	@Size(message = "Campo titlo postagem não pode estar vazio!", min = 3, max = 50)
@@ -67,5 +66,9 @@ public class Postagem {
 	public void alteraPostagem(PostagemAlteracaoRequest postagemAlteracaoRequest) {
 		this.titlo = postagemAlteracaoRequest.getTitlo();
 		this.descricao = postagemAlteracaoRequest.getDescricao();
+	}
+
+	public void incrementaLike() {
+		this.like +=1;
 	}
 }
