@@ -13,7 +13,6 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class PostagemRestController implements PostagemAPI {
 	private final PostagemService postagemService;
-
 	
 	@Override
 	public PostagemIdResponse criarPostagem(String email, PostagemRequest postagemRequest) {

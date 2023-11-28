@@ -3,7 +3,11 @@ package dev.wakandaacademy.comentario.domain;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -19,8 +23,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode(of = "idUsuario")
+@Document(collation = "Comentario")
 public class Comentario {
 	
+	@Id
+	@MongoId(targetType = FieldType.STRING)
+	private UUID idComentario;
+	@Indexed
 	private UUID idPostagem;
 	@Indexed
 	private UUID idUsuario;
