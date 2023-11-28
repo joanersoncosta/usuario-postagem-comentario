@@ -37,4 +37,12 @@ public class ComentarioApplicationService implements ComentarioService {
 		log.info("[finaliza] ComentarioApplicationService - adicionarComentario");
 	}
 
+	@Override
+	public void removeComentario(String usuarioEmail, UUID idPostagem) {
+		log.info("[inicia] ComentarioApplicationService - removeComentario");
+		log.info("[usuarioEmail], ", usuarioEmail);
+		log.info("[idPostagem], ", idPostagem);
+		log.info("[finaliza] ComentarioApplicationService - removeComentario");
+	}
+
 }

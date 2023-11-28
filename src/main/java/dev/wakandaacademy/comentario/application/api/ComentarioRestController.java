@@ -24,6 +24,7 @@ public class ComentarioRestController implements ComentarioAPI {
 	@Override
 	public void removeComentario(String email, UUID idPostagem) {
 		log.info("[inicia] ComentarioRestController - removeComentario");
+		comentarioService.removeComentario(email, idPostagem);
 		log.info("[finaliza] ComentarioRestController - removeComentario");
 		
 	}
