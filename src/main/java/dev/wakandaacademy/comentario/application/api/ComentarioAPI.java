@@ -14,16 +14,15 @@ import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 
 @RestController
-@RequestMapping("/v1/comentario")
+@RequestMapping("/v1/{idPostagem}/postagem")
 public interface ComentarioAPI {
 
-	@PatchMapping(value = "/{idPostagem}/postagem")
+	@PatchMapping
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	void adicionarComentario(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem,
 			@RequestBody @Valid ComentarioRequest comentarioRequest);
 
-	@PatchMapping(value = "/{idPostagem}/postagem/remove-comentario")
+	@PatchMapping(value = "/{idComentario}/comentario/remove-comentario")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	void removeComentario(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem);
-
+	void removeComentario(@PathParam(value = "email") String email, @PathVariable(value = "idComentario") UUID idComentario, @PathVariable(value = "idPostagem") UUID idPostagem);
 }

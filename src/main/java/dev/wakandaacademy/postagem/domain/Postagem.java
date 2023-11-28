@@ -91,4 +91,8 @@ public class Postagem {
 	public void adicionarComentario(Comentario comentario) {
 		this.comentarios.add(comentario);
 	}
+
+	public void removeComentario(Usuario usuario, UUID idPostagem) {
+		
+	}
 }

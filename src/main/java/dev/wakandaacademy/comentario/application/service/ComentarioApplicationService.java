@@ -38,11 +38,15 @@ public class ComentarioApplicationService implements ComentarioService {
 	}
 
 	@Override
-	public void removeComentario(String usuarioEmail, UUID idPostagem) {
+	public void removeComentario(String usuarioEmail, UUID idComentario, UUID idPostagem) {
 		log.info("[inicia] ComentarioApplicationService - removeComentario");
-		log.info("[usuarioEmail], ", usuarioEmail);
-		log.info("[idPostagem], ", idPostagem);
+		log.info("[usuarioEmail] {}", usuarioEmail);
+		log.info("[idPostagem] {}, [idPostagem] {}", idPostagem, idComentario);
+
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.removeComentario(usuario, idPostagem);
+		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] ComentarioApplicationService - removeComentario");
 	}
-
 }
