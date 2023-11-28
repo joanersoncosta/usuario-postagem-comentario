@@ -17,9 +17,9 @@ import jakarta.websocket.server.PathParam;
 @RequestMapping("/v1/{idPostagem}/postagem")
 public interface ComentarioAPI {
 
-	@PatchMapping
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	void adicionarComentario(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem,
+	@PatchMapping(value ="/comentario")
+	@ResponseStatus(code = HttpStatus.OK)
+	ComentarioIdResponse adicionarComentario(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem,
 			@RequestBody @Valid ComentarioRequest comentarioRequest);
 
 	@PatchMapping(value = "/{idComentario}/comentario/remove-comentario")

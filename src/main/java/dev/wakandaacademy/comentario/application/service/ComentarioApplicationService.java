@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.handler.APIException;
@@ -23,7 +24,7 @@ public class ComentarioApplicationService implements ComentarioService {
 	private final UsuarioRepository usuarioRepository;
 	
 	@Override
-	public void adicionarComentario(String usuarioEmail, UUID idPostagem,
+	public ComentarioIdResponse adicionarComentario(String usuarioEmail, UUID idPostagem,
 			ComentarioRequest comentarioRequest) {
 		log.info("[inicia] ComentarioApplicationService - adicionarComentario");
 		log.info("[usuarioEmail], ", usuarioEmail);
@@ -35,6 +36,7 @@ public class ComentarioApplicationService implements ComentarioService {
 		postagem.adicionarComentario(comentario);
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] ComentarioApplicationService - adicionarComentario");
+		return ComentarioIdResponse.builder().idComentario(comentario.getIdComentario()).build();
 	}
 
 	@Override
