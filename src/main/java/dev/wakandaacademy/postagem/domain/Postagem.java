@@ -2,6 +2,8 @@ package dev.wakandaacademy.postagem.domain;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -10,8 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.http.HttpStatus;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
@@ -46,6 +46,7 @@ public class Postagem {
 	private String descricao;
 	@Builder.Default
 	private int like = 0;
+	private Set<UsuarioLikePostagem> likeUsuarios = new HashSet<>();
 
 	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
 		this.idPostagem = UUID.randomUUID();
@@ -60,7 +61,6 @@ public class Postagem {
 		if (!idUsuario.equals(usuarioEmail.getIdUsuario())) {
 			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é dono do Post!");
 		}
-
 	}
 
 	public void alteraPostagem(PostagemAlteracaoRequest postagemAlteracaoRequest) {
