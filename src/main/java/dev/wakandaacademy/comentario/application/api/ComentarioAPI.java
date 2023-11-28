@@ -22,4 +22,8 @@ public interface ComentarioAPI {
 	void adicionarComentario(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem,
 			@RequestBody @Valid ComentarioRequest comentarioRequest);
 
+	@PatchMapping(value = "/{idPostagem}/postagem/remove-comentario")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	void removeComentario(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem);
+
 }
