@@ -68,8 +68,13 @@ public class Postagem {
 		this.descricao = postagemAlteracaoRequest.getDescricao();
 	}
 
-	public void incrementaLike() {
-		this.like +=1;
+	public void incrementaLike(Usuario usuarioPost) {
+		var usuarioLikePost = UsuarioLikePostagem.builder().idUsuario(usuarioPost.getIdUsuario()).build();
+		if(likeUsuarios.contains(usuarioLikePost)) throw APIException.build(HttpStatus.BAD_REQUEST, "Like já incrementado para esse Usuário!");
+		
+		usuarioLikePost.setLikeUsuario(true);
+		this.likeUsuarios.add(usuarioLikePost);
+		this.like += 1;
 	}
 
 	public void removeLike() {
