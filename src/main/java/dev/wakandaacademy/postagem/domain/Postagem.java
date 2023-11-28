@@ -77,7 +77,12 @@ public class Postagem {
 		this.like += 1;
 	}
 
-	public void removeLike() {
-		this.like -=1;
+	public void removeLike(Usuario usuarioPost) {
+		var usuarioLikePost = UsuarioLikePostagem.builder().idUsuario(usuarioPost.getIdUsuario()).build();
+		if(!likeUsuarios.contains(usuarioLikePost)) throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do like!");
+		else if (!usuarioLikePost.isLikeUsuario() == false) throw APIException.build(HttpStatus.BAD_REQUEST, "Like já removido para esse Usuário!");
+		
+		this.likeUsuarios.remove(usuarioLikePost);
+		this.like -= 1;
 	}
 }
