@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
+import dev.wakandaacademy.comentario.application.service.ComentarioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -12,12 +12,12 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Log4j2
 public class ComentarioRestController implements ComentarioAPI {
-
+	private final ComentarioService comentarioService;
+	
 	@Override
-	public ComentarioIdResponse adicionarComentario(String email, UUID idPostagem, @Valid ComentarioRequest comentarioRequest) {
+	public void adicionarComentario(String email, UUID idPostagem, ComentarioRequest comentarioRequest) {
 		log.info("[inicia] ComentarioRestController - adicionarComentario");
+		comentarioService.adicionarComentario(email, idPostagem, comentarioRequest);
 		log.info("[finaliza] ComentarioRestController - adicionarComentario");
-		return null;
 	}
-
 }

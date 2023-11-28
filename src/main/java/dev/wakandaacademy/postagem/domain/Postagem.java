@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.http.HttpStatus;
 
+import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
@@ -47,6 +48,7 @@ public class Postagem {
 	@Builder.Default
 	private int like = 0;
 	private Set<UsuarioLikePostagem> likeUsuarios = new HashSet<>();
+	private Set<Comentario> comentarios = new HashSet<>();
 
 	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
 		this.idPostagem = UUID.randomUUID();
@@ -84,5 +86,9 @@ public class Postagem {
 		
 		this.likeUsuarios.remove(usuarioLikePost);
 		this.like -= 1;
+	}
+
+	public void adicionarComentario(Comentario comentario) {
+		this.comentarios.add(comentario);
 	}
 }
