@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.wakandaacademy.postagem.application.service.PostagemService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -24,7 +23,6 @@ public class PostagemRestController implements PostagemAPI {
 			return postagemIdResponse;
 	}
 
-
 	@Override
 	public PostagemResponse buscaPostagemPorId(UUID idPostagem, String email) {
 		log.info("[inicia] PostagemRestController - buscaPostagemPorId");
@@ -32,7 +30,6 @@ public class PostagemRestController implements PostagemAPI {
 		log.info("[finaliza] PostagemRestController - buscaPostagemPorId");
 		return postagemResponse;
 	}
-
 
 	@Override
 	public void patchAlteraPost(UUID idPostagem, String email,
@@ -42,14 +39,12 @@ public class PostagemRestController implements PostagemAPI {
 		log.info("[finaliza] PostagemRestController - patchAlteraPost");
 	}
 
-
 	@Override
 	public void deletaPostPorId(UUID idPostagem, String email) {
 		log.info("[inicia] PostagemRestController - deletaPostPorId");
 		postagemService.deletaPostPorId(idPostagem, email);
 		log.info("[finaliza] PostagemRestController - deletaPostPorId");
 	}
-
 
 	@Override
 	public void incrementaLike(UUID idPostagem, String email) {
@@ -58,12 +53,10 @@ public class PostagemRestController implements PostagemAPI {
 		log.info("[finaliza] PostagemRestController - incrementaLike");
 	}
 
-
 	@Override
 	public void removeLike(UUID idPostagem, String email) {
-		log.info("[inicia] removeLike - incrementaLike");
+		log.info("[inicia] removeLike - removeLike");
 		postagemService.removeLike(idPostagem, email);
-		log.info("[finaliza] removeLike - incrementaLike");
+		log.info("[finaliza] removeLike - removeLike");
 	}
-
 }

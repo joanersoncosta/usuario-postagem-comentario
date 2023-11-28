@@ -1,5 +1,6 @@
 package dev.wakandaacademy.postagem.infra;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,8 +35,8 @@ public class PostagemInfraRepository implements PostagemRepository {
 
 	@Override
 	public void deletaPost(Postagem postagem) {
-		log.info("[inicia] PostagemInfraRepository - buscaPostagemPorId");
+		log.info("[inicia] PostagemInfraRepository - deletaPost");
 		postagemSpringDataMongoRepository.delete(postagem);
-		log.info("[finaliza] PostagemInfraRepository - buscaPostagemPorId");
+		log.info("[finaliza] PostagemInfraRepository - deletaPost");
 	}
 }

@@ -44,7 +44,7 @@ public class PostagemApplicationService implements PostagemService {
 		log.info("[finaliza] PostagemApplicationService - buscaPostagemPorId");
 		return new PostagemResponse(postagem, usuarioEmail);
 	}
-
+	
 	@Override
 	public void AlteraPostagemPorId(UUID idPostagem, String email, PostagemAlteracaoRequest postagemAlteracaoRequest) {
 		log.info("[inicia] PostagemApplicationService - AlteraPostagemPorId");
