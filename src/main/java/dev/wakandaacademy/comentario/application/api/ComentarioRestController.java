@@ -15,9 +15,9 @@ public class ComentarioRestController implements ComentarioAPI {
 	private final ComentarioService comentarioService;
 	
 	@Override
-	public ComentarioIdResponse adicionarComentario(String email, UUID idPostagem, ComentarioRequest comentarioRequest) {
+	public ComentarioIdResponse adicionarComentario(UUID idPostagem, ComentarioRequest comentarioRequest) {
 		log.info("[inicia] ComentarioRestController - adicionarComentario");
-		ComentarioIdResponse comentarioResponse = comentarioService.adicionarComentario(email, idPostagem, comentarioRequest);
+		ComentarioIdResponse comentarioResponse = comentarioService.adicionarComentario(idPostagem, comentarioRequest);
 		log.info("[finaliza] ComentarioRestController - adicionarComentario");
 		return comentarioResponse;
 	}

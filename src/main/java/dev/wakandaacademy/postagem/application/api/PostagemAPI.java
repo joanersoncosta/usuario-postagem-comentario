@@ -22,8 +22,7 @@ public interface PostagemAPI {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	PostagemIdResponse criarPostagem(@PathParam(value = "email") String email,
-			@RequestBody @Valid PostagemRequest postagemRequest);
+	PostagemIdResponse criarPostagem(@RequestBody @Valid PostagemRequest postagemRequest);
 
 	@GetMapping(value = "/{idPostagem}")
 	@ResponseStatus(code = HttpStatus.OK)

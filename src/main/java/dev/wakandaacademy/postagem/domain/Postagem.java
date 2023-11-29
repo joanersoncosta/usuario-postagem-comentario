@@ -1,16 +1,15 @@
 package dev.wakandaacademy.postagem.domain;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.http.HttpStatus;
 
 import dev.wakandaacademy.comentario.domain.Comentario;
@@ -34,25 +33,23 @@ import lombok.NoArgsConstructor;
 public class Postagem {
 
 	@Id
-	@MongoId(value = FieldType.STRING)
 	private UUID idPostagem;
-	@Indexed
 	private UUID idUsuario;
 	private Date data;
 	@NotBlank
-	@Size(message = "Campo titlo postagem não pode estar vazio!", min = 3, max = 50)
+	@Size(min = 3, max = 50)
 	private String titlo;
 	@NotBlank
-	@Size(message = "Campo descrição postagem não pode estar vazio!", min = 3, max = 250)
+	@Size(min = 3, max = 250)
 	private String descricao;
 	@Builder.Default
 	private int like = 0;
 	private Set<UsuarioLikePostagem> likeUsuarios = new HashSet<>();
-	private Set<Comentario> comentarios = new HashSet<>();
+	private List<Comentario> comentarios = new ArrayList<>();
 
 	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
 		this.idPostagem = UUID.randomUUID();
-		this.idUsuario = postagemRequest.getIdUsuario();
+		this.idUsuario = usuario.getIdUsuario();
 		this.data = Date.from(Instant.now());
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
@@ -92,7 +89,10 @@ public class Postagem {
 		this.comentarios.add(comentario);
 	}
 
-	public void removeComentario(Usuario usuario, UUID idPostagem) {
-		
+	public void removeComentario(Usuario usuario, UUID idPostagem, UUID idComentario) {
+		if(comentarios.contains(Comentario.builder().idUsuario(usuario.getIdUsuario()).build()) && (!comentarios.contains(Comentario.builder().idComentario(idComentario).build()))) throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do Comentário!");
+		else if(!(comentarios.contains(Comentario.builder().idComentario(idComentario).build()))) throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado!");
+		else if(!(comentarios.contains(Comentario.builder().idPostagem(idPostagem).build()) )) throw APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!");
+		this.comentarios.remove(Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem).idComentario(idComentario).build());
 	}
 }

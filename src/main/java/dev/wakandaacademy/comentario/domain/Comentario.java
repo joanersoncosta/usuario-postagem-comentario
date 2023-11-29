@@ -16,12 +16,14 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "idUsuario")
 @Getter
+@Setter
 public class Comentario {
 
 	private UUID idComentario;
@@ -42,9 +44,9 @@ public class Comentario {
 		this.like = 0;
 	}
 
-	public void pertencePostagem(Postagem postagem) {
+	public void pertenceUsuario(Postagem postagem) {
 		if (!idUsuario.equals(postagem.getIdUsuario())) {
-			throw APIException.build(HttpStatus.UNAUTHORIZED, "Comentário não ter a este Usuario!");
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Comentário não pertence a este Usuario!");
 		}
 	}
 

@@ -15,9 +15,9 @@ public class PostagemRestController implements PostagemAPI {
 	private final PostagemService postagemService;
 	
 	@Override
-	public PostagemIdResponse criarPostagem(String email, PostagemRequest postagemRequest) {
+	public PostagemIdResponse criarPostagem(PostagemRequest postagemRequest) {
 		log.info("[inicia] PostagemRestController - criarPostagem");
-		PostagemIdResponse postagemIdResponse = postagemService.criarPostagem(email, postagemRequest);
+		PostagemIdResponse postagemIdResponse = postagemService.criarPostagem(postagemRequest);
 		log.info("[finaliza] PostagemRestController - criarPostagem");
 			return postagemIdResponse;
 	}

@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 public class Usuario {
 
 	@Id
-	@MongoId(value = FieldType.STRING)
 	private UUID idUsuario;
 	@NotBlank
 	private String nome;

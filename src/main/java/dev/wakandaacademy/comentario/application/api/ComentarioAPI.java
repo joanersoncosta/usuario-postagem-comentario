@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 
 @RestController
@@ -19,8 +18,8 @@ public interface ComentarioAPI {
 
 	@PatchMapping(value ="/comentario")
 	@ResponseStatus(code = HttpStatus.OK)
-	ComentarioIdResponse adicionarComentario(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem,
-			@RequestBody @Valid ComentarioRequest comentarioRequest);
+	ComentarioIdResponse adicionarComentario(@PathVariable(value = "idPostagem") UUID idPostagem,
+			@RequestBody ComentarioRequest comentarioRequest);
 
 	@PatchMapping(value = "/{idComentario}/comentario/remove-comentario")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
