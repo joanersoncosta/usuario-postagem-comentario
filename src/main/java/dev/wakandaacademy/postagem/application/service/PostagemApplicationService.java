@@ -70,26 +70,14 @@ public class PostagemApplicationService implements PostagemService {
 	}
 
 	@Override
-	public void incrementaLike(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemApplicationService - incrementaLike");
+	public void usuarioLike(UUID idPostagem, String email) {
+		log.info("[inicia] PostagemApplicationService - usuarioLike");
 		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
 		log.info("[usuarioEmail], ", email);
 		log.info("[idPostagem], ", idPostagem);
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.incrementaLike(usuarioEmail);
+		postagem.usuarioLike(usuarioEmail);
 		postagemRepository.salvaPostagem(postagem);
-		log.info("[finaliza] PostagemApplicationService - incrementaLike");
-	}
-
-	@Override
-	public void removeLike(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemApplicationService - removeLike");
-		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
-		log.info("[usuarioEmail], ", email);
-		log.info("[idPostagem], ", idPostagem);
-		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.removeLike(usuarioEmail);
-		postagemRepository.salvaPostagem(postagem);
-		log.info("[finaliza] PostagemApplicationService - removeLike");
+		log.info("[finaliza] PostagemApplicationService - usuarioLike");
 	}
 }

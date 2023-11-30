@@ -46,16 +46,9 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public void incrementaLike(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemRestController - incrementaLike");
-		postagemService.incrementaLike(idPostagem, email);
-		log.info("[finaliza] PostagemRestController - incrementaLike");
-	}
-
-	@Override
-	public void removeLike(UUID idPostagem, String email) {
-		log.info("[inicia] removeLike - removeLike");
-		postagemService.removeLike(idPostagem, email);
-		log.info("[finaliza] removeLike - removeLike");
+	public void usuarioLike(UUID idPostagem, String email) {
+		log.info("[inicia] PostagemRestController - usuarioLike");
+		postagemService.usuarioLike(idPostagem, email);
+		log.info("[finaliza] PostagemRestController - usuarioLike");
 	}
 }

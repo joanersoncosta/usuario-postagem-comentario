@@ -2,6 +2,8 @@ package dev.wakandaacademy.comentario.domain;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.domain.Postagem;
+import dev.wakandaacademy.postagem.domain.UsuarioLikePostagem;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,6 +36,7 @@ public class Comentario {
 	private Date data;
 	private String descricao;
 	private int like;
+	private Set<UsuarioLikeComentario> likeUsuarios = new HashSet<>();
 
 	public Comentario(Usuario usuario, UUID idPostagem, ComentarioRequest comentarioRequest) {
 		this.idComentario = UUID.randomUUID();
@@ -44,14 +48,13 @@ public class Comentario {
 		this.like = 0;
 	}
 
-	public void pertenceUsuario(Postagem postagem) {
-		if (!idUsuario.equals(postagem.getIdUsuario())) {
-			throw APIException.build(HttpStatus.UNAUTHORIZED, "Comentário não pertence a este Usuario!");
-		}
-	}
-
-	public void incrementaLike() {
-		this.like += 1;
+	public void incrementaLike(Usuario usuario) {
+		var usuarioLike = UsuarioLikeComentario.builder().idUsuario(usuario.getIdUsuario()).build();
+		if(likeUsuarios.contains(usuarioLike)) throw APIException.build(HttpStatus.BAD_REQUEST, "Like já incrementado para esse Usuário!");
+		
+		usuarioLike.setLikeUsuario(true);
+		this.likeUsuarios.add(usuarioLike);
+		this.like += 1;	
 	}
 
 	public void removeLike() {

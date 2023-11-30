@@ -42,12 +42,25 @@ public class ComentarioApplicationService implements ComentarioService {
 	public void removeComentario(String usuarioEmail, UUID idComentario, UUID idPostagem) {
 		log.info("[inicia] ComentarioApplicationService - removeComentario");
 		log.info("[usuarioEmail] {}", usuarioEmail);
-		log.info("[idPostagem] {}, [idPostagem] {}", idPostagem, idComentario);
+		log.info("[idPostagem] {}, [idComentario] {}", idPostagem, idComentario);
 
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
 		postagem.removeComentario(usuario, idPostagem, idComentario);
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] ComentarioApplicationService - removeComentario");
+	}
+
+	@Override
+	public void incrementaLike(String usuarioEmail, UUID idPostagem, UUID idComentario) {
+		log.info("[inicia] ComentarioApplicationService - incrementaLike");
+		log.info("[usuarioEmail] {}", usuarioEmail);
+		log.info("[idPostagem] {}, [idComentario] {}", idPostagem, idComentario);
+
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.incrementaLikeComentario(usuario, postagem, idComentario);
+		postagemRepository.salvaPostagem(postagem);
+		log.info("[finaliza] ComentarioApplicationService - incrementaLike");
 	}
 }

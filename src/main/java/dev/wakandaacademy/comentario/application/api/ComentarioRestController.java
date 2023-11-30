@@ -29,4 +29,11 @@ public class ComentarioRestController implements ComentarioAPI {
 		log.info("[finaliza] ComentarioRestController - removeComentario");
 		
 	}
+
+	@Override
+	public void incrementaLike(String email, UUID idPostagem, UUID idComentario) {
+		log.info("[inicia] ComentarioRestController - incrementaLike");
+		comentarioService.incrementaLike(email, idPostagem, idComentario);
+		log.info("[finaliza] ComentarioRestController - incrementaLike");
+	}
 }

@@ -12,6 +12,5 @@ public interface PostagemService {
 	PostagemResponse buscaPostagemPorId(UUID idPostagem, String email);
 	void AlteraPostagemPorId(UUID idPostagem, String email, PostagemAlteracaoRequest postagemAlteracaoRequest);
 	void deletaPostPorId(UUID idPostagem, String email);
-	void incrementaLike(UUID idPostagem, String email);
-	void removeLike(UUID idPostagem, String email);
+	void usuarioLike(UUID idPostagem, String email);
 }

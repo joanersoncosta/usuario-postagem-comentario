@@ -67,21 +67,23 @@ public class Postagem {
 		this.descricao = postagemAlteracaoRequest.getDescricao();
 	}
 
-	public void incrementaLike(Usuario usuarioPost) {
+	public void usuarioLike(Usuario usuarioPost) {
 		var usuarioLikePost = UsuarioLikePostagem.builder().idUsuario(usuarioPost.getIdUsuario()).build();
-		if(likeUsuarios.contains(usuarioLikePost)) throw APIException.build(HttpStatus.BAD_REQUEST, "Like já incrementado para esse Usuário!");
-		
-		usuarioLikePost.setLikeUsuario(true);
-		this.likeUsuarios.add(usuarioLikePost);
+		if (!likeUsuarios.contains(usuarioLikePost)) {
+			usuarioLikePost.setLikeUsuario(true);
+			like(usuarioLikePost);
+		} else {
+			deslike(usuarioLikePost);
+		}
+	}
+
+	public void like(UsuarioLikePostagem usuarioLike) {
+		this.likeUsuarios.add(usuarioLike);
 		this.like += 1;
 	}
 
-	public void removeLike(Usuario usuarioPost) {
-		var usuarioLikePost = UsuarioLikePostagem.builder().idUsuario(usuarioPost.getIdUsuario()).build();
-		if(!likeUsuarios.contains(usuarioLikePost)) throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do like!");
-		else if (!usuarioLikePost.isLikeUsuario() == false) throw APIException.build(HttpStatus.BAD_REQUEST, "Like já removido para esse Usuário!");
-		
-		this.likeUsuarios.remove(usuarioLikePost);
+	public void deslike(UsuarioLikePostagem usuarioDeslike) {
+		this.likeUsuarios.remove(usuarioDeslike);
 		this.like -= 1;
 	}
 
@@ -90,8 +92,19 @@ public class Postagem {
 	}
 
 	public void removeComentario(Usuario usuario, UUID idPostagem, UUID idComentario) {
-		var comentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem).idComentario(idComentario).build();
-		if(!comentarios.contains(comentario)) throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
-		this.comentarios.remove(Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem).idComentario(idComentario).build());
+		var comentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
+				.idComentario(idComentario).build();
+		if (!comentarios.contains(comentario))
+			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
+		this.comentarios.remove(Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
+				.idComentario(idComentario).build());
+	}
+
+	public void incrementaLikeComentario(Usuario usuario, Postagem postagem, UUID idComentario) {
+		var comentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
+				.idComentario(idComentario).build();
+		if (!comentarios.contains(comentario))
+			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
+		comentario.incrementaLike(usuario);
 	}
 }
