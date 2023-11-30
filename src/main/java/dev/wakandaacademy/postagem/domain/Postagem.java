@@ -90,9 +90,8 @@ public class Postagem {
 	}
 
 	public void removeComentario(Usuario usuario, UUID idPostagem, UUID idComentario) {
-		if(comentarios.contains(Comentario.builder().idUsuario(usuario.getIdUsuario()).build()) && (!comentarios.contains(Comentario.builder().idComentario(idComentario).build()))) throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do Comentário!");
-		else if(!(comentarios.contains(Comentario.builder().idComentario(idComentario).build()))) throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado!");
-		else if(!(comentarios.contains(Comentario.builder().idPostagem(idPostagem).build()) )) throw APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!");
+		var comentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem).idComentario(idComentario).build();
+		if(!comentarios.contains(comentario)) throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
 		this.comentarios.remove(Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem).idComentario(idComentario).build());
 	}
 }
