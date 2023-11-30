@@ -91,16 +91,7 @@ public class Postagem {
 		this.comentarios.add(comentario);
 	}
 
-	public void removeComentario(Usuario usuario, UUID idPostagem, UUID idComentario) {
-		var comentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
-				.idComentario(idComentario).build();
-		if (!comentarios.contains(comentario))
-			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
-		this.comentarios.remove(Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
-				.idComentario(idComentario).build());
-	}
-
-	public void incrementaLikeComentario(Usuario usuario, Postagem postagem, UUID idComentario) {
+	public void usuarioLikeComentario(Usuario usuario, Postagem postagem, UUID idComentario) {
 		var comentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
 				.idComentario(idComentario).build();
 		if (!comentarios.contains(comentario))

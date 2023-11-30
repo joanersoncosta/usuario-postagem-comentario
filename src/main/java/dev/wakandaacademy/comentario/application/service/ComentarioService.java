@@ -8,6 +8,6 @@ import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 public interface ComentarioService {
 	ComentarioIdResponse adicionarComentario(UUID idPostagem, ComentarioRequest comentarioRequest);
 	void removeComentario(String email, UUID idComentario, UUID idPostagem);
-	void incrementaLike(String email, UUID idPostagem, UUID idComentario);
+	void usuarioLike(String email, UUID idPostagem, UUID idComentario);
 
 }
