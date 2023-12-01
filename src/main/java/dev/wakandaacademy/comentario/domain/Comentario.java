@@ -48,16 +48,25 @@ public class Comentario {
 		this.like = 0;
 	}
 
-	public void incrementaLike(Usuario usuario) {
-		var usuarioLike = UsuarioLikeComentario.builder().idUsuario(usuario.getIdUsuario()).build();
-		if(likeUsuarios.contains(usuarioLike)) throw APIException.build(HttpStatus.BAD_REQUEST, "Like já incrementado para esse Usuário!");
-		
-		usuarioLike.setLikeUsuario(true);
-		this.likeUsuarios.add(usuarioLike);
-		this.like += 1;	
+	public void usuarioLikeComentario(Usuario usuarioLike) {
+		var likeComentario = UsuarioLikeComentario.builder().idUsuario(usuarioLike.getIdUsuario()).build();
+
+		if (!likeUsuarios.contains(likeComentario)) {
+			likeUsuarios.add(likeComentario);
+			like(likeComentario);
+		} else {
+			likeUsuarios.remove(likeComentario);
+			deslike(likeComentario);
+		}
 	}
 
-	public void removeLike() {
+	public void like(UsuarioLikeComentario usuarioLike) {
+		this.likeUsuarios.add(usuarioLike);
+		this.like += 1;
+	}
+
+	public void deslike(UsuarioLikeComentario usuarioDeslike) {
+		this.likeUsuarios.remove(usuarioDeslike);
 		this.like -= 1;
 	}
 }

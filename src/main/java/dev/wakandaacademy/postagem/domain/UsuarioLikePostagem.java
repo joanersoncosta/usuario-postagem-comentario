@@ -10,7 +10,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -20,7 +19,4 @@ import lombok.Setter;
 public class UsuarioLikePostagem {
 	@Indexed(unique = true)
 	private UUID idUsuario;
-	@Builder.Default
-	@Setter
-	private boolean likeUsuario = false;
 }

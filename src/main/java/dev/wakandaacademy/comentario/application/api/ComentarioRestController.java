@@ -31,9 +31,11 @@ public class ComentarioRestController implements ComentarioAPI {
 	}
 
 	@Override
-	public void usuarioLike(String email, UUID idPostagem, UUID idComentario) {
+	public void usuarioLike(String emailUsuarioComentario, UUID idPostagem, UUID idComentario,
+			String emailUsuarioLike) {
 		log.info("[inicia] ComentarioRestController - usuarioLike");
-		comentarioService.usuarioLike(email, idPostagem, idComentario);
+		comentarioService.usuarioLike(emailUsuarioComentario, idPostagem, idComentario, emailUsuarioLike);
 		log.info("[finaliza] ComentarioRestController - usuarioLike");
+		
 	}
 }

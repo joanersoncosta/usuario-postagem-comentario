@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 
 import dev.wakandaacademy.comentario.domain.Comentario;
+import dev.wakandaacademy.comentario.domain.UsuarioLikeComentario;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
@@ -70,7 +71,6 @@ public class Postagem {
 	public void usuarioLike(Usuario usuarioPost) {
 		var usuarioLikePost = UsuarioLikePostagem.builder().idUsuario(usuarioPost.getIdUsuario()).build();
 		if (!likeUsuarios.contains(usuarioLikePost)) {
-			usuarioLikePost.setLikeUsuario(true);
 			like(usuarioLikePost);
 		} else {
 			deslike(usuarioLikePost);
@@ -91,11 +91,22 @@ public class Postagem {
 		this.comentarios.add(comentario);
 	}
 
-	public void usuarioLikeComentario(Usuario usuario, Postagem postagem, UUID idComentario) {
+	public void removeComentario(Usuario usuario, UUID idPostagem, UUID idComentario) {
 		var comentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
 				.idComentario(idComentario).build();
 		if (!comentarios.contains(comentario))
 			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
-		comentario.incrementaLike(usuario);
+		this.comentarios.remove(Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
+				.idComentario(idComentario).build());
+	}
+
+	public void usuarioLikeComentario(Usuario usuario, Postagem postagem, UUID idComentario, Usuario usuarioLike) {
+		var verificaComentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
+				.idComentario(idComentario).build();
+		if (!comentarios.contains(verificaComentario))
+			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
+		for (Comentario comentario : comentarios) {
+			comentario.usuarioLikeComentario(usuarioLike);
+		}
 	}
 }

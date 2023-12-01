@@ -52,14 +52,15 @@ public class ComentarioApplicationService implements ComentarioService {
 	}
 
 	@Override
-	public void usuarioLike(String usuarioEmail, UUID idPostagem, UUID idComentario) {
+	public void usuarioLike(String usuarioEmail, UUID idPostagem, UUID idComentario, String emailUsuarioLike) {
 		log.info("[inicia] ComentarioApplicationService - usuarioLike");
-		log.info("[usuarioEmail] {}", usuarioEmail);
+		log.info("[usuarioEmail] {}, [emailUsuarioLike] {}", usuarioEmail, emailUsuarioLike);
 		log.info("[idPostagem] {}, [idComentario] {}", idPostagem, idComentario);
 
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Usuario usuarioLike = usuarioRepository.buscaUsuarioPorEmail(emailUsuarioLike);
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.usuarioLikeComentario(usuario, postagem, idComentario);
+		postagem.usuarioLikeComentario(usuario, postagem, idComentario, usuarioLike);
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
 	}
