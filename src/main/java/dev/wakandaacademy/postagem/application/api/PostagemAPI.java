@@ -17,28 +17,33 @@ import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 
 @RestController
-@RequestMapping("/v1/postagem")
+@RequestMapping("/v1/{idPostagem}/postagem")
 public interface PostagemAPI {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	PostagemIdResponse criarPostagem(@RequestBody @Valid PostagemRequest postagemRequest);
 
-	@GetMapping(value = "/{idPostagem}")
+	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)
 	PostagemResponse buscaPostagemPorId(@PathVariable(value = "idPostagem") UUID idPostagem,
 			@PathParam(value = "email") String email);
 
-	@PatchMapping(value = "/{idPostagem}/altera-post")
+	@GetMapping(value = "/comentarios")
+	@ResponseStatus(code = HttpStatus.OK)
+	PostagemListComentariosResponse buscaPostagemComentarios(@PathVariable(value = "idPostagem") UUID idPostagem,
+			@PathParam(value = "email") String email);
+	
+	@PatchMapping(value = "/altera-post")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void patchAlteraPost(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email,
 			@RequestBody @Valid PostagemAlteracaoRequest postagemAlteracaoRequest);
 
-	@DeleteMapping(value = "/{idPostagem}/deleta-post")
+	@DeleteMapping(value = "/deleta-post")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void deletaPostPorId(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
 
-	@PatchMapping(value = "/{idPostagem}/like")
+	@PatchMapping(value = "/like")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void usuarioLike(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
 

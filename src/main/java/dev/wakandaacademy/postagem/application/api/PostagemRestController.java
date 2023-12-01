@@ -51,4 +51,12 @@ public class PostagemRestController implements PostagemAPI {
 		postagemService.usuarioLike(idPostagem, email);
 		log.info("[finaliza] PostagemRestController - usuarioLike");
 	}
+
+	@Override
+	public PostagemListComentariosResponse buscaPostagemComentarios(UUID idPostagem, String email) {
+		log.info("[inicia] PostagemRestController - buscaPostagemComentarios");
+		postagemService.usuarioLike(idPostagem, email);
+		log.info("[finaliza] PostagemRestController - buscaPostagemComentarios");
+		return null;
+	}
 }
