@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
+import dev.wakandaacademy.postagem.application.api.PostagemListComentariosResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemResponse;
 import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
@@ -79,5 +80,16 @@ public class PostagemApplicationService implements PostagemService {
 		postagem.usuarioLike(usuarioEmail);
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] PostagemApplicationService - usuarioLike");
+	}
+
+	@Override
+	public PostagemListComentariosResponse buscaPostagemComentarios(UUID idPostagem, String email) {
+		log.info("[inicia] PostagemApplicationService - buscaPostagemPorId");
+		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
+		log.info("[usuarioEmail], ", usuarioEmail);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.pertenceUsuario(usuarioEmail);
+		log.info("[finaliza] PostagemApplicationService - buscaPostagemPorId");
+		return new PostagemListComentariosResponse(postagem, usuarioEmail);
 	}
 }

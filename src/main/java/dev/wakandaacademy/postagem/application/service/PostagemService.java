@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
+import dev.wakandaacademy.postagem.application.api.PostagemListComentariosResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemResponse;
 
@@ -13,4 +14,5 @@ public interface PostagemService {
 	void AlteraPostagemPorId(UUID idPostagem, String email, PostagemAlteracaoRequest postagemAlteracaoRequest);
 	void deletaPostPorId(UUID idPostagem, String email);
 	void usuarioLike(UUID idPostagem, String email);
+	PostagemListComentariosResponse buscaPostagemComentarios(UUID idPostagem, String email);
 }
