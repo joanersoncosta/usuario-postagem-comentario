@@ -19,6 +19,4 @@ import lombok.NoArgsConstructor;
 public class UsuarioLikeComentario {
 	@Indexed(unique = true)
 	private UUID idUsuario;
-//	@Indexed(unique = true)
-//	private UUID idComentario;
 }

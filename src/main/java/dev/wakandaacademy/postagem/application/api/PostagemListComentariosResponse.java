@@ -36,10 +36,7 @@ public class PostagemListComentariosResponse {
 	}
 	
 	public List<ComentarioListResponse> getComentarios(Postagem postagem) {
-//		for(Comentario c:  comentarios) {
 			List<Comentario> comentarios = postagem.getComentarios();
 			return ComentarioListResponse.converte(comentarios);
-//		}
 	}
-	
 }

@@ -35,7 +35,8 @@ public class Comentario {
 	private String usuario;
 	private Date data;
 	private String descricao;
-	private int like;
+	@Builder.Default
+	private int like = 0;
 	private Set<UsuarioLikeComentario> likeUsuarios = new HashSet<>();
 
 	public Comentario(Usuario usuario, UUID idPostagem, ComentarioRequest comentarioRequest) {
@@ -50,7 +51,6 @@ public class Comentario {
 
 	public void usuarioLikeComentario(Usuario usuarioLike) {
 		var likeComentario = UsuarioLikeComentario.builder().idUsuario(usuarioLike.getIdUsuario()).build();
-
 		if (!likeUsuarios.contains(likeComentario)) {
 			likeUsuarios.add(likeComentario);
 			like(likeComentario);
@@ -68,5 +68,13 @@ public class Comentario {
 	public void deslike(UsuarioLikeComentario usuarioDeslike) {
 		this.likeUsuarios.remove(usuarioDeslike);
 		this.like -= 1;
+	}
+
+	public void pertenceUsuario(Comentario verificaComentario) {
+		if (!idUsuario.equals(verificaComentario.getIdUsuario())
+				&& idComentario.equals(verificaComentario.getIdComentario())) {
+			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
+		}
+
 	}
 }

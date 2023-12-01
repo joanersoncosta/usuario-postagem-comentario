@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -48,9 +50,9 @@ public class Postagem {
 	private Set<UsuarioLikePostagem> likeUsuarios = new HashSet<>();
 	private List<Comentario> comentarios = new ArrayList<>();
 
-	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
+	public Postagem(PostagemRequest postagemRequest) {
 		this.idPostagem = UUID.randomUUID();
-		this.idUsuario = usuario.getIdUsuario();
+		this.idUsuario = postagemRequest.getIdUsuario();
 		this.data = Date.from(Instant.now());
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
@@ -96,6 +98,7 @@ public class Postagem {
 				.idComentario(idComentario).build();
 		if (!comentarios.contains(comentario))
 			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
+		
 		this.comentarios.remove(Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
 				.idComentario(idComentario).build());
 	}
@@ -103,10 +106,12 @@ public class Postagem {
 	public void usuarioLikeComentario(Usuario usuario, Postagem postagem, UUID idComentario, Usuario usuarioLike) {
 		var verificaComentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
 				.idComentario(idComentario).build();
-		if (!comentarios.contains(verificaComentario))
-			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
+		
 		for (Comentario comentario : comentarios) {
-			comentario.usuarioLikeComentario(usuarioLike);
+			comentario.pertenceUsuario(verificaComentario);
+			if (comentario.getIdUsuario().equals(verificaComentario.getIdUsuario())
+					&& comentario.getIdComentario().equals(verificaComentario.getIdComentario()))
+				comentario.usuarioLikeComentario(usuarioLike);
 		}
 	}
 }
