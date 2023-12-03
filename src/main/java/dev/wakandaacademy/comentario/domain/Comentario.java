@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.handler.APIException;
-import dev.wakandaacademy.postagem.domain.Postagem;
-import dev.wakandaacademy.postagem.domain.UsuarioLikePostagem;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,14 +17,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = "idUsuario")
 @Getter
-@Setter
 public class Comentario {
 
 	private UUID idComentario;
@@ -71,10 +67,10 @@ public class Comentario {
 	}
 
 	public void pertenceUsuario(Comentario verificaComentario) {
-		if (!idUsuario.equals(verificaComentario.getIdUsuario())
-				&& idComentario.equals(verificaComentario.getIdComentario())) {
-			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
-		}
-
+		if (!idUsuario.equals(verificaComentario.getIdUsuario()))
+			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado!");
+		else if (!idUsuario.equals(verificaComentario.getIdUsuario())
+				&& idComentario.equals(verificaComentario.getIdComentario()))
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do Comentário!");
 	}
 }

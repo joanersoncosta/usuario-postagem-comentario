@@ -24,7 +24,7 @@ public interface PostagemAPI {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	PostagemIdResponse criarPostagem(@RequestBody @Valid PostagemRequest postagemRequest);
 
-	@GetMapping
+	@GetMapping(value = "/{idPostagem}/comentario")
 	@ResponseStatus(code = HttpStatus.OK)
 	PostagemResponse buscaPostagemPorId(@PathVariable(value = "idPostagem") UUID idPostagem,
 			@PathParam(value = "email") String email);
@@ -46,5 +46,4 @@ public interface PostagemAPI {
 	@PatchMapping(value = "/{idPostagem}/like")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void usuarioLike(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
-
 }
