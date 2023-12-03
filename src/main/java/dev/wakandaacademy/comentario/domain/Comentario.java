@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 
+import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.usuario.domain.Usuario;
@@ -17,6 +18,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -30,6 +32,7 @@ public class Comentario {
 	private UUID idUsuario;
 	private String usuario;
 	private Date data;
+	@Setter
 	private String descricao;
 	@Builder.Default
 	private int like = 0;
@@ -67,10 +70,12 @@ public class Comentario {
 	}
 
 	public void pertenceUsuario(Comentario verificaComentario) {
-		if (!idUsuario.equals(verificaComentario.getIdUsuario()))
-			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado!");
-		else if (!idUsuario.equals(verificaComentario.getIdUsuario())
+		if (!idUsuario.equals(verificaComentario.getIdUsuario())
 				&& idComentario.equals(verificaComentario.getIdComentario()))
 			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do Comentário!");
+	}
+
+	public void alteraComentario(ComentarioAlteracaoRequest comentarioRequest) {
+		setDescricao(comentarioRequest.getDescricao());
 	}
 }

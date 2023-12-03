@@ -12,6 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 
+import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
@@ -109,6 +110,17 @@ public class Postagem {
 			if (comentario.getIdUsuario().equals(verificaComentario.getIdUsuario())
 					&& comentario.getIdComentario().equals(verificaComentario.getIdComentario()))
 				comentario.usuarioLikeComentario(usuarioLike);
+		}
+	}
+	public void alteraComentario(Usuario usuario, UUID idComentario, ComentarioAlteracaoRequest comentarioRequest) {
+		var verificaComentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
+				.idComentario(idComentario).build();
+		
+		for (Comentario comentario : comentarios) {
+			comentario.pertenceUsuario(verificaComentario);
+			if (comentario.getIdUsuario().equals(verificaComentario.getIdUsuario())
+					&& comentario.getIdComentario().equals(verificaComentario.getIdComentario()))
+				comentario.alteraComentario(comentarioRequest);
 		}
 	}
 }

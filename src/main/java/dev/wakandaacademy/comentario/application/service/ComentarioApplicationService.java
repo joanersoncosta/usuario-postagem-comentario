@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.comentario.domain.Comentario;
@@ -63,5 +64,20 @@ public class ComentarioApplicationService implements ComentarioService {
 		postagem.usuarioLikeComentario(usuario, postagem, idComentario, usuarioLike);
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
+	}
+
+	@Override
+	public void alteraComentario(String emailUsuario, UUID idPostagem, UUID idComentario,
+			ComentarioAlteracaoRequest comentarioRequest) {
+		log.info("[inicia] ComentarioApplicationService - usuarioLike");
+		log.info("[emailUsuario] {}", emailUsuario);
+		log.info("[idPostagem] {}, [idComentario] {}", idPostagem, idComentario);
+
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(emailUsuario);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.alteraComentario(usuario, idComentario, comentarioRequest);
+		postagemRepository.salvaPostagem(postagem);
+		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
+		
 	}
 }
