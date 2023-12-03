@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "50d9616c-3f41-4ca1-868b-b70f3e13892a",
+		"name": "Usuario Post",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25179630",
+		"_collection_link": "https://www.postman.com/blue-moon-159961/workspace/bootcamp-api-petz/collection/25179630-50d9616c-3f41-4ca1-868b-b70f3e13892a?action=share&source=collection_link&creator=25179630"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Cria usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Juvenal Silva\",\r\n    \"telefone\":\"7344788888\",\r\n    \"sexo\":\"FEMININO\",\r\n    \"dataNascimento\":\"1998-05-12\",\r\n    \"email\":\"juvenal@gmail.com\",\r\n    \"senha\":\"123487\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/usuario-postagem/api/public/v1/usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Busca Usuario por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/usuario-postagem/api/public/v1/usuario/{{idUsuario}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Deleta Cliente Por Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/client-pet/api/v1/cliente/e22d2a40-22ec-42dc-ab70-67e94b4ee1bd"
+					},
+					"response": []
+				},
+				{
+					"name": "Altera Cliente por Id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeCompleto\":\"Maria Santos\",\r\n    \"celular\":\"7300000000\",\r\n    \"telefone\":\"7300000000\",\r\n    \"sexo\":\"MASCULINO\",\r\n    \"dataNascimento\":\"2002-05-12\",\r\n    \"aceitaTermos\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/client-pet/api/v1/cliente/ac62dbd6-e807-4c7f-b1d5-f8297a6bb1ad"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Cria Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUsuario\":\"102ca19b-2325-4670-a637-23642153c468\",\r\n    \"titlo\":\"Vou viajar\",\r\n    \"descricao\":\"Vou para casa dos meus avõs!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/postagem",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"postagem"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Todos os Post  do usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/client-pet/api/v1/cliente/2a78ec51-9dc1-4ba4-a10d-e2a71d48131d/pet"
+					},
+					"response": []
+				},
+				{
+					"name": "Deleta Post Por Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/postagem/{{idPostagem}}/deleta-post?email=joaoDias@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"postagem",
+								"{{idPostagem}}",
+								"deleta-post"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "joaoDias@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like ou Deslike Post",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/postagem/{{idPostagem}}/like?email=aurora@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"postagem",
+								"{{idPostagem}}",
+								"like"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "aurora@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca Post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/postagem/{{idPostagem}}/comentario?email=juvenal@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"postagem",
+								"{{idPostagem}}",
+								"comentario"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "juvenal@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca Post e seus Comentarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/postagem/{{idPostagem}}/comentarios?email=juvenal@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"postagem",
+								"{{idPostagem}}",
+								"comentarios"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "juvenal@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Altera Posr por Id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titlo\":\"Vou Viajar de ferias\",\r\n    \"descricao\":\"Me desejem uma boa viajem!!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/postagem/{{idPostagem}}/altera-post?email=juvenal@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"postagem",
+								"{{idPostagem}}",
+								"altera-post"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "juvenal@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comentario",
+			"item": [
+				{
+					"name": "Cria Comentario",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idUsuario\":\"8f1ebf65-e22a-4bde-bb70-709476bf4d13\",\r\n    \"descricao\":\"Boa Viajem mano!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/{{idPostagem}}/postagem/comentario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"{{idPostagem}}",
+								"postagem",
+								"comentario"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove o Comentario",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/{{idPostagem}}/postagem/{{idComentario}}/comentario/remove-comentario?email=angela@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"{{idPostagem}}",
+								"postagem",
+								"{{idComentario}}",
+								"comentario",
+								"remove-comentario"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "angela@gmail.com"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like  ou Deslike Comentario",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/{{idPostagem}}/postagem/{{idComentario}}/comentario/like?emailUsuarioComentario=aurora@gmail.com&emailUsuarioLike=joao@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"{{idPostagem}}",
+								"postagem",
+								"{{idComentario}}",
+								"comentario",
+								"like"
+							],
+							"query": [
+								{
+									"key": "emailUsuarioComentario",
+									"value": "aurora@gmail.com"
+								},
+								{
+									"key": "emailUsuarioLike",
+									"value": "joao@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Altera Comentario por Id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\":\"Bom dia. tenha uma otima ferias.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/usuario-postagem/api/v1/{{idPostagem}}/postagem/{{idComentario}}/comentario/altera?emailUsuario=aurora@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario-postagem",
+								"api",
+								"v1",
+								"{{idPostagem}}",
+								"postagem",
+								"{{idComentario}}",
+								"comentario",
+								"altera"
+							],
+							"query": [
+								{
+									"key": "emailUsuario",
+									"value": "aurora@gmail.com"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teste Home Api",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/client-pet/api/"
+			},
+			"response": []
+		}
+	]
+}
