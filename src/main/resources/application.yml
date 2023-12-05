@@ -1,1 +1,15 @@
+server:
+  servlet:
+    context-path: /usuario-postagem/api
+
+spring:    
+  data:
+    mongodb:
+      authentication-database: admin
+      uri: ${MONGO_DB_URI:mongodb+srv://wakandaAdmin:oazXcGSCw8aB7GmN@wakandadev.cjsar7m.mongodb.net/wakandaAdmin?retryWrites=true&w=majority}
+      auto-index-creation: true
+ 
+springdoc:
+  swagger-ui:
+    path: /swagger
 
