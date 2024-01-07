@@ -3,6 +3,7 @@ package dev.wakandaacademy.comentario.application.api;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,4 +34,5 @@ public interface ComentarioAPI {
 	@PatchMapping(value = "/{idComentario}/comentario/altera")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void alteraComentario(@PathParam(value = "emailUsuario") String emailUsuario, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario, @RequestBody @Valid ComentarioAlteracaoRequest comentarioRequest);
+
 }

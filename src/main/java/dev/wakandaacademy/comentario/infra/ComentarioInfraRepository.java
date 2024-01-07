@@ -1,5 +1,8 @@
 package dev.wakandaacademy.comentario.infra;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
@@ -18,6 +21,14 @@ public class ComentarioInfraRepository implements ComentarioRepository {
 		log.info("[inicia] ComentarioInfraRepository - adicionaComentario");
 		comentarioSpringDataMongoRepository.save(comentario);
 		log.info("[finaliza] ComentarioInfraRepository - adicionaComentario");
+		return comentario;
+	}
+
+	@Override
+	public Optional<Comentario> buscaComentario(UUID idComentario) {
+		log.info("[inicia] ComentarioInfraRepository - buscaComentario");
+		Optional<Comentario> comentario = comentarioSpringDataMongoRepository.findById(idComentario);
+		log.info("[finaliza] ComentarioInfraRepository - buscaComentario");
 		return comentario;
 	}
 

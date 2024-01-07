@@ -44,6 +44,7 @@ public class ComentarioApplicationService implements ComentarioService {
 		log.info("[idPostagem] {}, [idComentario] {}", idPostagem, idComentario);
 
 		usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		
 		postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
 		log.info("[finaliza] ComentarioApplicationService - removeComentario");
 	}
@@ -70,6 +71,15 @@ public class ComentarioApplicationService implements ComentarioService {
 		usuarioRepository.buscaUsuarioPorEmail(emailUsuario);
 		postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
 		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
+	}
+
+	@Override
+	public Comentario detalhaComentario(UUID idComentario) {
+		log.info("[inicia] ComentarioApplicationService - detalhaComentario");
+		Comentario comentario = comentarioRepository.buscaComentario(idComentario)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado!"));
+		log.info("[finaliza] ComentarioApplicationService - detalhaComentario");
+		return comentario;
 	}
 
 }
