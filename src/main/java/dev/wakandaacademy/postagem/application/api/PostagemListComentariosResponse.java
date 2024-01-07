@@ -23,7 +23,7 @@ public class PostagemListComentariosResponse {
 	private final String descricao;
 	private final int like;
 	private final UsuarioPostagem autor;
-	private List<ComentarioListResponse> comentarios = new ArrayList<>();
+//	private List<ComentarioListResponse> comentarios = new ArrayList<>();
 
 	public PostagemListComentariosResponse(Postagem postagem, Usuario usuarioEmail) {
 		this.idPostagem = postagem.getIdPostagem();
@@ -32,11 +32,11 @@ public class PostagemListComentariosResponse {
 		this.descricao = postagem.getDescricao();
 		this.like = postagem.getLike();
 		this.autor = new UsuarioPostagem(usuarioEmail);
-		this.comentarios = getComentarios(postagem);
+//		this.comentarios = getComentarios(postagem);
 	}
 	
-	public List<ComentarioListResponse> getComentarios(Postagem postagem) {
-			List<Comentario> comentarios = postagem.getComentarios();
-			return ComentarioListResponse.converte(comentarios);
-	}
+//	public List<ComentarioListResponse> getComentarios(Postagem postagem) {
+//			List<Comentario> comentarios = postagem.getComentarios();
+//			return ComentarioListResponse.converte(comentarios);
+//	}
 }

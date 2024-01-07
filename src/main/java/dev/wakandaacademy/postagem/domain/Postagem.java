@@ -1,10 +1,8 @@
 package dev.wakandaacademy.postagem.domain;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,8 +10,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 
-import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
-import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
@@ -46,7 +42,6 @@ public class Postagem {
 	@Builder.Default
 	private int like = 0;
 	private Set<UsuarioLikePostagem> likeUsuarios = new HashSet<>();
-	private List<Comentario> comentarios = new ArrayList<>();
 
 	public Postagem(PostagemRequest postagemRequest) {
 		this.idPostagem = UUID.randomUUID();
@@ -87,40 +82,4 @@ public class Postagem {
 		this.like -= 1;
 	}
 
-	public void adicionarComentario(Comentario comentario) {
-		this.comentarios.add(comentario);
-	}
-
-	public void removeComentario(Usuario usuario, UUID idPostagem, UUID idComentario) {
-		var comentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
-				.idComentario(idComentario).build();
-		if (!comentarios.contains(comentario))
-			throw APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado para este Usuário!");
-		
-		this.comentarios.remove(Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
-				.idComentario(idComentario).build());
-	}
-
-	public void usuarioLikeComentario(Usuario usuario, Postagem postagem, UUID idComentario, Usuario usuarioLike) {
-		var verificaComentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
-				.idComentario(idComentario).build();
-		
-		for (Comentario comentario : comentarios) {
-			comentario.pertenceUsuario(verificaComentario);
-			if (comentario.getIdUsuario().equals(verificaComentario.getIdUsuario())
-					&& comentario.getIdComentario().equals(verificaComentario.getIdComentario()))
-				comentario.usuarioLikeComentario(usuarioLike);
-		}
-	}
-	public void alteraComentario(Usuario usuario, UUID idComentario, ComentarioAlteracaoRequest comentarioRequest) {
-		var verificaComentario = Comentario.builder().idUsuario(usuario.getIdUsuario()).idPostagem(idPostagem)
-				.idComentario(idComentario).build();
-		
-		for (Comentario comentario : comentarios) {
-			comentario.pertenceUsuario(verificaComentario);
-			if (comentario.getIdUsuario().equals(verificaComentario.getIdUsuario())
-					&& comentario.getIdComentario().equals(verificaComentario.getIdComentario()))
-				comentario.alteraComentario(comentarioRequest);
-		}
-	}
 }

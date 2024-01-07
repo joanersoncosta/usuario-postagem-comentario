@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 
 import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
@@ -23,8 +24,9 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(of = "idUsuario")
 @Getter
+@Document(collection = "Comentario")
+@EqualsAndHashCode(of = "idComentario")
 public class Comentario {
 
 	private UUID idComentario;
@@ -36,7 +38,7 @@ public class Comentario {
 	private String descricao;
 	@Builder.Default
 	private int like = 0;
-	private Set<UsuarioLikeComentario> likeUsuarios = new HashSet<>();
+	private Set<UsuarioLikeComentario> likeUsuarios;
 
 	public Comentario(Usuario usuario, UUID idPostagem, ComentarioRequest comentarioRequest) {
 		this.idComentario = UUID.randomUUID();
@@ -46,6 +48,7 @@ public class Comentario {
 		this.data = Date.from(Instant.now());
 		this.descricao = comentarioRequest.getDescricao();
 		this.like = 0;
+		likeUsuarios = new HashSet<>();
 	}
 
 	public void usuarioLikeComentario(Usuario usuarioLike) {
@@ -76,6 +79,6 @@ public class Comentario {
 	}
 
 	public void alteraComentario(ComentarioAlteracaoRequest comentarioRequest) {
-		setDescricao(comentarioRequest.getDescricao());
+		this.descricao = comentarioRequest.getDescricao();
 	}
 }
