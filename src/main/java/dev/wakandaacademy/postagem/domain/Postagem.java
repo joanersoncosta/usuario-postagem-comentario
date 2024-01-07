@@ -41,7 +41,7 @@ public class Postagem {
 	private String descricao;
 	@Builder.Default
 	private int like = 0;
-	private Set<UsuarioLikePostagem> likeUsuarios = new HashSet<>();
+	private Set<UsuarioLikePostagem> likeUsuarios;
 
 	public Postagem(PostagemRequest postagemRequest) {
 		this.idPostagem = UUID.randomUUID();
@@ -50,6 +50,7 @@ public class Postagem {
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
 		this.like = 0;
+		likeUsuarios = new HashSet<>();
 	}
 
 	public void pertenceUsuario(Usuario usuarioEmail) {

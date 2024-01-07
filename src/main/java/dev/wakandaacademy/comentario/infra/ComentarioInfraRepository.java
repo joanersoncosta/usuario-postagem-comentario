@@ -32,4 +32,11 @@ public class ComentarioInfraRepository implements ComentarioRepository {
 		return comentario;
 	}
 
+	@Override
+	public void removeComentario(Comentario comentario) {
+		log.info("[inicia] ComentarioInfraRepository - removeComentario");
+		comentarioSpringDataMongoRepository.delete(comentario);
+		log.info("[finaliza] ComentarioInfraRepository - removeComentario");
+	}
+
 }

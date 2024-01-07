@@ -10,4 +10,6 @@ public interface ComentarioRepository {
 
 	Optional<Comentario> buscaComentario(UUID idComentario);
 
+	void removeComentario(Comentario comentario);
+
 }

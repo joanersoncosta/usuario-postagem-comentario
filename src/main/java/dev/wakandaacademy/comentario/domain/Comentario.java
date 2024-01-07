@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.handler.APIException;
+import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -72,13 +73,13 @@ public class Comentario {
 		this.like -= 1;
 	}
 
-	public void pertenceUsuario(Comentario verificaComentario) {
-		if (!idUsuario.equals(verificaComentario.getIdUsuario())
-				&& idComentario.equals(verificaComentario.getIdComentario()))
-			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do Comentário!");
-	}
-
 	public void alteraComentario(ComentarioAlteracaoRequest comentarioRequest) {
 		this.descricao = comentarioRequest.getDescricao();
+	}
+
+	public void pertenceUsuario(Usuario usuario, Postagem postagem) {
+		if (!idUsuario.equals(usuario.getIdUsuario())
+				&& idPostagem.equals(postagem.getIdPostagem()))
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do Comentário!");
 	}
 }

@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode(of = "idUsuario")
 public class UsuarioLikeComentario {
-	@Indexed(unique = true)
+	@Indexed
 	private UUID idUsuario;
 }
