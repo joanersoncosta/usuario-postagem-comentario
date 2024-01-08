@@ -31,7 +31,7 @@ public interface ComentarioAPI {
 
 	@PatchMapping(value = "/{idComentario}/comentario/like")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void usuarioLike(@PathParam(value = "emailUsuarioComentario") String emailUsuarioComentario, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario, @PathParam(value = "emailUsuarioLike") String emailUsuarioLike);
+	void usuarioLike(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
 
 	@PatchMapping(value = "/{idComentario}/comentario/altera")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
