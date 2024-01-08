@@ -1,6 +1,6 @@
 package dev.wakandaacademy.comentario.application.api;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -15,14 +15,14 @@ public class ComentarioListResponse {
 	private UUID idComentario;
 	private final String usuario;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT")
-	private final Date data;
+	private final LocalDateTime data;
 	private final String descricao;
 	private final int like;
 
 	public ComentarioListResponse(Comentario comentario) {
 		this.idComentario = comentario.getIdComentario();
 		this.usuario = comentario.getUsuario();
-		this.data = comentario.getData();
+		this.data = comentario.getDataCriacaoComentario();
 		this.descricao = comentario.getDescricao();
 		this.like = comentario.getLike();
 	}

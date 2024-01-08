@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
+import dev.wakandaacademy.comentario.application.api.ComentarioResponse;
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
 import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.handler.APIException;
@@ -43,10 +44,13 @@ public class ComentarioApplicationService implements ComentarioService {
 	public void removeComentario(String usuarioEmail, UUID idUsuario, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioApplicationService - removeComentario");
 		log.info("[usuarioEmail] {}", usuarioEmail);
-		log.info("[idComentario] {}", idComentario);
+		log.info("[idUsuario] {}, [idPostagem] {}, [idComentario] {}", idUsuario, idPostagem, idComentario);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = validaPostagem(idUsuario, idPostagem);
-		Comentario comentario = detalhaComentario(idComentario);
+//		Comentario comentario = detalhaComentario(idComentario);
+		
+		Comentario comentario = comentarioRepository.buscaComentario(idComentario)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado"));
 		comentario.pertenceUsuario(usuario, postagem);
 		comentarioRepository.removeComentario(comentario);
 		log.info("[finaliza] ComentarioApplicationService - removeComentario");
@@ -90,10 +94,26 @@ public class ComentarioApplicationService implements ComentarioService {
 		Usuario usuario = usuarioRepository.buscaUsuarioPorId(idUsuario)
 			.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem)
-				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado"));
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado"));
 		postagem.pertenceUsuario(usuario);
 		log.info("[finaliza] ComentarioApplicationService - validaPostagem");
 		return postagem;
+	}
+
+	@Override
+	public ComentarioResponse buscaComentarioPorId(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+		log.info("[inicia] ComentarioApplicationService - buscaComentarioPorId");
+		log.info("[usuarioEmail] {}", email);
+		log.info("[idUsuario] {}, [idPostagem] {}, [idComentario] {}", idUsuario, idPostagem, idComentario);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(email);
+		Postagem postagem = validaPostagem(idUsuario, idPostagem);
+		
+		Comentario comentario = comentarioRepository.buscaComentario(idComentario)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado"));
+		comentario.pertenceUsuario(usuario, postagem);
+		
+		log.info("[finaliza] ComentarioApplicationService - buscaComentarioPorId");
+			return ComentarioResponse.converte(comentario);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.UUID;
 import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
+import dev.wakandaacademy.comentario.application.api.ComentarioResponse;
 import dev.wakandaacademy.comentario.domain.Comentario;
 
 public interface ComentarioService {
@@ -14,4 +15,5 @@ public interface ComentarioService {
 	void alteraComentario(String emailUsuario, UUID idPostagem, UUID idComentario,
 			ComentarioAlteracaoRequest comentarioRequest);
 	Comentario detalhaComentario(UUID idComentario);
+	ComentarioResponse buscaComentarioPorId(String email, UUID idUsuario, UUID idPostagem, UUID idComentario);
 }

@@ -23,9 +23,9 @@ public class ComentarioRestController implements ComentarioAPI {
 	}
 
 	@Override
-	public void removeComentario(String usuarioLogado, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+	public void removeComentario(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioRestController - removeComentario");
-		comentarioService.removeComentario(usuarioLogado, idUsuario, idPostagem, idComentario);
+		comentarioService.removeComentario(email, idUsuario, idPostagem, idComentario);
 		log.info("[finaliza] ComentarioRestController - removeComentario");
 		
 	}
@@ -44,6 +44,13 @@ public class ComentarioRestController implements ComentarioAPI {
 		log.info("[inicia] ComentarioRestController - alteraComentario");
 		comentarioService.alteraComentario(emailUsuario, idPostagem, idComentario, comentarioRequest);
 		log.info("[finaliza] ComentarioRestController - alteraComentario");
-		
+	}
+
+	@Override
+	public ComentarioResponse buscaComentarioPorId(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+		log.info("[inicia] ComentarioRestController - buscaComentarioPorId");
+		ComentarioResponse comentario = comentarioService.buscaComentarioPorId(email, idUsuario, idPostagem, idComentario);
+		log.info("[finaliza] ComentarioRestController - buscaComentarioPorId");
+		return comentario;
 	}
 }
