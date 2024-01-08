@@ -6,7 +6,7 @@ import java.util.UUID;
 import dev.wakandaacademy.comentario.domain.Comentario;
 
 public interface ComentarioRepository {
-	Comentario adicionaComentario(Comentario comentario);
+	Comentario salvaComentario(Comentario comentario);
 
 	Optional<Comentario> buscaComentario(UUID idComentario);
 

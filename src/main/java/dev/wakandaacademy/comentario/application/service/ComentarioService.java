@@ -12,8 +12,8 @@ public interface ComentarioService {
 	ComentarioIdResponse adicionaComentario(String usuarioEmail, UUID idUsuario, UUID idPostagem, ComentarioRequest comentarioRequest);
 	void removeComentario(String usuarioEmail, UUID idUsuario, UUID idPostagem, UUID idComentario);
 	void usuarioLike(String email, UUID idPostagem, UUID idComentario, String emailUsuarioLike);
-	void alteraComentario(String emailUsuario, UUID idPostagem, UUID idComentario,
-			ComentarioAlteracaoRequest comentarioRequest);
 	Comentario detalhaComentario(UUID idComentario);
 	ComentarioResponse buscaComentarioPorId(String email, UUID idUsuario, UUID idPostagem, UUID idComentario);
+	void alteraComentario(String email, UUID idUsuario, UUID idPostagem, UUID idComentario,
+			ComentarioAlteracaoRequest comentarioRequest);
 }

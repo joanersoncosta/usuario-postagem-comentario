@@ -17,7 +17,7 @@ public class ComentarioInfraRepository implements ComentarioRepository {
 	private final ComentarioSpringDataMongoRepository comentarioSpringDataMongoRepository;
 	
 	@Override
-	public Comentario adicionaComentario(Comentario comentario) {
+	public Comentario salvaComentario(Comentario comentario) {
 		log.info("[inicia] ComentarioInfraRepository - adicionaComentario");
 		comentarioSpringDataMongoRepository.save(comentario);
 		log.info("[finaliza] ComentarioInfraRepository - adicionaComentario");

@@ -35,7 +35,7 @@ public class ComentarioApplicationService implements ComentarioService {
 		log.info("[idUsuario] {}, [idPostagem] {}", idUsuario, idPostagem);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		validaPostagem(idUsuario, idPostagem);
-		Comentario comentario = comentarioRepository.adicionaComentario(new Comentario(usuario, idPostagem, comentarioRequest));
+		Comentario comentario = comentarioRepository.salvaComentario(new Comentario(usuario, idPostagem, comentarioRequest));
 		log.info("[finaliza] ComentarioApplicationService - adicionaComentario");
 		return ComentarioIdResponse.builder().idComentario(comentario.getIdComentario()).build();
 	}
@@ -47,10 +47,7 @@ public class ComentarioApplicationService implements ComentarioService {
 		log.info("[idUsuario] {}, [idPostagem] {}, [idComentario] {}", idUsuario, idPostagem, idComentario);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = validaPostagem(idUsuario, idPostagem);
-//		Comentario comentario = detalhaComentario(idComentario);
-		
-		Comentario comentario = comentarioRepository.buscaComentario(idComentario)
-				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado"));
+		Comentario comentario = detalhaComentario(idComentario);
 		comentario.pertenceUsuario(usuario, postagem);
 		comentarioRepository.removeComentario(comentario);
 		log.info("[finaliza] ComentarioApplicationService - removeComentario");
@@ -69,15 +66,18 @@ public class ComentarioApplicationService implements ComentarioService {
 	}
 
 	@Override
-	public void alteraComentario(String emailUsuario, UUID idPostagem, UUID idComentario,
+	public void alteraComentario(String emailUsuario, UUID idUsuario, UUID idPostagem, UUID idComentario,
 			ComentarioAlteracaoRequest comentarioRequest) {
-		log.info("[inicia] ComentarioApplicationService - usuarioLike");
+		log.info("[inicia] ComentarioApplicationService - alteraComentario");
 		log.info("[emailUsuario] {}", emailUsuario);
-		log.info("[idPostagem] {}, [idComentario] {}", idPostagem, idComentario);
-
-		usuarioRepository.buscaUsuarioPorEmail(emailUsuario);
-		postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
+		log.info("[idUsuario] {}, [idPostagem] {}, [idComentario] {}", idUsuario, idPostagem, idComentario);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(emailUsuario);
+		Postagem postagem = validaPostagem(idUsuario, idPostagem);
+		Comentario comentario = detalhaComentario(idComentario);
+		comentario.pertenceUsuario(usuario, postagem);
+		comentario.alteraComentario(comentarioRequest);
+		comentarioRepository.salvaComentario(comentario);
+		log.info("[finaliza] ComentarioApplicationService - alteraComentario");
 	}
 
 	@Override
