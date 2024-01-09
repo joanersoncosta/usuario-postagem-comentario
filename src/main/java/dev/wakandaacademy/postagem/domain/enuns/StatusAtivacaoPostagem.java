@@ -1,5 +1,5 @@
 package dev.wakandaacademy.postagem.domain.enuns;
 
-public enum StatusPostagem {
+public enum StatusAtivacaoPostagem {
 	INATIVA, ATIVO;
 }

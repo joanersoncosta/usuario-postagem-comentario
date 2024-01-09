@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
+import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -44,6 +45,7 @@ public class Postagem {
 	@NotBlank
 	@Size
 	private String descricao;
+	private StatusAtivacaoPostagem statusAtivacao;
 	@Builder.Default
 	private int like = 0;
 	private Set<PostagemUsuarioLike> likeUsuarios;
@@ -55,6 +57,7 @@ public class Postagem {
 		this.dataPostagem = LocalDateTime.now();
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
+		this.statusAtivacao = StatusAtivacaoPostagem.INATIVA;
 		this.like = 0;
 		likeUsuarios = new HashSet<>();
 	}

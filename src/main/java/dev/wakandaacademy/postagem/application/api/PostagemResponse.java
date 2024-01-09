@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import dev.wakandaacademy.postagem.domain.Postagem;
+import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
 import lombok.Value;
 
 @Value
@@ -15,6 +16,7 @@ public class PostagemResponse {
 	private final LocalDateTime dataPostagem;
 	private final String titlo;
 	private final String descricao;
+	private StatusAtivacaoPostagem statusAtivacao;
 	private final int like;
 	
 	public PostagemResponse(Postagem postagem) {
@@ -24,6 +26,7 @@ public class PostagemResponse {
 		this.dataPostagem = postagem.getDataPostagem();
 		this.titlo = postagem.getTitlo();
 		this.descricao = postagem.getDescricao();
+        this.statusAtivacao = postagem.getStatusAtivacao();
 		this.like = postagem.getLike();
 	}
 }

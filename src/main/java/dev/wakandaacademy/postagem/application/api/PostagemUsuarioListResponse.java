@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import dev.wakandaacademy.postagem.domain.Postagem;
+import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
 import lombok.Value;
 
 @Value
@@ -16,6 +17,7 @@ public class PostagemUsuarioListResponse {
 	private final LocalDateTime dataPostagem;
 	private final String titlo;
 	private final String descricao;
+	private StatusAtivacaoPostagem statusAtivacao;
 	private final int like;
 	
 	public PostagemUsuarioListResponse(Postagem postagem) {
@@ -25,6 +27,7 @@ public class PostagemUsuarioListResponse {
 		this.dataPostagem = postagem.getDataPostagem();
 		this.titlo = postagem.getTitlo();
 		this.descricao = postagem.getDescricao();
+        this.statusAtivacao = postagem.getStatusAtivacao();
 		this.like = postagem.getLike();
 	}
 
