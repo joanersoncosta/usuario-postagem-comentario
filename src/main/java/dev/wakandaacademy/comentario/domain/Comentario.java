@@ -42,7 +42,7 @@ public class Comentario {
 	private String descricao;
 	@Builder.Default
 	private int like = 0;
-	private Set<UsuarioLikeComentario> likeUsuarios;
+	private Set<ComentarioUsuarioLike> likeUsuarios;
 
 	public Comentario(Usuario usuario, UUID idPostagem, ComentarioRequest comentarioRequest) {
 		this.idComentario = UUID.randomUUID();
@@ -56,7 +56,7 @@ public class Comentario {
 	}
 
 	public void usuarioLikeComentario(Usuario usuarioLike) {
-		var likeComentario = UsuarioLikeComentario.builder().idUsuario(usuarioLike.getIdUsuario()).build();
+		var likeComentario = ComentarioUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).build();
 		if (!likeUsuarios.contains(likeComentario)) {
 			likeUsuarios.add(likeComentario);
 			like(likeComentario);
@@ -66,12 +66,12 @@ public class Comentario {
 		}
 	}
 
-	public void like(UsuarioLikeComentario usuarioLike) {
+	public void like(ComentarioUsuarioLike usuarioLike) {
 		this.likeUsuarios.add(usuarioLike);
 		this.like += 1;
 	}
 
-	public void deslike(UsuarioLikeComentario usuarioDeslike) {
+	public void deslike(ComentarioUsuarioLike usuarioDeslike) {
 		this.likeUsuarios.remove(usuarioDeslike);
 		this.like -= 1;
 	}

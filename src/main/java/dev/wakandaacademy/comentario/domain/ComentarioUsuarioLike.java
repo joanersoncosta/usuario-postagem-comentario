@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode(of = "idUsuario")
-public class UsuarioLikeComentario {
+public class ComentarioUsuarioLike {
 	@Indexed
 	private UUID idUsuario;
 }
