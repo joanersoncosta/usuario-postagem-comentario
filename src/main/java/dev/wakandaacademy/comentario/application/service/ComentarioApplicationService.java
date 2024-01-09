@@ -1,5 +1,6 @@
 package dev.wakandaacademy.comentario.application.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
+import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioResponse;
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
@@ -115,6 +117,18 @@ public class ComentarioApplicationService implements ComentarioService {
 		
 		log.info("[finaliza] ComentarioApplicationService - buscaComentarioPorId");
 			return ComentarioResponse.converte(comentario);
+	}
+
+	@Override
+	public List<ComentarioListResponse> buscaComentarios(String usuarioEmail, UUID idUsuario, UUID idPostagem) {
+		log.info("[inicia] ComentarioApplicationService - buscaPostagemComComentarios");
+		log.info("[emailUsuario] {}", usuarioEmail);
+		log.info("[idUsuario] {}, [idPostagem] {}", idUsuario, idPostagem);
+		usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		validaPostagem(idUsuario, idPostagem);
+		List<Comentario> comentarios = comentarioRepository.buscaComentarios(idPostagem);
+		log.info("[finaliza] ComentarioApplicationService - buscaPostagemComComentarios");
+		return ComentarioListResponse.converte(comentarios);
 	}
 
 }

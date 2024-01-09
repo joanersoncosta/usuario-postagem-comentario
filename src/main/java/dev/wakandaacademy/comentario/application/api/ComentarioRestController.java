@@ -1,5 +1,6 @@
 package dev.wakandaacademy.comentario.application.api;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +14,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ComentarioRestController implements ComentarioAPI {
 	private final ComentarioService comentarioService;
-	
+
 	@Override
-	public ComentarioIdResponse adicionaComentario(String email, UUID idUsuario, UUID idPostagem, ComentarioRequest comentarioRequest) {
+	public ComentarioIdResponse adicionaComentario(String email, UUID idUsuario, UUID idPostagem,
+			ComentarioRequest comentarioRequest) {
 		log.info("[inicia] ComentarioRestController - adicionaComentario");
-		ComentarioIdResponse comentarioResponse = comentarioService.adicionaComentario(email, idUsuario, idPostagem, comentarioRequest);
+		ComentarioIdResponse comentarioResponse = comentarioService.adicionaComentario(email, idUsuario, idPostagem,
+				comentarioRequest);
 		log.info("[finaliza] ComentarioRestController - adicionaComentario");
 		return comentarioResponse;
 	}
@@ -27,18 +30,19 @@ public class ComentarioRestController implements ComentarioAPI {
 		log.info("[inicia] ComentarioRestController - removeComentario");
 		comentarioService.removeComentario(email, idUsuario, idPostagem, idComentario);
 		log.info("[finaliza] ComentarioRestController - removeComentario");
-		
+
 	}
 
 	@Override
-	public void usuarioLike	(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+	public void usuarioLike(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioRestController - usuarioLike");
 		comentarioService.usuarioLike(email, idUsuario, idPostagem, idComentario);
 		log.info("[finaliza] ComentarioRestController - usuarioLike");
 	}
 
 	@Override
-	public void alteraComentario(String email, UUID idUsuario, UUID idPostagem, UUID idComentario, ComentarioAlteracaoRequest comentarioRequest) {
+	public void alteraComentario(String email, UUID idUsuario, UUID idPostagem, UUID idComentario,
+			ComentarioAlteracaoRequest comentarioRequest) {
 		log.info("[inicia] ComentarioRestController - alteraComentario");
 		comentarioService.alteraComentario(email, idUsuario, idPostagem, idComentario, comentarioRequest);
 		log.info("[finaliza] ComentarioRestController - alteraComentario");
@@ -47,8 +51,17 @@ public class ComentarioRestController implements ComentarioAPI {
 	@Override
 	public ComentarioResponse buscaComentarioPorId(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioRestController - buscaComentarioPorId");
-		ComentarioResponse comentario = comentarioService.buscaComentarioPorId(email, idUsuario, idPostagem, idComentario);
+		ComentarioResponse comentario = comentarioService.buscaComentarioPorId(email, idUsuario, idPostagem,
+				idComentario);
 		log.info("[finaliza] ComentarioRestController - buscaComentarioPorId");
 		return comentario;
+	}
+
+	@Override
+	public List<ComentarioListResponse> buscaComentarios(String email, UUID idUsuario, UUID idPostagem) {
+		log.info("[inicia] ComentarioRestController - buscaPostagemComComentarios");
+		List<ComentarioListResponse> comentarios = comentarioService.buscaComentarios(email, idUsuario, idPostagem);
+		log.info("[finaliza] ComentarioRestController - buscaPostagemComComentarios");
+		return comentarios;
 	}
 }

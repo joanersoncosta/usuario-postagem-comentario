@@ -5,30 +5,32 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import dev.wakandaacademy.comentario.domain.Comentario;
-import lombok.Value;
+import lombok.Getter;
 
-@Value
+@Getter
 public class ComentarioListResponse {
 	private UUID idComentario;
-	private final String usuario;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT")
-	private final LocalDateTime data;
-	private final String descricao;
-	private final int like;
+	private UUID idPostagem;
+	private UUID idUsuario;
+	private String usuario;
+	private LocalDateTime data;
+	private String descricao;
+	private int like;
 
-	public ComentarioListResponse(Comentario comentario) {
+	private ComentarioListResponse(Comentario comentario) {
 		this.idComentario = comentario.getIdComentario();
+		this.idPostagem = comentario.getIdPostagem();
+		this.idUsuario = comentario.getIdUsuario();
 		this.usuario = comentario.getUsuario();
 		this.data = comentario.getDataCriacaoComentario();
 		this.descricao = comentario.getDescricao();
 		this.like = comentario.getLike();
 	}
 	
-	public static List<ComentarioListResponse> converte(List<Comentario> comentario){
-		return comentario.stream().map(ComentarioListResponse::new)
+	public static List<ComentarioListResponse> converte(List<Comentario> comentarios){
+		return comentarios.stream()
+				.map(ComentarioListResponse::new)
 				.collect(Collectors.toList());
 	}
 }

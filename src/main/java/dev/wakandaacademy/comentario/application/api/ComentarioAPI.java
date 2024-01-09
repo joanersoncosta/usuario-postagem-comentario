@@ -1,5 +1,6 @@
 package dev.wakandaacademy.comentario.application.api;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -41,4 +42,8 @@ public interface ComentarioAPI {
 	@ResponseStatus(code = HttpStatus.OK)
 	ComentarioResponse buscaComentarioPorId(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
 	
+	@GetMapping(value = "/comentario/busca-comentarios")
+	@ResponseStatus(code = HttpStatus.OK)
+	List<ComentarioListResponse> buscaComentarios(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem);
+
 }

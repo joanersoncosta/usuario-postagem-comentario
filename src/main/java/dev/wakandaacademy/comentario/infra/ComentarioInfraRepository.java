@@ -1,8 +1,12 @@
 package dev.wakandaacademy.comentario.infra;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
@@ -15,6 +19,7 @@ import lombok.extern.log4j.Log4j2;
 @Repository
 public class ComentarioInfraRepository implements ComentarioRepository {
 	private final ComentarioSpringDataMongoRepository comentarioSpringDataMongoRepository;
+	private final MongoTemplate mongoTemplate;
 	
 	@Override
 	public Comentario salvaComentario(Comentario comentario) {
@@ -37,6 +42,16 @@ public class ComentarioInfraRepository implements ComentarioRepository {
 		log.info("[inicia] ComentarioInfraRepository - removeComentario");
 		comentarioSpringDataMongoRepository.delete(comentario);
 		log.info("[finaliza] ComentarioInfraRepository - removeComentario");
+	}
+
+	@Override
+	public List<Comentario> buscaComentarios(UUID idPostagem) {
+		log.info("[inicia] ComentarioInfraRepository - buscaComentarios");
+		Query query = new Query();
+		query.addCriteria(Criteria.where("idPostagem").is(idPostagem));
+		List<Comentario> comentarios = mongoTemplate.find(query, Comentario.class);
+		log.info("[finaliza] ComentarioInfraRepository - buscaComentarios");
+		return comentarios;
 	}
 
 }

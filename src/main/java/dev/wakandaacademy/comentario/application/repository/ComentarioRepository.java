@@ -1,5 +1,6 @@
 package dev.wakandaacademy.comentario.application.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,5 +12,7 @@ public interface ComentarioRepository {
 	Optional<Comentario> buscaComentario(UUID idComentario);
 
 	void removeComentario(Comentario comentario);
+
+	List<Comentario> buscaComentarios(UUID idPostagem);
 
 }

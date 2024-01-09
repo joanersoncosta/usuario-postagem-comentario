@@ -1,14 +1,10 @@
 package dev.wakandaacademy.postagem.application.api;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
-import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.postagem.domain.UsuarioPostagem;
 import dev.wakandaacademy.usuario.domain.Usuario;
