@@ -26,25 +26,26 @@ public interface PostagemAPI {
 	PostagemIdResponse criarPostagem(@PathParam(value = "email") String email,
 			@RequestBody @Valid PostagemRequest postagemRequest);
 
-	@GetMapping(value = "/{idPostagem}")
+	@GetMapping(value = "/{idPostagem}/busca-postagem")
 	@ResponseStatus(code = HttpStatus.OK)
-	PostagemResponse buscaPostagemPorId(@PathVariable(value = "idPostagem") UUID idPostagem,
-			@PathParam(value = "email") String email);
+	PostagemResponse buscaPostagemPorId(@PathVariable(value = "idPostagem") UUID idPostagem);
 
+	@GetMapping(value = "/busca-postagens")
+	@ResponseStatus(code = HttpStatus.OK)
+	List<PostagemUsuarioListResponse> buscaPostagens();
+	
 	@PatchMapping(value = "/{idPostagem}/altera-post")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void patchAlteraPost(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email,
+	void patchAlteraPost(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem,
 			@RequestBody @Valid PostagemAlteracaoRequest postagemAlteracaoRequest);
 
 	@DeleteMapping(value = "/{idPostagem}/deleta-post")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void deletaPostPorId(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
+	void deletaPostPorId(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem);
 
-	@PatchMapping(value = "/{idPostagem}/incrementa-like")
+	@PatchMapping(value = "/{idPostagem}/usuario-like")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void incrementaLike(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
+	void postagemUsuarioLike(@PathParam(value = "email") String email,
+			@PathVariable(value = "idPostagem") UUID idPostagem);
 
-	@PatchMapping(value = "/{idPostagem}/remove-like")
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void removeLike(@PathVariable(value = "idPostagem") UUID idPostagem, @PathParam(value = "email") String email);
 }

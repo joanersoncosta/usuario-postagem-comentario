@@ -1,7 +1,6 @@
 package dev.wakandaacademy.postagem.domain;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -37,24 +36,27 @@ public class Postagem {
 	private UUID idPostagem;
 	@Indexed
 	private UUID idUsuario;
-	private Date data;
+	private String autor;
+	private LocalDateTime dataPostagem;
 	@NotBlank
-	@Size(message = "Campo titlo postagem não pode estar vazio!", min = 3, max = 50)
+	@Size
 	private String titlo;
 	@NotBlank
-	@Size(message = "Campo descrição postagem não pode estar vazio!", min = 3, max = 250)
+	@Size
 	private String descricao;
 	@Builder.Default
 	private int like = 0;
-	private Set<UsuarioLikePostagem> likeUsuarios = new HashSet<>();
+	private Set<PostagemUsuarioLike> likeUsuarios;
 
 	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
 		this.idPostagem = UUID.randomUUID();
-		this.idUsuario = postagemRequest.getIdUsuario();
-		this.data = Date.from(Instant.now());
+		this.idUsuario = usuario.getIdUsuario();
+		this.autor = usuario.getNome();
+		this.dataPostagem = LocalDateTime.now();
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
 		this.like = 0;
+		likeUsuarios = new HashSet<>();
 	}
 
 	public void pertenceUsuario(Usuario usuarioEmail) {
@@ -68,21 +70,24 @@ public class Postagem {
 		this.descricao = postagemAlteracaoRequest.getDescricao();
 	}
 
-	public void incrementaLike(Usuario usuarioPost) {
-		var usuarioLikePost = UsuarioLikePostagem.builder().idUsuario(usuarioPost.getIdUsuario()).build();
-		if(likeUsuarios.contains(usuarioLikePost)) throw APIException.build(HttpStatus.BAD_REQUEST, "Like já incrementado para esse Usuário!");
-		
-		usuarioLikePost.setLikeUsuario(true);
-		this.likeUsuarios.add(usuarioLikePost);
+	public void usuarioLikePostagem(Usuario usuarioLike) {
+		var likeComentario = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).build();
+		if (!likeUsuarios.contains(likeComentario)) {
+			likeUsuarios.add(likeComentario);
+			like(likeComentario);
+		} else {
+			likeUsuarios.remove(likeComentario);
+			deslike(likeComentario);
+		}
+	}
+
+	public void like(PostagemUsuarioLike usuarioLike) {
+		this.likeUsuarios.add(usuarioLike);
 		this.like += 1;
 	}
 
-	public void removeLike(Usuario usuarioPost) {
-		var usuarioLikePost = UsuarioLikePostagem.builder().idUsuario(usuarioPost.getIdUsuario()).build();
-		if(!likeUsuarios.contains(usuarioLikePost)) throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do like!");
-		else if (!usuarioLikePost.isLikeUsuario() == false) throw APIException.build(HttpStatus.BAD_REQUEST, "Like já removido para esse Usuário!");
-		
-		this.likeUsuarios.remove(usuarioLikePost);
+	public void deslike(PostagemUsuarioLike usuarioDeslike) {
+		this.likeUsuarios.remove(usuarioDeslike);
 		this.like -= 1;
 	}
 }

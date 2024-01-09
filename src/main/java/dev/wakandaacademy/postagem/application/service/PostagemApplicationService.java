@@ -1,5 +1,6 @@
 package dev.wakandaacademy.postagem.application.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemResponse;
+import dev.wakandaacademy.postagem.application.api.PostagemUsuarioListResponse;
 import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
 import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.usuario.application.repository.UsuarioRepository;
@@ -25,72 +27,67 @@ public class PostagemApplicationService implements PostagemService {
 	private final UsuarioRepository usuarioRepository;
 	
 	@Override
-	public PostagemIdResponse criarPostagem(String email, PostagemRequest postagemRequest) {
+	public PostagemIdResponse criarPostagem(String usuarioEmail, PostagemRequest postagemRequest) {
 		log.info("[inicia] PostagemApplicationService - criarPostagem");
-		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
 		log.info("[usuarioEmail], ", usuarioEmail);
-		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(postagemRequest, usuarioEmail));
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(postagemRequest, usuario));
 		log.info("[finaliza] PostagemApplicationService - criarPostagem");
 		return PostagemIdResponse.builder().idPostagem(postagem.getIdPostagem()).build();
 	}
 
 	@Override
-	public PostagemResponse buscaPostagemPorId(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemApplicationService - buscaPostagemPorId");
-		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
-		log.info("[usuarioEmail], ", usuarioEmail);
-		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.pertenceUsuario(usuarioEmail);
-		log.info("[finaliza] PostagemApplicationService - buscaPostagemPorId");
-		return new PostagemResponse(postagem, usuarioEmail);
+	public List<PostagemUsuarioListResponse> buscaPostagens() {
+		log.info("[inicia] PostagemApplicationService - buscaPostagens");
+		List<Postagem> postagens = postagemRepository.buscaPostagens();
+		log.info("[finaliza] PostagemApplicationService - buscaPostagens");
+		return PostagemUsuarioListResponse.converte(postagens);
 	}
 	
 	@Override
-	public void AlteraPostagemPorId(UUID idPostagem, String email, PostagemAlteracaoRequest postagemAlteracaoRequest) {
-		log.info("[inicia] PostagemApplicationService - AlteraPostagemPorId");
-		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
-		log.info("[usuarioEmail], ", usuarioEmail);
+	public PostagemResponse buscaPostagemPorId(UUID idPostagem) {
+		log.info("[inicia] PostagemApplicationService - buscaPostagemPorId");
 		log.info("[idPostagem], ", idPostagem);
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.pertenceUsuario(usuarioEmail);
+		log.info("[finaliza] PostagemApplicationService - buscaPostagemPorId");
+		return new PostagemResponse(postagem);
+	}
+	
+	@Override
+	public void AlteraPostagemPorId(String usuarioEmail, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest) {
+		log.info("[inicia] PostagemApplicationService - AlteraPostagemPorId");
+		log.info("[usuarioEmail], ", usuarioEmail);
+		log.info("[idPostagem], ", idPostagem);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.pertenceUsuario(usuario);		
 		postagem.alteraPostagem(postagemAlteracaoRequest);
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] PostagemApplicationService - AlteraPostagemPorId");
 	}
 
 	@Override
-	public void deletaPostPorId(UUID idPostagem, String email) {
+	public void deletaPostPorId(String usuarioEmail, UUID idPostagem) {
 		log.info("[inicia] PostagemApplicationService - deletaPostPorId");
-		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
 		log.info("[usuarioEmail], ", usuarioEmail);
 		log.info("[idPostagem], ", idPostagem);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.pertenceUsuario(usuarioEmail);
+		postagem.pertenceUsuario(usuario);
 		postagemRepository.deletaPost(postagem);
 		log.info("[finaliza] PostagemApplicationService - deletaPostPorId");
 	}
 
 	@Override
-	public void incrementaLike(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemApplicationService - incrementaLike");
-		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
-		log.info("[usuarioEmail], ", email);
+	public void postagemUsuarioLike(String usuarioEmail, UUID idPostagem) {
+		log.info("[inicia] PostagemApplicationService - postagemUsuarioLike");
+		log.info("[usuarioEmail], ", usuarioEmail);
 		log.info("[idPostagem], ", idPostagem);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.incrementaLike(usuarioEmail);
+		postagem.usuarioLikePostagem(usuario);
 		postagemRepository.salvaPostagem(postagem);
-		log.info("[finaliza] PostagemApplicationService - incrementaLike");
+		log.info("[finaliza] PostagemApplicationService - postagemUsuarioLike");
 	}
 
-	@Override
-	public void removeLike(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemApplicationService - removeLike");
-		Usuario usuarioEmail = usuarioRepository.buscaUsuarioPorEmail(email);
-		log.info("[usuarioEmail], ", email);
-		log.info("[idPostagem], ", idPostagem);
-		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.removeLike(usuarioEmail);
-		postagemRepository.salvaPostagem(postagem);
-		log.info("[finaliza] PostagemApplicationService - removeLike");
-	}
 }

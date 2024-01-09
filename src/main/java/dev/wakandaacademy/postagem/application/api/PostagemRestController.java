@@ -1,5 +1,6 @@
 package dev.wakandaacademy.postagem.application.api;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -24,39 +25,41 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public PostagemResponse buscaPostagemPorId(UUID idPostagem, String email) {
+	public List<PostagemUsuarioListResponse> buscaPostagens() {
+		log.info("[inicia] PostagemRestController - buscaPostagens");
+		List<PostagemUsuarioListResponse> postagens = postagemService.buscaPostagens();
+		log.info("[finaliza] PostagemRestController - buscaPostagens");
+		return postagens;
+	}
+	
+	@Override
+	public PostagemResponse buscaPostagemPorId(UUID idPostagem) {
 		log.info("[inicia] PostagemRestController - buscaPostagemPorId");
-		PostagemResponse postagemResponse = postagemService.buscaPostagemPorId(idPostagem, email);
+		PostagemResponse postagemResponse = postagemService.buscaPostagemPorId(idPostagem);
 		log.info("[finaliza] PostagemRestController - buscaPostagemPorId");
 		return postagemResponse;
 	}
 
 	@Override
-	public void patchAlteraPost(UUID idPostagem, String email,
+	public void patchAlteraPost(String email, UUID idPostagem,
 			PostagemAlteracaoRequest postagemAlteracaoRequest) {
 		log.info("[inicia] PostagemRestController - patchAlteraPost");
-		postagemService.AlteraPostagemPorId(idPostagem, email, postagemAlteracaoRequest);
+		postagemService.AlteraPostagemPorId(email, idPostagem, postagemAlteracaoRequest);
 		log.info("[finaliza] PostagemRestController - patchAlteraPost");
 	}
 
 	@Override
-	public void deletaPostPorId(UUID idPostagem, String email) {
+	public void deletaPostPorId(String email, UUID idPostagem) {
 		log.info("[inicia] PostagemRestController - deletaPostPorId");
-		postagemService.deletaPostPorId(idPostagem, email);
+		postagemService.deletaPostPorId(email, idPostagem);
 		log.info("[finaliza] PostagemRestController - deletaPostPorId");
 	}
 
 	@Override
-	public void incrementaLike(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemRestController - incrementaLike");
-		postagemService.incrementaLike(idPostagem, email);
-		log.info("[finaliza] PostagemRestController - incrementaLike");
+	public void postagemUsuarioLike(String email, UUID idPostagem) {
+		log.info("[inicia] PostagemRestController - postagemUsuarioLike");
+		postagemService.postagemUsuarioLike(email, idPostagem);
+		log.info("[finaliza] PostagemRestController - postagemUsuarioLike");
 	}
 
-	@Override
-	public void removeLike(UUID idPostagem, String email) {
-		log.info("[inicia] removeLike - removeLike");
-		postagemService.removeLike(idPostagem, email);
-		log.info("[finaliza] removeLike - removeLike");
-	}
 }

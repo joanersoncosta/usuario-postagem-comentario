@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
@@ -16,6 +17,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class PostagemInfraRepository implements PostagemRepository {
 	private final PostagemSpringDataMongoRepository postagemSpringDataMongoRepository;
+	private final MongoTemplate mongoTemplate;
 	
 	@Override
 	public Postagem salvaPostagem(Postagem postagem) {
@@ -25,6 +27,14 @@ public class PostagemInfraRepository implements PostagemRepository {
 		return postagem;
 	}
 
+	@Override
+	public List<Postagem> buscaPostagens() {
+		log.info("[inicia] PostagemInfraRepository - buscaPostagens");
+		List<Postagem> postagens = postagemSpringDataMongoRepository.findAll();
+		log.info("[finaliza] PostagemInfraRepository - buscaPostagens");
+		return postagens;
+	}
+	
 	@Override
 	public Optional<Postagem> buscaPostagemPorId(UUID idPostagem) {
 		log.info("[inicia] PostagemInfraRepository - buscaPostagemPorId");
@@ -39,4 +49,6 @@ public class PostagemInfraRepository implements PostagemRepository {
 		postagemSpringDataMongoRepository.delete(postagem);
 		log.info("[finaliza] PostagemInfraRepository - deletaPost");
 	}
+
+
 }
