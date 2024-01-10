@@ -14,7 +14,6 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class PostagemRestController implements PostagemAPI {
 	private final PostagemService postagemService;
-
 	
 	@Override
 	public PostagemIdResponse criarPostagem(String email, PostagemRequest postagemRequest) {
@@ -60,6 +59,13 @@ public class PostagemRestController implements PostagemAPI {
 		log.info("[inicia] PostagemRestController - postagemUsuarioLike");
 		postagemService.postagemUsuarioLike(email, idPostagem);
 		log.info("[finaliza] PostagemRestController - postagemUsuarioLike");
+	}
+
+	@Override
+	public void usuarioAtivaPostagem(String email, UUID idPostagem) {
+		log.info("[inicia] usuarioAtivaPostagem - postagemUsuarioLike");
+		postagemService.usuarioAtivaPostagem(email, idPostagem);
+		log.info("[finaliza] usuarioAtivaPostagem - postagemUsuarioLike");
 	}
 
 }

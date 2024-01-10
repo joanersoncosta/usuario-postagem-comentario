@@ -48,4 +48,9 @@ public interface PostagemAPI {
 	void postagemUsuarioLike(@PathParam(value = "email") String email,
 			@PathVariable(value = "idPostagem") UUID idPostagem);
 
+	@PatchMapping(value = "/{idPostagem}/ativa-postagem")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void usuarioAtivaPostagem(@PathParam(value = "email") String email,
+			@PathVariable(value = "idPostagem") UUID idPostagem);
+
 }

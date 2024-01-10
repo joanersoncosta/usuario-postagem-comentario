@@ -93,4 +93,8 @@ public class Postagem {
 		this.likeUsuarios.remove(usuarioDeslike);
 		this.like -= 1;
 	}
+
+	public void ativaPostagem() {
+		this.statusAtivacao = StatusAtivacaoPostagem.ATIVO;
+	}
 }

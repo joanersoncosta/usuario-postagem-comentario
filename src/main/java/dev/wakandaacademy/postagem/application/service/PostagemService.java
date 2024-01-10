@@ -16,4 +16,5 @@ public interface PostagemService {
 	void AlteraPostagemPorId(String email, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest);
 	void deletaPostPorId(String email, UUID idPostagem);
 	void postagemUsuarioLike(String email, UUID idPostagem);
+	void usuarioAtivaPostagem(String email, UUID idPostagem);
 }
