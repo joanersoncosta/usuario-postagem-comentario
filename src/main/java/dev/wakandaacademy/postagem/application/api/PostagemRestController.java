@@ -62,9 +62,9 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public void usuarioAtivaPostagem(String email, UUID idPostagem) {
+	public void usuarioAtivaPostagem(UUID idPostagem) {
 		log.info("[inicia] usuarioAtivaPostagem - postagemUsuarioLike");
-		postagemService.usuarioAtivaPostagem(email, idPostagem);
+		postagemService.usuarioAtivaPostagem(idPostagem);
 		log.info("[finaliza] usuarioAtivaPostagem - postagemUsuarioLike");
 	}
 

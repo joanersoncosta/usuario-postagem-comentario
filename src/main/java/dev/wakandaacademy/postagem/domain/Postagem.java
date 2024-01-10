@@ -48,6 +48,8 @@ public class Postagem {
 	private StatusAtivacaoPostagem statusAtivacao;
 	@Builder.Default
 	private int like = 0;
+	@Builder.Default
+	private int deslike = 0;
 	private Set<PostagemUsuarioLike> likeUsuarios;
 
 	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
@@ -59,6 +61,7 @@ public class Postagem {
 		this.descricao = postagemRequest.getDescricao();
 		this.statusAtivacao = StatusAtivacaoPostagem.INATIVA;
 		this.like = 0;
+		this.deslike = 0;
 		likeUsuarios = new HashSet<>();
 	}
 

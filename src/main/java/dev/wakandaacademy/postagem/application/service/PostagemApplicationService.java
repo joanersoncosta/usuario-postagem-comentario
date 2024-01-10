@@ -91,12 +91,11 @@ public class PostagemApplicationService implements PostagemService {
 	}
 
 	@Override
-	public void usuarioAtivaPostagem(String usuarioEmail, UUID idPostagem) {
+	public void usuarioAtivaPostagem(UUID idPostagem) {
 		log.info("[inicia] PostagemApplicationService - postagemUsuarioLike");
-		log.info("[usuarioEmail], ", usuarioEmail);
 		log.info("[idPostagem], ", idPostagem);
-		usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagemRepository.desativaTarefa();
 		postagem.ativaPostagem();
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] PostagemApplicationService - postagemUsuarioLike");

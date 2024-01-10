@@ -11,4 +11,5 @@ public interface PostagemRepository {
 	List<Postagem> buscaPostagens();
 	Optional<Postagem> buscaPostagemPorId(UUID idPostagem);
 	void deletaPost(Postagem postagem);
+	void desativaTarefa();
 }
