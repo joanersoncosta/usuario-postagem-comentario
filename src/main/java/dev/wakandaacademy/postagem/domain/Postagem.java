@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -80,27 +81,24 @@ public class Postagem {
 	public void ativaPostagem() {
 		this.statusAtivacao = StatusAtivacaoPostagem.ATIVO;
 	}
-	
+
 	public void likePostagem(Usuario usuarioLike) {
-		var likePostagem = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).statusPostagem(StatusLikePostagem.LIKE).build();
+		PostagemUsuarioLike likePostagem = likeUsuario(usuarioLike);
 
-		if (likes.contains(likePostagem)) {
-			likes.remove(likePostagem);
-			this.like--;
-		} else {
-			likes.add(likePostagem);
-			this.like++;
+		if (!likes.contains(likePostagem)) {
+	        addLike(likePostagem);
+	    } else {
+	        removeLike(likePostagem);
+	    }
 
-			var deslikeExistente = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).statusPostagem(StatusLikePostagem.DESLIKE).build();
-			if (deslikes.contains(deslikeExistente)) {
-				deslikes.remove(deslikeExistente);
-				this.deslike--;
-			}
-		}
+	    PostagemUsuarioLike deslikeExistente = deslikeUsuario(usuarioLike);
+
+	    deslikes.removeIf(deslike -> deslike.equals(deslikeExistente));
 	}
 
 	public void deslikePostagem(Usuario usuarioLike) {
-		var deslikePostagem = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).statusPostagem(StatusLikePostagem.DESLIKE).build();
+		var deslikePostagem = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario())
+				.statusPostagem(StatusLikePostagem.DESLIKE).build();
 		if (deslikes.contains(deslikePostagem)) {
 			deslikes.remove(deslikePostagem);
 			this.deslike--;
@@ -108,12 +106,40 @@ public class Postagem {
 			deslikes.add(deslikePostagem);
 			this.deslike++;
 
-			var likeExistente = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).statusPostagem(StatusLikePostagem.LIKE).build();
+			var likeExistente = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario())
+					.statusPostagem(StatusLikePostagem.LIKE).build();
 			if (likes.contains(likeExistente)) {
 				likes.remove(likeExistente);
 				this.like--;
 			}
 		}
+	}
+
+	private PostagemUsuarioLike likeUsuario(Usuario usuario) {
+		var likeUsuario = PostagemUsuarioLike.builder().idUsuario(usuario.getIdUsuario())
+				.statusPostagem(StatusLikePostagem.LIKE).build();
+		return likeUsuario;
+	}
+
+	private PostagemUsuarioLike deslikeUsuario(Usuario usuario) {
+		var likeUsuario = PostagemUsuarioLike.builder().idUsuario(usuario.getIdUsuario())
+				.statusPostagem(StatusLikePostagem.DESLIKE).build();
+		return likeUsuario;
+	}
+
+	private void addLike(PostagemUsuarioLike usuario) {
+		likes.add(usuario);
+		this.like++;
+	}
+	
+	private void removeLike(PostagemUsuarioLike usuario) {
+		likes.remove(usuario);
+		this.like--;
+	}
+
+	private void removeDeslike(PostagemUsuarioLike usuario) {
+		deslikes.remove(usuario);
+		this.deslike--;
 	}
 
 }
