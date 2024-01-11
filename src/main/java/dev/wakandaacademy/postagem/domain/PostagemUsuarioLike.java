@@ -22,12 +22,4 @@ public class PostagemUsuarioLike {
 	private UUID idUsuario;
 	private StatusLikePostagem statusPostagem;
 	
-	public void likePostagem() {
-		this.statusPostagem = StatusLikePostagem.LIKE;
-	}
-	
-	public void deslikePostagem() {
-		this.statusPostagem = StatusLikePostagem.DESLIKE;
-	}
-	
 }

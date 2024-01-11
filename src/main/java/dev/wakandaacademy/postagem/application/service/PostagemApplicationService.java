@@ -54,8 +54,8 @@ public class PostagemApplicationService implements PostagemService {
 	}
 	
 	@Override
-	public void AlteraPostagemPorId(String usuarioEmail, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest) {
-		log.info("[inicia] PostagemApplicationService - AlteraPostagemPorId");
+	public void alteraPostPorId(String usuarioEmail, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest) {
+		log.info("[inicia] PostagemApplicationService - alteraPostPorId");
 		log.info("[usuarioEmail], ", usuarioEmail);
 		log.info("[idPostagem], ", idPostagem);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
@@ -63,7 +63,7 @@ public class PostagemApplicationService implements PostagemService {
 		postagem.pertenceUsuario(usuario);		
 		postagem.alteraPostagem(postagemAlteracaoRequest);
 		postagemRepository.salvaPostagem(postagem);
-		log.info("[finaliza] PostagemApplicationService - AlteraPostagemPorId");
+		log.info("[finaliza] PostagemApplicationService - alteraPostPorId");
 	}
 
 	@Override

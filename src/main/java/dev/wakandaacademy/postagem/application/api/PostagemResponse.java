@@ -17,6 +17,7 @@ public class PostagemResponse {
 	private final String titlo;
 	private final String descricao;
 	private StatusAtivacaoPostagem statusAtivacao;
+	private int quantidadeComentarios;
 	private final int like;
 	private final int deslike;
 
@@ -29,6 +30,7 @@ public class PostagemResponse {
 		this.descricao = postagem.getDescricao();
         this.statusAtivacao = postagem.getStatusAtivacao();
 		this.like = postagem.getLike();
+		this.quantidadeComentarios = postagem.getQuantidadeComentarios();
 		this.deslike = postagem.getDeslike();
 
 	}

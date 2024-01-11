@@ -13,7 +13,7 @@ public interface PostagemService {
 	PostagemIdResponse criarPostagem(String email,PostagemRequest postagemRequest);
 	List<PostagemUsuarioListResponse> buscaPostagens();
 	PostagemResponse buscaPostagemPorId(UUID idPostagem);
-	void AlteraPostagemPorId(String email, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest);
+	void alteraPostPorId(String email, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest);
 	void deletaPostPorId(String email, UUID idPostagem);
 	void usuarioAtivaPostagem(UUID idPostagem);
 	void usuarioLikePostagem(String email, UUID idPostagem);

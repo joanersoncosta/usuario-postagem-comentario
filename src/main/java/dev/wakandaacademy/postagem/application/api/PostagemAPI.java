@@ -36,14 +36,14 @@ public interface PostagemAPI {
 	
 	@PatchMapping(value = "/{idPostagem}/altera-post")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void patchAlteraPost(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem,
+	void alteraPostPorId(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem,
 			@RequestBody @Valid PostagemAlteracaoRequest postagemAlteracaoRequest);
 
 	@DeleteMapping(value = "/{idPostagem}/deleta-post")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void deletaPostPorId(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem);
 
-	@GetMapping(value = "/{idPostagem}/ativa-postagem")
+	@PatchMapping(value = "/{idPostagem}/ativa-postagem")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void usuarioAtivaPostagem(@PathVariable(value = "idPostagem") UUID idPostagem);
 

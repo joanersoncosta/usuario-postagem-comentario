@@ -18,7 +18,9 @@ public class PostagemUsuarioListResponse {
 	private final String titlo;
 	private final String descricao;
 	private StatusAtivacaoPostagem statusAtivacao;
+	private int quantidadeComentarios;
 	private final int like;
+	private final int deslike;
 	
 	public PostagemUsuarioListResponse(Postagem postagem) {
 		this.idUsuario = postagem.getIdUsuario();
@@ -29,6 +31,8 @@ public class PostagemUsuarioListResponse {
 		this.descricao = postagem.getDescricao();
         this.statusAtivacao = postagem.getStatusAtivacao();
 		this.like = postagem.getLike();
+		this.quantidadeComentarios = postagem.getQuantidadeComentarios();
+		this.deslike = postagem.getDeslike();
 	}
 
 	public static List<PostagemUsuarioListResponse> converte(List<Postagem> postagens) {

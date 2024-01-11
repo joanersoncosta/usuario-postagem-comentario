@@ -40,10 +40,10 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public void patchAlteraPost(String email, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest) {
-		log.info("[inicia] PostagemRestController - patchAlteraPost");
-		postagemService.AlteraPostagemPorId(email, idPostagem, postagemAlteracaoRequest);
-		log.info("[finaliza] PostagemRestController - patchAlteraPost");
+	public void alteraPostPorId(String email, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest) {
+		log.info("[inicia] PostagemRestController - alteraPostPorId");
+		postagemService.alteraPostPorId(email, idPostagem, postagemAlteracaoRequest);
+		log.info("[finaliza] PostagemRestController - alteraPostPorId");
 	}
 
 	@Override
