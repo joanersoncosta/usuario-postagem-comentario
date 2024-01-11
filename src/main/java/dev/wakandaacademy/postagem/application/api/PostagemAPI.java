@@ -43,13 +43,18 @@ public interface PostagemAPI {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void deletaPostPorId(@PathParam(value = "email") String email, @PathVariable(value = "idPostagem") UUID idPostagem);
 
-	@PatchMapping(value = "/{idPostagem}/usuario-like")
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void postagemUsuarioLike(@PathParam(value = "email") String email,
-			@PathVariable(value = "idPostagem") UUID idPostagem);
-
 	@GetMapping(value = "/{idPostagem}/ativa-postagem")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void usuarioAtivaPostagem(@PathVariable(value = "idPostagem") UUID idPostagem);
+
+	@PatchMapping(value = "/{idPostagem}/usuario-like")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void usuarioLikePostagem(@PathParam(value = "email") String email,
+			@PathVariable(value = "idPostagem") UUID idPostagem);
+
+	@PatchMapping(value = "/{idPostagem}/usuario-deslike")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void usuarioDeslikePostagem(@PathParam(value = "email") String email,
+			@PathVariable(value = "idPostagem") UUID idPostagem);
 
 }

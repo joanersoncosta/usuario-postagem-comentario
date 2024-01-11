@@ -14,13 +14,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class PostagemRestController implements PostagemAPI {
 	private final PostagemService postagemService;
-	
+
 	@Override
 	public PostagemIdResponse criarPostagem(String email, PostagemRequest postagemRequest) {
 		log.info("[inicia] PostagemRestController - criarPostagem");
 		PostagemIdResponse postagemIdResponse = postagemService.criarPostagem(email, postagemRequest);
 		log.info("[finaliza] PostagemRestController - criarPostagem");
-			return postagemIdResponse;
+		return postagemIdResponse;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class PostagemRestController implements PostagemAPI {
 		log.info("[finaliza] PostagemRestController - buscaPostagens");
 		return postagens;
 	}
-	
+
 	@Override
 	public PostagemResponse buscaPostagemPorId(UUID idPostagem) {
 		log.info("[inicia] PostagemRestController - buscaPostagemPorId");
@@ -40,8 +40,7 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public void patchAlteraPost(String email, UUID idPostagem,
-			PostagemAlteracaoRequest postagemAlteracaoRequest) {
+	public void patchAlteraPost(String email, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest) {
 		log.info("[inicia] PostagemRestController - patchAlteraPost");
 		postagemService.AlteraPostagemPorId(email, idPostagem, postagemAlteracaoRequest);
 		log.info("[finaliza] PostagemRestController - patchAlteraPost");
@@ -55,17 +54,24 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public void postagemUsuarioLike(String email, UUID idPostagem) {
-		log.info("[inicia] PostagemRestController - postagemUsuarioLike");
-		postagemService.postagemUsuarioLike(email, idPostagem);
-		log.info("[finaliza] PostagemRestController - postagemUsuarioLike");
-	}
-
-	@Override
 	public void usuarioAtivaPostagem(UUID idPostagem) {
 		log.info("[inicia] usuarioAtivaPostagem - postagemUsuarioLike");
 		postagemService.usuarioAtivaPostagem(idPostagem);
 		log.info("[finaliza] usuarioAtivaPostagem - postagemUsuarioLike");
+	}
+
+	@Override
+	public void usuarioLikePostagem(String email, UUID idPostagem) {
+		log.info("[inicia] PostagemRestController - usuarioLikePostagem");
+		postagemService.usuarioLikePostagem(email, idPostagem);
+		log.info("[finaliza] PostagemRestController - usuarioLikePostagem");
+	}
+
+	@Override
+	public void usuarioDeslikePostagem(String email, UUID idPostagem) {
+		log.info("[inicia] PostagemRestController - usuarioDeslikePostagem");
+		postagemService.usuarioDeslikePostagem(email, idPostagem);
+		log.info("[finaliza] PostagemRestController - usuarioDeslikePostagem");
 	}
 
 }

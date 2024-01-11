@@ -79,18 +79,6 @@ public class PostagemApplicationService implements PostagemService {
 	}
 
 	@Override
-	public void postagemUsuarioLike(String usuarioEmail, UUID idPostagem) {
-		log.info("[inicia] PostagemApplicationService - postagemUsuarioLike");
-		log.info("[usuarioEmail], ", usuarioEmail);
-		log.info("[idPostagem], ", idPostagem);
-		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.likePostagem(usuario);
-		postagemRepository.salvaPostagem(postagem);
-		log.info("[finaliza] PostagemApplicationService - postagemUsuarioLike");
-	}
-
-	@Override
 	public void usuarioAtivaPostagem(UUID idPostagem) {
 		log.info("[inicia] PostagemApplicationService - postagemUsuarioLike");
 		log.info("[idPostagem], ", idPostagem);
@@ -100,5 +88,28 @@ public class PostagemApplicationService implements PostagemService {
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] PostagemApplicationService - postagemUsuarioLike");
 	}
+	
+	@Override
+	public void usuarioLikePostagem(String usuarioEmail, UUID idPostagem) {
+		log.info("[inicia] PostagemApplicationService - usuarioLikePostagem");
+		log.info("[usuarioEmail], ", usuarioEmail);
+		log.info("[idPostagem], ", idPostagem);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.likePostagem(usuario);
+		postagemRepository.salvaPostagem(postagem);
+		log.info("[finaliza] PostagemApplicationService - usuarioLikePostagem");
+	}
 
+	@Override
+	public void usuarioDeslikePostagem(String usuarioEmail, UUID idPostagem) {
+		log.info("[inicia] PostagemApplicationService - usuarioDeslikePostagem");
+		log.info("[usuarioEmail], ", usuarioEmail);
+		log.info("[idPostagem], ", idPostagem);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
+		postagem.deslikePostagem(usuario);
+		postagemRepository.salvaPostagem(postagem);
+		log.info("[finaliza] PostagemApplicationService - usuarioDeslikePostagem");
+	}
 }
