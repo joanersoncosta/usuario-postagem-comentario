@@ -99,4 +99,21 @@ public class Postagem {
 		}
 	}
 
+	public void deslikePostagem(Usuario usuarioLike) {
+		var deslikePostagem = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).statusPostagem(StatusLikePostagem.DESLIKE).build();
+		if (deslikes.contains(deslikePostagem)) {
+			deslikes.remove(deslikePostagem);
+			this.deslike--;
+		} else {
+			deslikes.add(deslikePostagem);
+			this.deslike++;
+
+			var likeExistente = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).statusPostagem(StatusLikePostagem.LIKE).build();
+			if (likes.contains(likeExistente)) {
+				likes.remove(likeExistente);
+				this.like--;
+			}
+		}
+	}
+
 }
