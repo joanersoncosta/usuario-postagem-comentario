@@ -85,7 +85,7 @@ public class PostagemApplicationService implements PostagemService {
 		log.info("[idPostagem], ", idPostagem);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem).orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
-		postagem.usuarioLikePostagem(usuario);
+		postagem.likePostagem(usuario);
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] PostagemApplicationService - postagemUsuarioLike");
 	}

@@ -18,7 +18,8 @@ public class PostagemResponse {
 	private final String descricao;
 	private StatusAtivacaoPostagem statusAtivacao;
 	private final int like;
-	
+	private final int deslike;
+
 	public PostagemResponse(Postagem postagem) {
 		this.idUsuario = postagem.getIdUsuario();
 		this.idPostagem = postagem.getIdPostagem();
@@ -28,5 +29,7 @@ public class PostagemResponse {
 		this.descricao = postagem.getDescricao();
         this.statusAtivacao = postagem.getStatusAtivacao();
 		this.like = postagem.getLike();
+		this.deslike = postagem.getDeslike();
+
 	}
 }

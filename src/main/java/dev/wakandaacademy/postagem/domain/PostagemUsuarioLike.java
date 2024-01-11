@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import dev.wakandaacademy.postagem.domain.enuns.StatusLikePostagem;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,4 +20,14 @@ import lombok.NoArgsConstructor;
 public class PostagemUsuarioLike {
 	@Indexed
 	private UUID idUsuario;
+	private StatusLikePostagem statusPostagem;
+	
+	public void likePostagem() {
+		this.statusPostagem = StatusLikePostagem.LIKE;
+	}
+	
+	public void deslikePostagem() {
+		this.statusPostagem = StatusLikePostagem.DESLIKE;
+	}
+	
 }

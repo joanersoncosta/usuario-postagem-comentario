@@ -16,6 +16,7 @@ import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
+import dev.wakandaacademy.postagem.domain.enuns.StatusLikePostagem;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -46,11 +47,10 @@ public class Postagem {
 	@Size
 	private String descricao;
 	private StatusAtivacaoPostagem statusAtivacao;
-	@Builder.Default
-	private int like = 0;
-	@Builder.Default
-	private int deslike = 0;
-	private Set<PostagemUsuarioLike> likeUsuarios;
+	private int like;
+	private int deslike;
+	private Set<PostagemUsuarioLike> likes;
+	private Set<PostagemUsuarioLike> deslikes;
 
 	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
 		this.idPostagem = UUID.randomUUID();
@@ -62,7 +62,8 @@ public class Postagem {
 		this.statusAtivacao = StatusAtivacaoPostagem.INATIVA;
 		this.like = 0;
 		this.deslike = 0;
-		likeUsuarios = new HashSet<>();
+		this.likes = new HashSet<>();
+		this.deslikes = new HashSet<>();
 	}
 
 	public void pertenceUsuario(Usuario usuarioEmail) {
@@ -76,28 +77,26 @@ public class Postagem {
 		this.descricao = postagemAlteracaoRequest.getDescricao();
 	}
 
-	public void usuarioLikePostagem(Usuario usuarioLike) {
-		var likeComentario = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).build();
-		if (!likeUsuarios.contains(likeComentario)) {
-			likeUsuarios.add(likeComentario);
-			like(likeComentario);
-		} else {
-			likeUsuarios.remove(likeComentario);
-			deslike(likeComentario);
-		}
-	}
-
-	public void like(PostagemUsuarioLike usuarioLike) {
-		this.likeUsuarios.add(usuarioLike);
-		this.like += 1;
-	}
-
-	public void deslike(PostagemUsuarioLike usuarioDeslike) {
-		this.likeUsuarios.remove(usuarioDeslike);
-		this.like -= 1;
-	}
-
 	public void ativaPostagem() {
 		this.statusAtivacao = StatusAtivacaoPostagem.ATIVO;
 	}
+	
+	public void likePostagem(Usuario usuarioLike) {
+		var likePostagem = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).statusPostagem(StatusLikePostagem.LIKE).build();
+
+		if (likes.contains(likePostagem)) {
+			likes.remove(likePostagem);
+			this.like--;
+		} else {
+			likes.add(likePostagem);
+			this.like++;
+
+			var deslikeExistente = PostagemUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).statusPostagem(StatusLikePostagem.DESLIKE).build();
+			if (deslikes.contains(deslikeExistente)) {
+				deslikes.remove(deslikeExistente);
+				this.deslike--;
+			}
+		}
+	}
+
 }
