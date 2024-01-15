@@ -72,7 +72,7 @@ public class ComentarioApplicationService implements ComentarioService {
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		Comentario comentario = detalhaComentario(idComentario);
 		comentario.pertenceUsuario(usuario, postagem);
-		comentario.usuarioLikeComentario(usuario);
+		comentario.like(usuario);
 		comentarioRepository.salvaComentario(comentario);
 		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
 	}

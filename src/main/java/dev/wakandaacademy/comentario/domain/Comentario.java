@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 
 import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
+import dev.wakandaacademy.comentario.domain.enuns.StatusLikeComentario;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.usuario.domain.Usuario;
@@ -31,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Document(collection = "Comentario")
 @EqualsAndHashCode(of = "idComentario")
 public class Comentario {
-	
+
 	@Id
 	private UUID idComentario;
 	@Indexed
@@ -47,7 +48,9 @@ public class Comentario {
 	@Size(message = "Campo descrição comentario não pode estar vazio!", min = 3, max = 250)
 	private String descricao;
 	private int like;
-	private Set<ComentarioUsuarioLike> likeUsuarios;
+	private int deslike;
+	private Set<ComentarioUsuarioLike> likes;
+	private Set<ComentarioUsuarioLike> deslikes;
 
 	public Comentario(Usuario usuario, Postagem postagem, ComentarioRequest comentarioRequest) {
 		this.idComentario = UUID.randomUUID();
@@ -59,28 +62,25 @@ public class Comentario {
 		this.dataCriacaoComentario = LocalDateTime.now();
 		this.descricao = comentarioRequest.getDescricao();
 		this.like = 0;
-		likeUsuarios = new HashSet<>();
+		this.likes = new HashSet<>();
+		this.deslikes = new HashSet<>();
 	}
 
-	public void usuarioLikeComentario(Usuario usuarioLike) {
-		var likeComentario = ComentarioUsuarioLike.builder().idUsuario(usuarioLike.getIdUsuario()).build();
-		if (!likeUsuarios.contains(likeComentario)) {
-			likeUsuarios.add(likeComentario);
-			like(likeComentario);
+	public void like(Usuario usuarioLike) {
+		var likePostagem = likeUsuario(usuarioLike);
+
+		if (likes.removeIf(like -> like.equals(likePostagem))) {
+			this.like--;
 		} else {
-			likeUsuarios.remove(likeComentario);
-			deslike(likeComentario);
+			likes.add(likePostagem);
+			this.like++;
 		}
 	}
 
-	public void like(ComentarioUsuarioLike usuarioLike) {
-		this.likeUsuarios.add(usuarioLike);
-		this.like += 1;
-	}
-
-	public void deslike(ComentarioUsuarioLike usuarioDeslike) {
-		this.likeUsuarios.remove(usuarioDeslike);
-		this.like -= 1;
+	private ComentarioUsuarioLike likeUsuario(Usuario usuario) {
+		var likeUsuario = ComentarioUsuarioLike.builder().idUsuario(usuario.getIdUsuario())
+				.statusComentario(StatusLikeComentario.LIKE).build();
+		return likeUsuario;
 	}
 
 	public void alteraComentario(ComentarioAlteracaoRequest comentarioRequest) {
@@ -88,8 +88,7 @@ public class Comentario {
 	}
 
 	public void pertenceUsuario(Usuario usuario, Postagem postagem) {
-		if (!idUsuario.equals(usuario.getIdUsuario())
-				&& idPostagem.equals(postagem.getIdPostagem()))
+		if (!idUsuario.equals(usuario.getIdUsuario()) && idPostagem.equals(postagem.getIdPostagem()))
 			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do Comentário!");
 	}
 }

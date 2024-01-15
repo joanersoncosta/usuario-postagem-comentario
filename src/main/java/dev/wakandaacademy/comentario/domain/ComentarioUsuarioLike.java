@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 
+import dev.wakandaacademy.comentario.domain.enuns.StatusLikeComentario;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,4 +20,5 @@ import lombok.NoArgsConstructor;
 public class ComentarioUsuarioLike {
 	@Indexed
 	private UUID idUsuario;
+	private StatusLikeComentario statusComentario;
 }
