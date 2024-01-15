@@ -8,7 +8,7 @@ import dev.wakandaacademy.postagem.domain.Postagem;
 
 public interface PostagemRepository {
 	Postagem salvaPostagem(Postagem postagem);
-	List<Postagem> buscaPostagens();
+	List<Postagem> buscaPostagens(UUID idConteudo);
 	Optional<Postagem> buscaPostagemPorId(UUID idPostagem);
 	void deletaPost(Postagem postagem);
 	void desativaTarefa();

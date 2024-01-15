@@ -35,7 +35,8 @@ public class PostagemApplicationService implements PostagemService {
 		log.info("[usuarioEmail] {}", usuarioEmail);
 		log.info("[idConteudo], ", idConteudo);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(usuario, idConteudo, postagemRequest));
+		Conteudo conteudo = conteudoService.detalhaConteudoPorId(idConteudo);
+		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(usuario, conteudo.getIdConteudo(), postagemRequest));
 		log.info("[finaliza] PostagemApplicationService - criarPostagem");
 		return PostagemIdResponse.builder().idPostagem(postagem.getIdPostagem()).build();
 	}
@@ -44,7 +45,7 @@ public class PostagemApplicationService implements PostagemService {
 	public List<PostagemUsuarioListResponse> buscaPostagens(UUID idConteudo) {
 		log.info("[inicia] PostagemApplicationService - buscaPostagens");
 		log.info("[idConteudo], ", idConteudo);
-		List<Postagem> postagens = postagemRepository.buscaPostagens();
+		List<Postagem> postagens = postagemRepository.buscaPostagens(idConteudo);
 		log.info("[finaliza] PostagemApplicationService - buscaPostagens");
 		return PostagemUsuarioListResponse.converte(postagens);
 	}

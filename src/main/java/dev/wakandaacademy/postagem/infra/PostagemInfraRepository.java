@@ -32,9 +32,11 @@ public class PostagemInfraRepository implements PostagemRepository {
 	}
 
 	@Override
-	public List<Postagem> buscaPostagens() {
+	public List<Postagem> buscaPostagens(UUID idConteudo) {
 		log.info("[inicia] PostagemInfraRepository - buscaPostagens");
-		List<Postagem> postagens = postagemSpringDataMongoRepository.findAll();
+		Query query = new Query();
+		query.addCriteria(Criteria.where("idConteudo").is(idConteudo));
+		List<Postagem> postagens = mongoTemplate.find(query, Postagem.class);
 		log.info("[finaliza] PostagemInfraRepository - buscaPostagens");
 		return postagens;
 	}
