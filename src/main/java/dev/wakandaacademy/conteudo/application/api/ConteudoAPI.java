@@ -43,4 +43,9 @@ public interface ConteudoAPI {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void deletaConteudoPorId(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo);
 
+	@PatchMapping(value = "/{idConteudo}/altera-conteudo")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void editarConteudoPorId(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo,
+			@RequestBody @Valid ConteudoAlteracaoRequest conteudoAlteracaoRequest);
+
 }

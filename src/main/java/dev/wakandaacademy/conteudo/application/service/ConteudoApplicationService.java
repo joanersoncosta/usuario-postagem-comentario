@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import dev.wakandaacademy.conteudo.application.api.ConteudoAlteracaoRequest;
 import dev.wakandaacademy.conteudo.application.api.ConteudoIdResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoListResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
@@ -80,6 +81,18 @@ public class ConteudoApplicationService implements ConteudoService {
 		Conteudo conteudo = detalhaConteudoPorId(idConteudo);
 		conteudo.pertenceUsuario(usuario);
 		conteudoRepository.deletaConteudo(conteudo);
+		log.info("[finaliza] ConteudoApplicationService - deletaConteudoPorId");
+	}
+
+	@Override
+	public void editarConteudoPorId(String usuarioEmail, UUID idConteudo, ConteudoAlteracaoRequest conteudoAlteracaoRequest) {
+		log.info("[inicia] ConteudoApplicationService - deletaConteudoPorId");
+		log.info("[usuarioEmail]  {}", usuarioEmail);
+		log.info("[idConteudo]  {}", idConteudo);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Conteudo conteudo = detalhaConteudoPorId(idConteudo);
+		conteudo.pertenceUsuario(usuario);
+		conteudoRepository.editarConteudoPorId(conteudo, conteudoAlteracaoRequest);
 		log.info("[finaliza] ConteudoApplicationService - deletaConteudoPorId");
 	}
 	

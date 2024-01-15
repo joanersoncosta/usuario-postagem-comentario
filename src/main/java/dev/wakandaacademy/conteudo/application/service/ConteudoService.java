@@ -3,6 +3,7 @@ package dev.wakandaacademy.conteudo.application.service;
 import java.util.List;
 import java.util.UUID;
 
+import dev.wakandaacademy.conteudo.application.api.ConteudoAlteracaoRequest;
 import dev.wakandaacademy.conteudo.application.api.ConteudoIdResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoListResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
@@ -23,4 +24,6 @@ public interface ConteudoService {
 	List<ConteudoUsuarioListResponse> buscaConteudosDoUsuario(UUID idUsuario);
 
 	void deletaConteudoPorId(String email, UUID idConteudo);
+
+	void editarConteudoPorId(String email, UUID idConteudo, ConteudoAlteracaoRequest conteudoAlteracaoRequest);
 }

@@ -7,8 +7,10 @@ import java.util.UUID;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import dev.wakandaacademy.conteudo.application.api.ConteudoAlteracaoRequest;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ import lombok.extern.log4j.Log4j2;
 public class ConteudoInfraRepository implements ConteudoRepository {
 	private final ConteudoSpringDataMongoRepository conteudoSpringDataMongoRepository;
 	private final MongoTemplate mongoTemplate;
-	
+
 	@Override
 	public Conteudo salvaConteudo(Conteudo conteudo) {
 		log.info("[start] ConteudoInfraRepository - salvaConteudo");
@@ -60,6 +62,19 @@ public class ConteudoInfraRepository implements ConteudoRepository {
 		log.info("[start] ConteudoInfraRepository - deletaConteudo");
 		conteudoSpringDataMongoRepository.delete(conteudo);
 		log.info("[finish] ConteudoInfraRepository - deletaConteudo");
+	}
+
+	@Override
+	public void editarConteudoPorId(Conteudo conteudo, ConteudoAlteracaoRequest conteudoAlteracaoRequest) {
+		log.info("[start] ConteudoInfraRepository - editarConteudoPorId");
+		Query query = new Query();
+		query.addCriteria(Criteria.where("IdConteudo").is(conteudo.getIdConteudo()));
+
+		Update update = new Update();
+		update.set("descricao", conteudoAlteracaoRequest.getDescricao());
+
+		mongoTemplate.updateFirst(query, update, Conteudo.class);
+		log.info("[finish] ConteudoInfraRepository - editarConteudoPorId");
 	}
 
 }
