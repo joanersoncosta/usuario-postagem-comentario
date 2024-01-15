@@ -15,7 +15,7 @@ public class PostagemUsuarioListResponse {
 	private final UUID idConteudo;
 	private final UUID idPostagem;
 	private final UUID idUsuario;
-	private final String autor;
+	private final String publicador;
 	private final LocalDateTime dataPostagem;
 	private final String titlo;
 	private final String descricao;
@@ -28,7 +28,7 @@ public class PostagemUsuarioListResponse {
 		this.idConteudo = postagem.getIdConteudo();
 		this.idPostagem = postagem.getIdPostagem();
 		this.idUsuario = postagem.getIdUsuario();
-		this.autor = postagem.getAutor();
+		this.publicador = postagem.getPublicador();
 		this.dataPostagem = postagem.getDataPostagem();
 		this.titlo = postagem.getTitlo();
 		this.descricao = postagem.getDescricao();

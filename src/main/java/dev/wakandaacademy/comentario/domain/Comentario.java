@@ -40,7 +40,8 @@ public class Comentario {
 	private UUID idPostagem;
 	@Indexed
 	private UUID idUsuario;
-	private String usuario;
+	private String publicador;
+	private String comentarista;
 	private LocalDateTime dataCriacaoComentario;
 	@NotBlank
 	@Size(message = "Campo descrição comentario não pode estar vazio!", min = 3, max = 250)
@@ -53,7 +54,8 @@ public class Comentario {
 		this.idConteudo = postagem.getIdConteudo();
 		this.idPostagem = postagem.getIdPostagem();
 		this.idUsuario = usuario.getIdUsuario();
-		this.usuario = usuario.getNome();
+		this.publicador = postagem.getPublicador();
+		this.comentarista = usuario.getNome();
 		this.dataCriacaoComentario = LocalDateTime.now();
 		this.descricao = comentarioRequest.getDescricao();
 		this.like = 0;

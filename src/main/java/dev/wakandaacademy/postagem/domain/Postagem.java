@@ -40,7 +40,7 @@ public class Postagem {
 	private UUID idConteudo;
 	@Indexed
 	private UUID idUsuario;
-	private String autor;
+	private String publicador;
 	private LocalDateTime dataPostagem;
 	@NotBlank
 	@Size
@@ -59,7 +59,7 @@ public class Postagem {
 		this.idPostagem = UUID.randomUUID();
 		this.idConteudo = idConteudo;
 		this.idUsuario = usuario.getIdUsuario();
-		this.autor = usuario.getNome();
+		this.publicador = usuario.getNome();
 		this.dataPostagem = LocalDateTime.now();
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
