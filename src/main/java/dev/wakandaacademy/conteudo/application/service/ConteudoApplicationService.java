@@ -46,10 +46,20 @@ public class ConteudoApplicationService implements ConteudoService {
 	@Override
 	public ConteudoResponse buscaConteudoPorId(UUID idConteudo) {
 		log.info("[inicia] ConteudoApplicationService - buscaConteudoPorId");
-		Conteudo conteudo = conteudoRepository.buscaConteudoPorId(idConteudo)
-				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Conteúdo não encontrado!"));
+		log.info("[idConteudo]  {}", idConteudo);
+		Conteudo conteudo = detalhaConteudoPorId(idConteudo);
 		log.info("[finaliza] ConteudoApplicationService - buscaConteudoPorId");
 		return ConteudoResponse.converte(conteudo);
 	}
 
+	@Override
+	public Conteudo detalhaConteudoPorId(UUID idConteudo) {
+		log.info("[inicia] ConteudoApplicationService - detalhaConteudoPorId");
+		Conteudo conteudo = conteudoRepository.buscaConteudoPorId(idConteudo)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Conteúdo não encontrado!"));
+		log.info("[finaliza] ConteudoApplicationService - detalhaConteudoPorId");
+		return conteudo;
+	}
+
+	
 }

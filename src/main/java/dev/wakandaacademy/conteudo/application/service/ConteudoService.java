@@ -7,6 +7,7 @@ import dev.wakandaacademy.conteudo.application.api.ConteudoIdResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoListResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
 import dev.wakandaacademy.conteudo.application.api.ConteudoResponse;
+import dev.wakandaacademy.conteudo.domian.Conteudo;
 
 public interface ConteudoService {
 
@@ -16,4 +17,5 @@ public interface ConteudoService {
 
 	ConteudoResponse buscaConteudoPorId(UUID idConteudo);
 
+	Conteudo detalhaConteudoPorId(UUID idConteudo);
 }
