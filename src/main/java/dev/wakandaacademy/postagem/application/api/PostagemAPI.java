@@ -18,7 +18,7 @@ import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 
 @RestController
-@RequestMapping("/conteudo/{idConteudo}v1/postagem")
+@RequestMapping("/v1/conteudo/{idConteudo}/postagem")
 public interface PostagemAPI {
 
 	@PostMapping

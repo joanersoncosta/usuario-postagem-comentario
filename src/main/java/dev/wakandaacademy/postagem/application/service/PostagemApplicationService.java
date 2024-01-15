@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import dev.wakandaacademy.conteudo.application.service.ConteudoService;
+import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
@@ -27,7 +27,7 @@ import lombok.extern.log4j.Log4j2;
 public class PostagemApplicationService implements PostagemService {
 	private final PostagemRepository postagemRepository;
 	private final UsuarioRepository usuarioRepository;
-	private final ConteudoService conteudoService;
+	private final ConteudoRepository  conteudoRepository;
 
 	@Override
 	public PostagemIdResponse criarPostagem(String usuarioEmail, UUID idConteudo, PostagemRequest postagemRequest) {
@@ -35,8 +35,11 @@ public class PostagemApplicationService implements PostagemService {
 		log.info("[usuarioEmail] {}", usuarioEmail);
 		log.info("[idConteudo], ", idConteudo);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		Conteudo conteudo = conteudoService.detalhaConteudoPorId(idConteudo);
+		Conteudo conteudo = conteudoRepository.buscaConteudoPorId(idConteudo)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Conteúdo não encontrado!"));
 		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(usuario, conteudo.getIdConteudo(), postagemRequest));
+		conteudo.incrementaQuantidadePostagem();
+		conteudoRepository.salvaConteudo(conteudo);
 		log.info("[finaliza] PostagemApplicationService - criarPostagem");
 		return PostagemIdResponse.builder().idPostagem(postagem.getIdPostagem()).build();
 	}
@@ -123,7 +126,8 @@ public class PostagemApplicationService implements PostagemService {
 	@Override
 	public Postagem detalhaPostagem(UUID idConteudo, UUID idPostagem) {
 		log.info("[inicia] PostagemApplicationService - usuarioDeslikePostagem");
-		Conteudo conteudo = conteudoService.detalhaConteudoPorId(idConteudo);
+		Conteudo conteudo = conteudoRepository.buscaConteudoPorId(idConteudo)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Conteúdo não encontrado!"));
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem)
 				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
 		postagem.pertenceConteudo(conteudo);
