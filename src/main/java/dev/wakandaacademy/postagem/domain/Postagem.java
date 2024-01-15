@@ -1,18 +1,23 @@
 package dev.wakandaacademy.postagem.domain;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.http.HttpStatus;
 
+import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
+import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
+import dev.wakandaacademy.postagem.domain.enuns.StatusLikePostagem;
 import dev.wakandaacademy.usuario.domain.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -30,32 +35,51 @@ import lombok.NoArgsConstructor;
 public class Postagem {
 
 	@Id
+	@MongoId(value = FieldType.STRING)
 	private UUID idPostagem;
+	private UUID idConteudo;
+	@Indexed
 	private UUID idUsuario;
-	private Date data;
+	private String autor;
+	private LocalDateTime dataPostagem;
 	@NotBlank
-	@Size(min = 3, max = 50)
+	@Size
 	private String titlo;
 	@NotBlank
-	@Size(min = 3, max = 250)
+	@Size
 	private String descricao;
-	@Builder.Default
-	private int like = 0;
-	private Set<UsuarioLikePostagem> likeUsuarios;
+	private StatusAtivacaoPostagem statusAtivacao;
+	private int quantidadeComentarios;
+	private int like;
+	private int deslike;
+	private Set<PostagemUsuarioLike> likes;
+	private Set<PostagemUsuarioLike> deslikes;
 
-	public Postagem(PostagemRequest postagemRequest) {
+	public Postagem(Usuario usuario, UUID idConteudo, PostagemRequest postagemRequest) {
 		this.idPostagem = UUID.randomUUID();
-		this.idUsuario = postagemRequest.getIdUsuario();
-		this.data = Date.from(Instant.now());
+		this.idConteudo = idConteudo;
+		this.idUsuario = usuario.getIdUsuario();
+		this.autor = usuario.getNome();
+		this.dataPostagem = LocalDateTime.now();
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
+		this.statusAtivacao = StatusAtivacaoPostagem.INATIVA;
+		this.quantidadeComentarios = 0;
 		this.like = 0;
-		likeUsuarios = new HashSet<>();
+		this.deslike = 0;
+		this.likes = new HashSet<>();
+		this.deslikes = new HashSet<>();
 	}
 
 	public void pertenceUsuario(Usuario usuarioEmail) {
 		if (!idUsuario.equals(usuarioEmail.getIdUsuario())) {
 			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é dono do Post!");
+		}
+	}
+	
+	public void pertenceConteudo(Conteudo conteudo) {
+		if (!idConteudo.equals(conteudo.getIdConteudo())) {
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Post não pertence a este Conteudo.");
 		}
 	}
 
@@ -64,23 +88,52 @@ public class Postagem {
 		this.descricao = postagemAlteracaoRequest.getDescricao();
 	}
 
-	public void usuarioLike(Usuario usuarioPost) {
-		var usuarioLikePost = UsuarioLikePostagem.builder().idUsuario(usuarioPost.getIdUsuario()).build();
-		if (!likeUsuarios.contains(usuarioLikePost)) {
-			like(usuarioLikePost);
+	public void ativaPostagem() {
+		this.statusAtivacao = StatusAtivacaoPostagem.ATIVO;
+	}
+
+	public void likePostagem(Usuario usuarioLike) {
+		PostagemUsuarioLike likePostagem = likeUsuario(usuarioLike);
+		PostagemUsuarioLike deslikeExistente = deslikeUsuario(usuarioLike);
+
+		if (deslikes.removeIf(deslike -> deslike.equals(deslikeExistente))) {
+			this.deslike--;
+		}
+
+		if (likes.removeIf(like -> like.equals(likePostagem))) {
+			this.like--;
 		} else {
-			deslike(usuarioLikePost);
+			likes.add(likePostagem);
+			this.like++;
 		}
 	}
 
-	public void like(UsuarioLikePostagem usuarioLike) {
-		this.likeUsuarios.add(usuarioLike);
-		this.like += 1;
+	public void deslikePostagem(Usuario usuarioLike) {
+		PostagemUsuarioLike deslikePostagem = deslikeUsuario(usuarioLike);
+		PostagemUsuarioLike likeExistente = likeUsuario(usuarioLike);
+
+		if (likes.removeIf(like -> like.equals(likeExistente))) {
+			this.like--;
+		}
+
+		if (deslikes.removeIf(deslike -> deslike.equals(deslikePostagem))) {
+			this.deslike--;
+		} else {
+			deslikes.add(deslikePostagem);
+			this.deslike++;
+		}
 	}
 
-	public void deslike(UsuarioLikePostagem usuarioDeslike) {
-		this.likeUsuarios.remove(usuarioDeslike);
-		this.like -= 1;
+	private PostagemUsuarioLike likeUsuario(Usuario usuario) {
+		var likeUsuario = PostagemUsuarioLike.builder().idUsuario(usuario.getIdUsuario())
+				.statusPostagem(StatusLikePostagem.LIKE).build();
+		return likeUsuario;
+	}
+
+	private PostagemUsuarioLike deslikeUsuario(Usuario usuario) {
+		var likeUsuario = PostagemUsuarioLike.builder().idUsuario(usuario.getIdUsuario())
+				.statusPostagem(StatusLikePostagem.DESLIKE).build();
+		return likeUsuario;
 	}
 
 }

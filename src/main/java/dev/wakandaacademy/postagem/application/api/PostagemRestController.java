@@ -1,5 +1,6 @@
 package dev.wakandaacademy.postagem.application.api;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -13,50 +14,64 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class PostagemRestController implements PostagemAPI {
 	private final PostagemService postagemService;
-	
+
 	@Override
-	public PostagemIdResponse criarPostagem(PostagemRequest postagemRequest) {
+	public PostagemIdResponse criarPostagem(String email, UUID idConteudo, PostagemRequest postagemRequest) {
 		log.info("[inicia] PostagemRestController - criarPostagem");
-		PostagemIdResponse postagemIdResponse = postagemService.criarPostagem(postagemRequest);
+		PostagemIdResponse postagemIdResponse = postagemService.criarPostagem(email, idConteudo, postagemRequest);
 		log.info("[finaliza] PostagemRestController - criarPostagem");
-			return postagemIdResponse;
+		return postagemIdResponse;
 	}
 
 	@Override
-	public PostagemResponse buscaPostagemPorId(UUID idPostagem, String email) {
+	public List<PostagemUsuarioListResponse> buscaPostagens(UUID idConteudo) {
+		log.info("[inicia] PostagemRestController - buscaPostagens");
+		List<PostagemUsuarioListResponse> postagens = postagemService.buscaPostagens(idConteudo);
+		log.info("[finaliza] PostagemRestController - buscaPostagens");
+		return postagens;
+	}
+
+	@Override
+	public PostagemResponse buscaPostagemPorId(UUID idConteudo, UUID idPostagem) {
 		log.info("[inicia] PostagemRestController - buscaPostagemPorId");
-		PostagemResponse postagemResponse = postagemService.buscaPostagemPorId(idPostagem, email);
+		PostagemResponse postagemResponse = postagemService.buscaPostagemPorId(idConteudo, idPostagem);
 		log.info("[finaliza] PostagemRestController - buscaPostagemPorId");
 		return postagemResponse;
 	}
 
 	@Override
-	public void patchAlteraPost(UUID idPostagem, String email,
-			PostagemAlteracaoRequest postagemAlteracaoRequest) {
-		log.info("[inicia] PostagemRestController - patchAlteraPost");
-		postagemService.AlteraPostagemPorId(idPostagem, email, postagemAlteracaoRequest);
-		log.info("[finaliza] PostagemRestController - patchAlteraPost");
+	public void alteraPostPorId(String email, UUID idConteudo, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest) {
+		log.info("[inicia] PostagemRestController - alteraPostPorId");
+		postagemService.alteraPostPorId(email, idConteudo, idPostagem, postagemAlteracaoRequest);
+		log.info("[finaliza] PostagemRestController - alteraPostPorId");
 	}
 
 	@Override
-	public void deletaPostPorId(UUID idPostagem, String email) {
+	public void deletaPostPorId(String email, UUID idConteudo, UUID idPostagem) {
 		log.info("[inicia] PostagemRestController - deletaPostPorId");
-		postagemService.deletaPostPorId(idPostagem, email);
+		postagemService.deletaPostPorId(email, idConteudo, idPostagem);
 		log.info("[finaliza] PostagemRestController - deletaPostPorId");
 	}
 
 	@Override
-	public void usuarioLike(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemRestController - usuarioLike");
-		postagemService.usuarioLike(idPostagem, email);
-		log.info("[finaliza] PostagemRestController - usuarioLike");
+	public void usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem) {
+		log.info("[inicia] usuarioAtivaPostagem - postagemUsuarioLike");
+		postagemService.usuarioAtivaPostagem(idConteudo, idPostagem);
+		log.info("[finaliza] usuarioAtivaPostagem - postagemUsuarioLike");
 	}
 
 	@Override
-	public PostagemListComentariosResponse buscaPostagemComentarios(UUID idPostagem, String email) {
-		log.info("[inicia] PostagemRestController - buscaPostagemComentarios");
-		PostagemListComentariosResponse postListComentarios = postagemService.buscaPostagemComentarios(idPostagem, email);
-		log.info("[finaliza] PostagemRestController - buscaPostagemComentarios");
-		return postListComentarios;
+	public void usuarioLikePostagem(String email, UUID idConteudo, UUID idPostagem) {
+		log.info("[inicia] PostagemRestController - usuarioLikePostagem");
+		postagemService.usuarioLikePostagem(email, idConteudo, idPostagem);
+		log.info("[finaliza] PostagemRestController - usuarioLikePostagem");
 	}
+
+	@Override
+	public void usuarioDeslikePostagem(String email, UUID idConteudo, UUID idPostagem) {
+		log.info("[inicia] PostagemRestController - usuarioDeslikePostagem");
+		postagemService.usuarioDeslikePostagem(email, idConteudo, idPostagem);
+		log.info("[finaliza] PostagemRestController - usuarioDeslikePostagem");
+	}
+
 }

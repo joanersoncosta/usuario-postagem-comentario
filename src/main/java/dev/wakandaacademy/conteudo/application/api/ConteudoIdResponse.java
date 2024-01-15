@@ -1,13 +1,10 @@
-package dev.wakandaacademy.postagem.domain;
+package dev.wakandaacademy.conteudo.application.api;
 
 import java.util.UUID;
-
-import org.springframework.data.mongodb.core.index.Indexed;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,8 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@EqualsAndHashCode(of = "idUsuario")
-public class UsuarioLikePostagem {
-	@Indexed
-	private UUID idUsuario;
+public class ConteudoIdResponse {
+	private UUID idConteudo;
 }

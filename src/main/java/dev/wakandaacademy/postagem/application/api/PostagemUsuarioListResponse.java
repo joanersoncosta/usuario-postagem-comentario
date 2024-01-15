@@ -1,34 +1,45 @@
 package dev.wakandaacademy.postagem.application.api;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import dev.wakandaacademy.postagem.domain.Postagem;
-import dev.wakandaacademy.postagem.domain.UsuarioPostagem;
-import dev.wakandaacademy.usuario.domain.Usuario;
+import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
 import lombok.Value;
 
 @Value
 public class PostagemUsuarioListResponse {
+	
+	private final UUID idConteudo;
 	private final UUID idPostagem;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT")
-	private final Date data;
+	private final UUID idUsuario;
+	private final String autor;
+	private final LocalDateTime dataPostagem;
 	private final String titlo;
 	private final String descricao;
+	private StatusAtivacaoPostagem statusAtivacao;
+	private int quantidadeComentarios;
 	private final int like;
-	private final UsuarioPostagem autor;
-	
-	public PostagemUsuarioListResponse(Postagem postagem, Usuario usuarioEmail) {
+	private final int deslike;
+
+	public PostagemUsuarioListResponse(Postagem postagem) {
+		this.idConteudo = postagem.getIdConteudo();
 		this.idPostagem = postagem.getIdPostagem();
-		this.data = postagem.getData();
+		this.idUsuario = postagem.getIdUsuario();
+		this.autor = postagem.getAutor();
+		this.dataPostagem = postagem.getDataPostagem();
 		this.titlo = postagem.getTitlo();
 		this.descricao = postagem.getDescricao();
+		this.statusAtivacao = postagem.getStatusAtivacao();
 		this.like = postagem.getLike();
-		this.autor = new UsuarioPostagem(usuarioEmail);
+		this.quantidadeComentarios = postagem.getQuantidadeComentarios();
+		this.deslike = postagem.getDeslike();
+	}
+
+	public static List<PostagemUsuarioListResponse> converte(List<Postagem> postagens) {
+		return postagens.stream().map(PostagemUsuarioListResponse::new).collect(Collectors.toList());
 	}
 
 }
