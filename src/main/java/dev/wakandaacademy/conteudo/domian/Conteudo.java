@@ -61,5 +61,13 @@ public class Conteudo {
 			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é dono do Conteúdo.");
 		}		
 	}
+	
+	public void incrementaQuantidadePostagem() {
+		this.quantidadePostagem ++;
+	}
+	
+	public void reduzQuantidadePostagem() {
+		this.quantidadePostagem --;
+	}
 
 }
