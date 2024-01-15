@@ -1,10 +1,12 @@
 package dev.wakandaacademy.conteudo.application.api;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.wakandaacademy.conteudo.application.service.ConteudoService;
+import dev.wakandaacademy.conteudo.domian.Conteudo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -28,6 +30,14 @@ public class ConteudoRestController implements ConteudoAPI {
 		List<ConteudoListResponse>  conteudos = conteudoService.buscaConteudos();
 		log.info("[finaliza] ConteudoRestController - buscaConteudos");
 		return conteudos;
+	}
+
+	@Override
+	public ConteudoResponse buscaConteudoPorId(UUID idConteudo) {
+		log.info("[inicia] ConteudoRestController - buscaConteudoPorId");
+		ConteudoResponse  conteudo = conteudoService.buscaConteudoPorId(idConteudo);
+		log.info("[finaliza] ConteudoRestController - buscaConteudoPorId");
+		return conteudo;
 	}
 
 }

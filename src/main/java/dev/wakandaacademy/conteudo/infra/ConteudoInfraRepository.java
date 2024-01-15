@@ -1,6 +1,8 @@
 package dev.wakandaacademy.conteudo.infra;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +31,14 @@ public class ConteudoInfraRepository implements ConteudoRepository {
 		List<Conteudo> conteudos = conteudoSpringDataMongoRepository.findAll();
 		log.info("[finish] ConteudoInfraRepository - buscaConteudos");
 		return conteudos;
+	}
+
+	@Override
+	public Optional<Conteudo> buscaConteudoPorId(UUID idConteudo) {
+		log.info("[start] ConteudoInfraRepository - buscaConteudoPorId");
+		Optional<Conteudo> conteudo = conteudoSpringDataMongoRepository.findById(idConteudo);
+		log.info("[finish] ConteudoInfraRepository - buscaConteudoPorId");
+		return conteudo;
 	}
 
 }
