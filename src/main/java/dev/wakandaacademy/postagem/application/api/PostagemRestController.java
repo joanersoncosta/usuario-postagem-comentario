@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
 import dev.wakandaacademy.postagem.application.service.PostagemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -54,10 +55,11 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public void usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem) {
+	public List<ComentarioListResponse> usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem) {
 		log.info("[inicia] usuarioAtivaPostagem - postagemUsuarioLike");
-		postagemService.usuarioAtivaPostagem(idConteudo, idPostagem);
+		List<ComentarioListResponse> comentariosDoPost = postagemService.usuarioAtivaPostagem(idConteudo, idPostagem);
 		log.info("[finaliza] usuarioAtivaPostagem - postagemUsuarioLike");
+		return comentariosDoPost;
 	}
 
 	@Override

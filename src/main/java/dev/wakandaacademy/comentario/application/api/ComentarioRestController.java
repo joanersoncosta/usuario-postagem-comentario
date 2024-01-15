@@ -16,51 +16,51 @@ public class ComentarioRestController implements ComentarioAPI {
 	private final ComentarioService comentarioService;
 
 	@Override
-	public ComentarioIdResponse adicionaComentario(String email, UUID idUsuario, UUID idPostagem,
+	public ComentarioIdResponse adicionaComentario(String email, UUID idConteudo, UUID idPostagem,
 			ComentarioRequest comentarioRequest) {
 		log.info("[inicia] ComentarioRestController - adicionaComentario");
-		ComentarioIdResponse comentarioResponse = comentarioService.adicionaComentario(email, idUsuario, idPostagem,
+		ComentarioIdResponse comentarioResponse = comentarioService.adicionaComentario(email, idConteudo, idPostagem,
 				comentarioRequest);
 		log.info("[finaliza] ComentarioRestController - adicionaComentario");
 		return comentarioResponse;
 	}
 
 	@Override
-	public void removeComentario(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+	public void removeComentario(String email, UUID idConteudo, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioRestController - removeComentario");
-		comentarioService.removeComentario(email, idUsuario, idPostagem, idComentario);
+		comentarioService.removeComentario(email, idConteudo, idPostagem, idComentario);
 		log.info("[finaliza] ComentarioRestController - removeComentario");
 
 	}
 
 	@Override
-	public void usuarioLike(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+	public void usuarioLike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioRestController - usuarioLike");
-		comentarioService.usuarioLike(email, idUsuario, idPostagem, idComentario);
+		comentarioService.usuarioLike(email, idConteudo, idPostagem, idComentario);
 		log.info("[finaliza] ComentarioRestController - usuarioLike");
 	}
 
 	@Override
-	public void alteraComentario(String email, UUID idUsuario, UUID idPostagem, UUID idComentario,
+	public void alteraComentario(String email, UUID idConteudo, UUID idPostagem, UUID idComentario,
 			ComentarioAlteracaoRequest comentarioRequest) {
 		log.info("[inicia] ComentarioRestController - alteraComentario");
-		comentarioService.alteraComentario(email, idUsuario, idPostagem, idComentario, comentarioRequest);
+		comentarioService.alteraComentario(email, idConteudo, idPostagem, idComentario, comentarioRequest);
 		log.info("[finaliza] ComentarioRestController - alteraComentario");
 	}
 
 	@Override
-	public ComentarioResponse buscaComentarioPorId(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+	public ComentarioResponse buscaComentarioPorId(String email, UUID idConteudo, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioRestController - buscaComentarioPorId");
-		ComentarioResponse comentario = comentarioService.buscaComentarioPorId(email, idUsuario, idPostagem,
+		ComentarioResponse comentario = comentarioService.buscaComentarioPorId(email, idConteudo, idPostagem,
 				idComentario);
 		log.info("[finaliza] ComentarioRestController - buscaComentarioPorId");
 		return comentario;
 	}
 
 	@Override
-	public List<ComentarioListResponse> buscaComentarios(String email, UUID idUsuario, UUID idPostagem) {
+	public List<ComentarioListResponse> buscaComentarios(String email, UUID idConteudo, UUID idPostagem) {
 		log.info("[inicia] ComentarioRestController - buscaPostagemComComentarios");
-		List<ComentarioListResponse> comentarios = comentarioService.buscaComentarios(email, idUsuario, idPostagem);
+		List<ComentarioListResponse> comentarios = comentarioService.buscaComentarios(email, idConteudo, idPostagem);
 		log.info("[finaliza] ComentarioRestController - buscaPostagemComComentarios");
 		return comentarios;
 	}

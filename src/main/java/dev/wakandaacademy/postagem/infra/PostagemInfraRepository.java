@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
 import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
@@ -57,16 +58,26 @@ private final MongoTemplate mongoTemplate;
 	}
 
 	@Override
-	public void desativaTarefa() {
-		log.info("[inicia] PostagemInfraRepository - desativaTarefa");
+	public void desativaPostagem(UUID idConteudo) {
+		log.info("[inicia] PostagemInfraRepository - desativaPostagem");
 		Query query = new Query();
-		query.addCriteria(Criteria.where("statusAtivacao").is(StatusAtivacaoPostagem.ATIVO));
+		query.addCriteria(Criteria.where("idConteudo").is(idConteudo));
 		
 		Update update = new Update();
 		update.set("statusAtivacao", StatusAtivacaoPostagem.INATIVA);
 		
 		mongoTemplate.updateMulti(query, update, Postagem.class);
-		log.info("[finaliza] PostagemInfraRepository - desativaTarefa");
+		log.info("[finaliza] PostagemInfraRepository - desativaPostagem");
+	}
+
+	@Override
+	public List<Comentario> buscaComentarios(UUID idPostagem) {
+		log.info("[inicia] PostagemInfraRepository - buscaComentarios");
+		Query query = new Query();
+		query.addCriteria(Criteria.where("idPostagem").is(idPostagem));
+		List<Comentario> comentarios = mongoTemplate.find(query, Comentario.class);
+		log.info("[finaliza] PostagemInfraRepository - buscaComentarios");
+		return comentarios;
 	}
 
 }

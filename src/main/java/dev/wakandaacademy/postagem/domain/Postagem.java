@@ -135,5 +135,13 @@ public class Postagem {
 				.statusPostagem(StatusLikePostagem.DESLIKE).build();
 		return likeUsuario;
 	}
+	
+	public void incrementaQuantidadeComentarios() {
+		this.quantidadeComentarios ++;
+	}
+	
+	public void reduzQuantidadeComentarios() {
+		this.quantidadeComentarios --;
+	}
 
 }

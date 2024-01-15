@@ -13,6 +13,8 @@ import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioResponse;
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
 import dev.wakandaacademy.comentario.domain.Comentario;
+import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
+import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
 import dev.wakandaacademy.postagem.domain.Postagem;
@@ -27,55 +29,62 @@ import lombok.extern.log4j.Log4j2;
 public class ComentarioApplicationService implements ComentarioService {
 	private final PostagemRepository postagemRepository;
 	private final UsuarioRepository usuarioRepository;
+	private final ConteudoRepository conteudoRepository;
 	private final ComentarioRepository comentarioRepository;
-	
+
 	@Override
-	public ComentarioIdResponse adicionaComentario(String usuarioEmail, UUID idUsuario, UUID idPostagem,
+	public ComentarioIdResponse adicionaComentario(String usuarioEmail, UUID idConteudo, UUID idPostagem,
 			ComentarioRequest comentarioRequest) {
 		log.info("[inicia] ComentarioApplicationService - adicionaComentario");
 		log.info("[usuarioEmail] {}", usuarioEmail);
-		log.info("[idUsuario] {}, [idPostagem] {}", idUsuario, idPostagem);
+		log.info("[idConteudo] {}, [idPostagem] {}", idConteudo, idPostagem);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		validaPostagem(idUsuario, idPostagem);
-		Comentario comentario = comentarioRepository.salvaComentario(new Comentario(usuario, idPostagem, comentarioRequest));
+		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
+		Comentario comentario = comentarioRepository
+				.salvaComentario(new Comentario(usuario, postagem, comentarioRequest));
+		postagem.incrementaQuantidadeComentarios();
+		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] ComentarioApplicationService - adicionaComentario");
 		return ComentarioIdResponse.builder().idComentario(comentario.getIdComentario()).build();
 	}
 
 	@Override
-	public void removeComentario(String usuarioEmail, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+	public void removeComentario(String usuarioEmail, UUID idConteudo, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioApplicationService - removeComentario");
 		log.info("[usuarioEmail] {}", usuarioEmail);
-		log.info("[idUsuario] {}, [idPostagem] {}, [idComentario] {}", idUsuario, idPostagem, idComentario);
+		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		Postagem postagem = validaPostagem(idUsuario, idPostagem);
+		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		Comentario comentario = detalhaComentario(idComentario);
 		comentario.pertenceUsuario(usuario, postagem);
 		comentarioRepository.removeComentario(comentario);
+		postagem.reduzQuantidadeComentarios();
+		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] ComentarioApplicationService - removeComentario");
 	}
 
 	@Override
-	public void usuarioLike(String usuarioEmail, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+	public void usuarioLike(String usuarioEmail, UUID idConteudo, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioApplicationService - usuarioLike");
 		log.info("[usuarioEmail] {}", usuarioEmail);
-		log.info("[idUsuario] {}, [idPostagem] {}, [idComentario] {}", idUsuario, idPostagem, idComentario);
+		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		validaPostagem(idUsuario, idPostagem);
+		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		Comentario comentario = detalhaComentario(idComentario);
+		comentario.pertenceUsuario(usuario, postagem);
 		comentario.usuarioLikeComentario(usuario);
 		comentarioRepository.salvaComentario(comentario);
 		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
 	}
 
 	@Override
-	public void alteraComentario(String emailUsuario, UUID idUsuario, UUID idPostagem, UUID idComentario,
+	public void alteraComentario(String emailUsuario, UUID idConteudo, UUID idPostagem, UUID idComentario,
 			ComentarioAlteracaoRequest comentarioRequest) {
 		log.info("[inicia] ComentarioApplicationService - alteraComentario");
 		log.info("[emailUsuario] {}", emailUsuario);
-		log.info("[idUsuario] {}, [idPostagem] {}, [idComentario] {}", idUsuario, idPostagem, idComentario);
+		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(emailUsuario);
-		Postagem postagem = validaPostagem(idUsuario, idPostagem);
+		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		Comentario comentario = detalhaComentario(idComentario);
 		comentario.pertenceUsuario(usuario, postagem);
 		comentario.alteraComentario(comentarioRequest);
@@ -91,41 +100,38 @@ public class ComentarioApplicationService implements ComentarioService {
 		log.info("[finaliza] ComentarioApplicationService - detalhaComentario");
 		return comentario;
 	}
-	
-	private Postagem validaPostagem(UUID idUsuario, UUID idPostagem) {
-		log.info("[inicia] ComentarioApplicationService - validaPostagem");
-		Usuario usuario = usuarioRepository.buscaUsuarioPorId(idUsuario)
-			.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+	private Postagem detalhaPostagem(UUID idConteudo, UUID idPostagem) {
+		log.info("[inicia] ComentarioApplicationService - detalhaPostagem");
+		Conteudo conteudo = conteudoRepository.buscaConteudoPorId(idConteudo)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Counteúdo não encontrado"));
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem)
 				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado"));
-		postagem.pertenceUsuario(usuario);
-		log.info("[finaliza] ComentarioApplicationService - validaPostagem");
+		postagem.pertenceConteudo(conteudo);
+		log.info("[finaliza] ComentarioApplicationService - detalhaPostagem");
 		return postagem;
 	}
 
 	@Override
-	public ComentarioResponse buscaComentarioPorId(String email, UUID idUsuario, UUID idPostagem, UUID idComentario) {
+	public ComentarioResponse buscaComentarioPorId(String usuarioEmail, UUID idConteudo, UUID idPostagem, UUID idComentario) {
 		log.info("[inicia] ComentarioApplicationService - buscaComentarioPorId");
-		log.info("[usuarioEmail] {}", email);
-		log.info("[idUsuario] {}, [idPostagem] {}, [idComentario] {}", idUsuario, idPostagem, idComentario);
-		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(email);
-		Postagem postagem = validaPostagem(idUsuario, idPostagem);
-		
+		log.info("[usuarioEmail] {}", usuarioEmail);
+		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
+		usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		detalhaPostagem(idConteudo, idPostagem);
 		Comentario comentario = comentarioRepository.buscaComentario(idComentario)
 				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado"));
-		comentario.pertenceUsuario(usuario, postagem);
-		
 		log.info("[finaliza] ComentarioApplicationService - buscaComentarioPorId");
-			return ComentarioResponse.converte(comentario);
+		return ComentarioResponse.converte(comentario);
 	}
 
 	@Override
-	public List<ComentarioListResponse> buscaComentarios(String usuarioEmail, UUID idUsuario, UUID idPostagem) {
+	public List<ComentarioListResponse> buscaComentarios(String usuarioEmail, UUID idConteudo, UUID idPostagem) {
 		log.info("[inicia] ComentarioApplicationService - buscaPostagemComComentarios");
 		log.info("[emailUsuario] {}", usuarioEmail);
-		log.info("[idUsuario] {}, [idPostagem] {}", idUsuario, idPostagem);
+		log.info("[idConteudo] {}, [idPostagem] {}", idConteudo, idPostagem);
 		usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		validaPostagem(idUsuario, idPostagem);
+		detalhaPostagem(idConteudo, idPostagem);
 		List<Comentario> comentarios = comentarioRepository.buscaComentarios(idPostagem);
 		log.info("[finaliza] ComentarioApplicationService - buscaPostagemComComentarios");
 		return ComentarioListResponse.converte(comentarios);

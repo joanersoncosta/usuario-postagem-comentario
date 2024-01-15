@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 
@@ -47,8 +48,8 @@ public interface PostagemAPI {
 			@PathVariable(value = "idPostagem") UUID idPostagem);
 
 	@PatchMapping(value = "/{idPostagem}/ativa-postagem")
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void usuarioAtivaPostagem(@PathVariable(value = "idConteudo") UUID idConteudo,
+	@ResponseStatus(value = HttpStatus.OK)
+	List<ComentarioListResponse> usuarioAtivaPostagem(@PathVariable(value = "idConteudo") UUID idConteudo,
 			@PathVariable(value = "idPostagem") UUID idPostagem);
 
 	@PatchMapping(value = "/{idPostagem}/usuario-like")

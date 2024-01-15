@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 
@@ -33,20 +34,24 @@ public class Comentario {
 	
 	@Id
 	private UUID idComentario;
+	@Indexed
+	private UUID idConteudo;
+	@Indexed
 	private UUID idPostagem;
+	@Indexed
 	private UUID idUsuario;
 	private String usuario;
 	private LocalDateTime dataCriacaoComentario;
 	@NotBlank
 	@Size(message = "Campo descrição comentario não pode estar vazio!", min = 3, max = 250)
 	private String descricao;
-	@Builder.Default
-	private int like = 0;
+	private int like;
 	private Set<ComentarioUsuarioLike> likeUsuarios;
 
-	public Comentario(Usuario usuario, UUID idPostagem, ComentarioRequest comentarioRequest) {
+	public Comentario(Usuario usuario, Postagem postagem, ComentarioRequest comentarioRequest) {
 		this.idComentario = UUID.randomUUID();
-		this.idPostagem = idPostagem;
+		this.idConteudo = postagem.getIdConteudo();
+		this.idPostagem = postagem.getIdPostagem();
 		this.idUsuario = usuario.getIdUsuario();
 		this.usuario = usuario.getNome();
 		this.dataCriacaoComentario = LocalDateTime.now();

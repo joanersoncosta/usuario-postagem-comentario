@@ -18,32 +18,32 @@ import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 
 @RestController
-@RequestMapping("/v1/{idUsuario}/usuario/{idPostagem}/postagem")
+@RequestMapping("/v1/conteudo/{idConteudo}/postagem/{idPostagem}/comentario")
 public interface ComentarioAPI {
 
-	@PostMapping(value ="/comentario")
+	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	ComentarioIdResponse adicionaComentario(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem,
+	ComentarioIdResponse adicionaComentario(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem,
 			@RequestBody @Valid ComentarioRequest comentarioRequest);
 
-	@DeleteMapping(value = "/{idComentario}/comentario/remove-comentario")
+	@DeleteMapping(value = "/{idComentario}/remove-comentario")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	void removeComentario(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
+	void removeComentario(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
 
-	@PatchMapping(value = "/{idComentario}/comentario/like")
+	@PatchMapping(value = "/{idComentario}/like")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void usuarioLike(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
+	void usuarioLike(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
 
-	@PatchMapping(value = "/{idComentario}/comentario/altera")
+	@PatchMapping(value = "/{idComentario}/altera")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void alteraComentario(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario, @RequestBody @Valid ComentarioAlteracaoRequest comentarioRequest);
+	void alteraComentario(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario, @RequestBody @Valid ComentarioAlteracaoRequest comentarioRequest);
 
-	@GetMapping(value = "/{idComentario}/comentario/busca-comentario")
+	@GetMapping(value = "/{idComentario}/busca-comentario")
 	@ResponseStatus(code = HttpStatus.OK)
-	ComentarioResponse buscaComentarioPorId(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
+	ComentarioResponse buscaComentarioPorId(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
 	
-	@GetMapping(value = "/comentario/busca-comentarios")
+	@GetMapping(value = "/busca-comentarios")
 	@ResponseStatus(code = HttpStatus.OK)
-	List<ComentarioListResponse> buscaComentarios(@PathParam(value = "email") String email, @PathVariable(value = "idUsuario") UUID idUsuario, @PathVariable(value = "idPostagem") UUID idPostagem);
+	List<ComentarioListResponse> buscaComentarios(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem);
 
 }

@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
+import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
@@ -89,14 +91,16 @@ public class PostagemApplicationService implements PostagemService {
 	}
 
 	@Override
-	public void usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem) {
+	public List<ComentarioListResponse> usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem) {
 		log.info("[inicia] PostagemApplicationService - postagemUsuarioLike");
 		log.info("[idConteudo] {}, [idPostagem] {}", idConteudo, idPostagem);
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
-		postagemRepository.desativaTarefa();
+		postagemRepository.desativaPostagem(idConteudo);
 		postagem.ativaPostagem();
 		postagemRepository.salvaPostagem(postagem);
+		List<Comentario> comentarios = postagemRepository.buscaComentarios(postagem.getIdPostagem());
 		log.info("[finaliza] PostagemApplicationService - postagemUsuarioLike");
+		return ComentarioListResponse.converte(comentarios);
 	}
 
 	@Override

@@ -48,7 +48,8 @@ public class ComentarioInfraRepository implements ComentarioRepository {
 	public List<Comentario> buscaComentarios(UUID idPostagem) {
 		log.info("[inicia] ComentarioInfraRepository - buscaComentarios");
 		Query query = new Query();
-		query.addCriteria(Criteria.where("idPostagem").is(idPostagem));
+		query.addCriteria(Criteria
+				.where("idPostagem").is(idPostagem));
 		List<Comentario> comentarios = mongoTemplate.find(query, Comentario.class);
 		log.info("[finaliza] ComentarioInfraRepository - buscaComentarios");
 		return comentarios;
