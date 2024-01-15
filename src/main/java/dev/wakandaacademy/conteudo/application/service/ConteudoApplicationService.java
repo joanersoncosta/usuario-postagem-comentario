@@ -10,6 +10,7 @@ import dev.wakandaacademy.conteudo.application.api.ConteudoIdResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoListResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
 import dev.wakandaacademy.conteudo.application.api.ConteudoResponse;
+import dev.wakandaacademy.conteudo.application.api.ConteudoUsuarioListResponse;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
@@ -61,5 +62,13 @@ public class ConteudoApplicationService implements ConteudoService {
 		return conteudo;
 	}
 
+	@Override
+	public List<ConteudoUsuarioListResponse> buscaConteudosDoUsuario(UUID idUsuario) {
+		log.info("[inicia] ConteudoApplicationService - buscaConteudosDoUsuario");
+		log.info("[idUsuario]  {}", idUsuario);
+		List<Conteudo> conteudos = conteudoRepository.buscaConteudosDoUsuario(idUsuario);
+		log.info("[finaliza] ConteudoApplicationService - buscaConteudosDoUsuario");
+		return ConteudoUsuarioListResponse.converte(conteudos);
+	}
 	
 }

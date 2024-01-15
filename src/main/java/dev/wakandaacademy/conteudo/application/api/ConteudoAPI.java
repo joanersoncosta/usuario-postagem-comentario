@@ -32,5 +32,8 @@ public interface ConteudoAPI {
 	@ResponseStatus(code = HttpStatus.OK)
 	ConteudoResponse buscaConteudoPorId(@PathVariable(value = "idConteudo") UUID idConteudo);
 
+	@GetMapping(value = "/{idUsuario}/busca-conteuds-usuario")
+	@ResponseStatus(code = HttpStatus.OK)
+	List<ConteudoUsuarioListResponse> buscaConteudosDoUsuario(@PathVariable(value = "idUsuario") UUID idUsuario);
 	
 }

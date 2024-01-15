@@ -14,4 +14,6 @@ public interface ConteudoRepository {
 	
 	Optional<Conteudo> buscaConteudoPorId(UUID idConteudo);
 
+	List<Conteudo> buscaConteudosDoUsuario(UUID idUsuario);
+
 }
