@@ -1,6 +1,9 @@
 package dev.wakandaacademy.conteudo.application.api;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,5 +21,9 @@ public interface ConteudoAPI {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	ConteudoIdResponse criaConteudo(@PathParam(value = "email") String email,
 			@RequestBody @Valid ConteudoRequest ConteudoRequest);
+
+	@GetMapping
+	@ResponseStatus(code = HttpStatus.OK)
+	List<ConteudoListResponse> buscaConteudos();
 
 }
