@@ -1,30 +1,23 @@
 package dev.wakandaacademy.conteudo.domian.enuns;
 
-import org.springframework.http.HttpStatus;
-
-import dev.wakandaacademy.handler.APIException;
+import java.util.Arrays;
+import java.util.Optional;
 
 public enum ConteudoCategoria {
-	TECNOLOGIA("TECNOLOGIA"), 
-	VIAJEM("VIAJEM"), 
-	PET("PET");
-	
+	TECNOLOGIA("TECNOLOGIA"), VIAJEM("VIAJEM"), PET("PET");
+
 	private String nicho;
-	
-	ConteudoCategoria(String  nicho){
+
+	ConteudoCategoria(String nicho) {
 		this.nicho = nicho;
 	}
-	
+
 	public String getNicho() {
 		return this.nicho;
 	}
-	
-	public static ConteudoCategoria verificaValor(String nicho) {
-	    for (ConteudoCategoria valorCorrespondente : ConteudoCategoria.values()) {
-	        if (valorCorrespondente.name().equals(nicho)) {
-	            return valorCorrespondente;
-	        }
-	    }
-	    throw APIException.build(HttpStatus.BAD_REQUEST, "Nicho não encontrado");
+
+	public static Optional<ConteudoCategoria> validaCategoria(String nicho) {
+		return Arrays.stream(values()).filter(valorCorrespondente -> valorCorrespondente.getNicho().equals(nicho))
+				.findFirst();
 	}
 }

@@ -6,8 +6,12 @@ import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.http.HttpStatus;
 
+import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
 import dev.wakandaacademy.conteudo.domian.enuns.ConteudoCategoria;
+import dev.wakandaacademy.handler.APIException;
+import dev.wakandaacademy.usuario.domain.Usuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -37,17 +41,19 @@ public class Conteudo {
 	private LocalDateTime momentoCricaoCategoria;
 	private LocalDateTime momentoAlteracaoCategoria;
 
-	public Conteudo(UUID idUsuario, String autor, String descricao, String categoria, int quantidadePostagem) {
+	public Conteudo(ConteudoRequest conteudoRequest, Usuario usuario) {
 		this.idConteudo = UUID.randomUUID();
-		this.idUsuario = idUsuario;
-		this.autor = autor;
-		this.descricao = descricao;
-		this.categoria = retornaCategoria(categoria);
+		this.idUsuario = usuario.getIdUsuario();
+		this.autor = usuario.getNome();
+		this.descricao = conteudoRequest.getDescricao();
+		this.categoria = retornaCategoria(conteudoRequest.getCategoria());
 		this.quantidadePostagem = 0;
 		this.momentoCricaoCategoria = LocalDateTime.now();
 	}
 
-	private ConteudoCategoria retornaCategoria(String nicho) {
-		return this.categoria = ConteudoCategoria.verificaValor(nicho);
+	private ConteudoCategoria retornaCategoria(String categoria) {
+		return ConteudoCategoria.validaCategoria(categoria)
+	            .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Categória não encontrada"));
 	}
+
 }
