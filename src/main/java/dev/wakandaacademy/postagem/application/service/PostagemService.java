@@ -8,14 +8,16 @@ import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemUsuarioListResponse;
+import dev.wakandaacademy.postagem.domain.Postagem;
 
 public interface PostagemService {
-	PostagemIdResponse criarPostagem(String email,PostagemRequest postagemRequest);
-	List<PostagemUsuarioListResponse> buscaPostagens();
-	PostagemResponse buscaPostagemPorId(UUID idPostagem);
-	void alteraPostPorId(String email, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest);
-	void deletaPostPorId(String email, UUID idPostagem);
-	void usuarioAtivaPostagem(UUID idPostagem);
-	void usuarioLikePostagem(String email, UUID idPostagem);
-	void usuarioDeslikePostagem(String email, UUID idPostagem);
+	PostagemIdResponse criarPostagem(String email, UUID idConteudo, PostagemRequest postagemRequest);
+	List<PostagemUsuarioListResponse> buscaPostagens(UUID idConteudo);
+	PostagemResponse buscaPostagemPorId(UUID idConteudo, UUID idPostagem);
+	void alteraPostPorId(String email, UUID idConteudo, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest);
+	void deletaPostPorId(String email, UUID idConteudo, UUID idPostagem);
+	void usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem);
+	void usuarioLikePostagem(String email, UUID idConteudo, UUID idPostagem);
+	void usuarioDeslikePostagem(String email, UUID idConteudo, UUID idPostagem);
+	Postagem detalhaPostagem(UUID idConteudo, UUID idPostagem);
 }

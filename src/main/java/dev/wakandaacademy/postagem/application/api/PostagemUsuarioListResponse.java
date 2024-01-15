@@ -11,8 +11,10 @@ import lombok.Value;
 
 @Value
 public class PostagemUsuarioListResponse {
-	private final UUID idUsuario;
+	
+	private final UUID idConteudo;
 	private final UUID idPostagem;
+	private final UUID idUsuario;
 	private final String autor;
 	private final LocalDateTime dataPostagem;
 	private final String titlo;
@@ -21,24 +23,23 @@ public class PostagemUsuarioListResponse {
 	private int quantidadeComentarios;
 	private final int like;
 	private final int deslike;
-	
+
 	public PostagemUsuarioListResponse(Postagem postagem) {
-		this.idUsuario = postagem.getIdUsuario();
+		this.idConteudo = postagem.getIdConteudo();
 		this.idPostagem = postagem.getIdPostagem();
+		this.idUsuario = postagem.getIdUsuario();
 		this.autor = postagem.getAutor();
 		this.dataPostagem = postagem.getDataPostagem();
 		this.titlo = postagem.getTitlo();
 		this.descricao = postagem.getDescricao();
-        this.statusAtivacao = postagem.getStatusAtivacao();
+		this.statusAtivacao = postagem.getStatusAtivacao();
 		this.like = postagem.getLike();
 		this.quantidadeComentarios = postagem.getQuantidadeComentarios();
 		this.deslike = postagem.getDeslike();
 	}
 
 	public static List<PostagemUsuarioListResponse> converte(List<Postagem> postagens) {
-		return postagens.stream()
-				.map(PostagemUsuarioListResponse::new)
-				.collect(Collectors.toList());
+		return postagens.stream().map(PostagemUsuarioListResponse::new).collect(Collectors.toList());
 	}
 
 }

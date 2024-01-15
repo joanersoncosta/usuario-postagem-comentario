@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.http.HttpStatus;
 
+import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
@@ -36,6 +37,7 @@ public class Postagem {
 	@Id
 	@MongoId(value = FieldType.STRING)
 	private UUID idPostagem;
+	private UUID idConteudo;
 	@Indexed
 	private UUID idUsuario;
 	private String autor;
@@ -53,8 +55,9 @@ public class Postagem {
 	private Set<PostagemUsuarioLike> likes;
 	private Set<PostagemUsuarioLike> deslikes;
 
-	public Postagem(PostagemRequest postagemRequest, Usuario usuario) {
+	public Postagem(Usuario usuario, UUID idConteudo, PostagemRequest postagemRequest) {
 		this.idPostagem = UUID.randomUUID();
+		this.idConteudo = idConteudo;
 		this.idUsuario = usuario.getIdUsuario();
 		this.autor = usuario.getNome();
 		this.dataPostagem = LocalDateTime.now();
@@ -71,6 +74,12 @@ public class Postagem {
 	public void pertenceUsuario(Usuario usuarioEmail) {
 		if (!idUsuario.equals(usuarioEmail.getIdUsuario())) {
 			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é dono do Post!");
+		}
+	}
+	
+	public void pertenceConteudo(Conteudo conteudo) {
+		if (!idConteudo.equals(conteudo.getIdConteudo())) {
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Post não pertence a este Conteudo.");
 		}
 	}
 

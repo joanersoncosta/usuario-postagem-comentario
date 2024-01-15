@@ -10,8 +10,9 @@ import lombok.Value;
 @Value
 public class PostagemResponse {
 	
-	private final UUID idUsuario;
+	private final UUID idConteudo;
 	private final UUID idPostagem;
+	private final UUID idUsuario;
 	private final String autor;
 	private final LocalDateTime dataPostagem;
 	private final String titlo;
@@ -22,8 +23,9 @@ public class PostagemResponse {
 	private final int deslike;
 
 	public PostagemResponse(Postagem postagem) {
-		this.idUsuario = postagem.getIdUsuario();
+		this.idConteudo = postagem.getIdConteudo();
 		this.idPostagem = postagem.getIdPostagem();
+		this.idUsuario = postagem.getIdUsuario();
 		this.autor = postagem.getAutor();
 		this.dataPostagem = postagem.getDataPostagem();
 		this.titlo = postagem.getTitlo();
