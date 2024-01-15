@@ -55,4 +55,11 @@ public class ConteudoInfraRepository implements ConteudoRepository {
 		return conteudo;
 	}
 
+	@Override
+	public void deletaConteudo(Conteudo conteudo) {
+		log.info("[start] ConteudoInfraRepository - deletaConteudo");
+		conteudoSpringDataMongoRepository.delete(conteudo);
+		log.info("[finish] ConteudoInfraRepository - deletaConteudo");
+	}
+
 }

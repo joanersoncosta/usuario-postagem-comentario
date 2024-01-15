@@ -21,4 +21,6 @@ public interface ConteudoService {
 	Conteudo detalhaConteudoPorId(UUID idConteudo);
 
 	List<ConteudoUsuarioListResponse> buscaConteudosDoUsuario(UUID idUsuario);
+
+	void deletaConteudoPorId(String email, UUID idConteudo);
 }

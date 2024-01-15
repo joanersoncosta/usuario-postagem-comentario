@@ -53,7 +53,13 @@ public class Conteudo {
 
 	private ConteudoCategoria retornaCategoria(String categoria) {
 		return ConteudoCategoria.validaCategoria(categoria)
-	            .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Categória não encontrada"));
+	            .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Categória não encontrada."));
+	}
+
+	public void pertenceUsuario(Usuario usuario) {
+		if (!idUsuario.equals(usuario.getIdUsuario())) {
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é dono do Conteúdo.");
+		}		
 	}
 
 }

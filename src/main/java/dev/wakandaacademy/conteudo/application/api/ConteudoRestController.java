@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.wakandaacademy.conteudo.application.service.ConteudoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -26,7 +27,7 @@ public class ConteudoRestController implements ConteudoAPI {
 	@Override
 	public List<ConteudoListResponse> buscaConteudos() {
 		log.info("[inicia] ConteudoRestController - buscaConteudos");
-		List<ConteudoListResponse>  conteudos = conteudoService.buscaConteudos();
+		List<ConteudoListResponse> conteudos = conteudoService.buscaConteudos();
 		log.info("[finaliza] ConteudoRestController - buscaConteudos");
 		return conteudos;
 	}
@@ -34,7 +35,7 @@ public class ConteudoRestController implements ConteudoAPI {
 	@Override
 	public ConteudoResponse buscaConteudoPorId(UUID idConteudo) {
 		log.info("[inicia] ConteudoRestController - buscaConteudoPorId");
-		ConteudoResponse  conteudo = conteudoService.buscaConteudoPorId(idConteudo);
+		ConteudoResponse conteudo = conteudoService.buscaConteudoPorId(idConteudo);
 		log.info("[finaliza] ConteudoRestController - buscaConteudoPorId");
 		return conteudo;
 	}
@@ -42,9 +43,16 @@ public class ConteudoRestController implements ConteudoAPI {
 	@Override
 	public List<ConteudoUsuarioListResponse> buscaConteudosDoUsuario(UUID idUsuario) {
 		log.info("[inicia] ConteudoRestController - buscaConteudosDoUsuario");
-		List<ConteudoUsuarioListResponse>  conteudosDoUsuario = conteudoService.buscaConteudosDoUsuario(idUsuario);
+		List<ConteudoUsuarioListResponse> conteudosDoUsuario = conteudoService.buscaConteudosDoUsuario(idUsuario);
 		log.info("[finaliza] ConteudoRestController - buscaConteudosDoUsuario");
 		return conteudosDoUsuario;
+	}
+
+	@Override
+	public void deletaConteudoPorId(String email, UUID idConteudo) {
+		log.info("[inicia] ConteudoRestController - deletaConteudoPorId");
+		conteudoService.deletaConteudoPorId(email, idConteudo);
+		log.info("[finaliza] ConteudoRestController - deletaConteudoPorId");
 	}
 
 }

@@ -70,5 +70,17 @@ public class ConteudoApplicationService implements ConteudoService {
 		log.info("[finaliza] ConteudoApplicationService - buscaConteudosDoUsuario");
 		return ConteudoUsuarioListResponse.converte(conteudos);
 	}
+
+	@Override
+	public void deletaConteudoPorId(String usuarioEmail, UUID idConteudo) {
+		log.info("[inicia] ConteudoApplicationService - deletaConteudoPorId");
+		log.info("[usuarioEmail]  {}", usuarioEmail);
+		log.info("[idConteudo]  {}", idConteudo);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Conteudo conteudo = detalhaConteudoPorId(idConteudo);
+		conteudo.pertenceUsuario(usuario);
+		conteudoRepository.deletaConteudo(conteudo);
+		log.info("[finaliza] ConteudoApplicationService - deletaConteudoPorId");
+	}
 	
 }
