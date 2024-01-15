@@ -68,6 +68,11 @@ public class Comentario {
 
 	public void like(Usuario usuarioLike) {
 		var likePostagem = likeUsuario(usuarioLike);
+		var deslikeExistente = deslikeUsuario(usuarioLike);
+
+		if (deslikes.removeIf(deslike -> deslike.equals(deslikeExistente))) {
+			this.deslike--;
+		}
 
 		if (likes.removeIf(like -> like.equals(likePostagem))) {
 			this.like--;
@@ -76,10 +81,32 @@ public class Comentario {
 			this.like++;
 		}
 	}
+	
+	public void deslike(Usuario usuarioLike) {
+		var deslikePostagem = deslikeUsuario(usuarioLike);
+		var likeExistente = likeUsuario(usuarioLike);
+
+		if (likes.removeIf(like -> like.equals(likeExistente))) {
+			this.like--;
+		}
+
+		if (deslikes.removeIf(deslike -> deslike.equals(deslikePostagem))) {
+			this.deslike--;
+		} else {
+			deslikes.add(deslikePostagem);
+			this.deslike++;
+		}
+	}
 
 	private ComentarioUsuarioLike likeUsuario(Usuario usuario) {
 		var likeUsuario = ComentarioUsuarioLike.builder().idUsuario(usuario.getIdUsuario())
 				.statusComentario(StatusLikeComentario.LIKE).build();
+		return likeUsuario;
+	}
+	
+	private ComentarioUsuarioLike deslikeUsuario(Usuario usuario) {
+		var likeUsuario = ComentarioUsuarioLike.builder().idUsuario(usuario.getIdUsuario())
+				.statusComentario(StatusLikeComentario.DESLIKE).build();
 		return likeUsuario;
 	}
 
