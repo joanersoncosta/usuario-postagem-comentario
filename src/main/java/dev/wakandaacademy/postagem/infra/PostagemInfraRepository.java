@@ -22,13 +22,13 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class PostagemInfraRepository implements PostagemRepository {
 	private final PostagemSpringDataMongoRepository postagemSpringDataMongoRepository;
-private final MongoTemplate mongoTemplate;
-	
+	private final MongoTemplate mongoTemplate;
+
 	@Override
 	public Postagem salvaPostagem(Postagem postagem) {
-			log.info("[inicia] PostagemInfraRepository - salvaPostagem");
-			postagemSpringDataMongoRepository.save(postagem);
-			log.info("[finaliza] PostagemInfraRepository - salvaPostagem");
+		log.info("[inicia] PostagemInfraRepository - salvaPostagem");
+		postagemSpringDataMongoRepository.save(postagem);
+		log.info("[finaliza] PostagemInfraRepository - salvaPostagem");
 		return postagem;
 	}
 
@@ -41,7 +41,7 @@ private final MongoTemplate mongoTemplate;
 		log.info("[finaliza] PostagemInfraRepository - buscaPostagens");
 		return postagens;
 	}
-	
+
 	@Override
 	public Optional<Postagem> buscaPostagemPorId(UUID idPostagem) {
 		log.info("[inicia] PostagemInfraRepository - buscaPostagemPorId");
@@ -53,7 +53,10 @@ private final MongoTemplate mongoTemplate;
 	@Override
 	public void deletaPost(Postagem postagem) {
 		log.info("[inicia] PostagemInfraRepository - deletaPost");
-		postagemSpringDataMongoRepository.delete(postagem);
+		removerComentariosAssociados(postagem);
+		Query queryPost = new Query();
+		queryPost.addCriteria(Criteria.where("idPostagem").is(postagem.getIdPostagem()));
+		mongoTemplate.remove(queryPost, Postagem.class);
 		log.info("[finaliza] PostagemInfraRepository - deletaPost");
 	}
 
@@ -62,10 +65,10 @@ private final MongoTemplate mongoTemplate;
 		log.info("[inicia] PostagemInfraRepository - desativaPostagem");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("idConteudo").is(idConteudo));
-		
+
 		Update update = new Update();
 		update.set("statusAtivacao", StatusAtivacaoPostagem.INATIVA);
-		
+
 		mongoTemplate.updateMulti(query, update, Postagem.class);
 		log.info("[finaliza] PostagemInfraRepository - desativaPostagem");
 	}
@@ -78,6 +81,12 @@ private final MongoTemplate mongoTemplate;
 		List<Comentario> comentarios = mongoTemplate.find(query, Comentario.class);
 		log.info("[finaliza] PostagemInfraRepository - buscaComentarios");
 		return comentarios;
+	}
+	
+	private void removerComentariosAssociados(Postagem postagem) {
+		Query queryComentario = new Query();
+		queryComentario.addCriteria(Criteria.where("idPostagem").is(postagem.getIdPostagem()));
+		mongoTemplate.remove(queryComentario, Comentario.class);
 	}
 
 }
