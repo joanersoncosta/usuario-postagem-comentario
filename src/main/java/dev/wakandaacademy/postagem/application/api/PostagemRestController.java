@@ -55,11 +55,10 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public List<ComentarioListResponse> usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem) {
+	public void usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem) {
 		log.info("[inicia] usuarioAtivaPostagem - postagemUsuarioLike");
-		List<ComentarioListResponse> comentariosDoPost = postagemService.usuarioAtivaPostagem(idConteudo, idPostagem);
+		postagemService.usuarioAtivaPostagem(idConteudo, idPostagem);
 		log.info("[finaliza] usuarioAtivaPostagem - postagemUsuarioLike");
-		return comentariosDoPost;
 	}
 
 	@Override

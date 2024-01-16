@@ -49,7 +49,7 @@ public interface PostagemAPI {
 
 	@PatchMapping(value = "/{idPostagem}/ativa-postagem")
 	@ResponseStatus(value = HttpStatus.OK)
-	List<ComentarioListResponse> usuarioAtivaPostagem(@PathVariable(value = "idConteudo") UUID idConteudo,
+	void usuarioAtivaPostagem(@PathVariable(value = "idConteudo") UUID idConteudo,
 			@PathVariable(value = "idPostagem") UUID idPostagem);
 
 	@PatchMapping(value = "/{idPostagem}/usuario-like")

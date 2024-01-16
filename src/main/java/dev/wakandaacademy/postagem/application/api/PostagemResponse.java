@@ -1,8 +1,11 @@
 package dev.wakandaacademy.postagem.application.api;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
+import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
+import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
 import lombok.Value;
@@ -21,8 +24,9 @@ public class PostagemResponse {
 	private int quantidadeComentarios;
 	private final int like;
 	private final int deslike;
+	private List<ComentarioListResponse> comentarios;
 
-	public PostagemResponse(Postagem postagem) {
+	public PostagemResponse(Postagem postagem, List<Comentario> comentarios) {
 		this.idConteudo = postagem.getIdConteudo();
 		this.idPostagem = postagem.getIdPostagem();
 		this.idUsuario = postagem.getIdUsuario();
@@ -34,6 +38,11 @@ public class PostagemResponse {
 		this.like = postagem.getLike();
 		this.quantidadeComentarios = postagem.getQuantidadeComentarios();
 		this.deslike = postagem.getDeslike();
+		this.comentarios = ComentarioListResponse.converte(comentarios);
 
+	}
+
+	public static PostagemResponse converte(Postagem postagem, List<Comentario> comentarios) {
+		return new PostagemResponse(postagem, comentarios);
 	}
 }
