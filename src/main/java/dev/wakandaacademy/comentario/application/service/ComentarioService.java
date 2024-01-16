@@ -13,10 +13,12 @@ import dev.wakandaacademy.comentario.domain.Comentario;
 public interface ComentarioService {
 	ComentarioIdResponse adicionaComentario(String usuarioEmail, UUID idConteudo, UUID idPostagem, ComentarioRequest comentarioRequest);
 	void removeComentario(String usuarioEmail, UUID idConteudo, UUID idPostagem, UUID idComentario);
-	void usuarioLike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario);
 	Comentario detalhaComentario(UUID idComentario);
 	ComentarioResponse buscaComentarioPorId(String email, UUID idConteudo, UUID idPostagem, UUID idComentario);
 	void alteraComentario(String email, UUID idConteudo, UUID idPostagem, UUID idComentario,
 			ComentarioAlteracaoRequest comentarioRequest);
 	List<ComentarioListResponse> buscaComentarios(String usuarioEmail, UUID idConteudo, UUID idPostagem);
+	void usuarioLike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario);
+	void usuarioDeslike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario);
+
 }

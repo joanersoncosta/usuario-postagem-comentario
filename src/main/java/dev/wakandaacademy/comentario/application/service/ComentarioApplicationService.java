@@ -56,25 +56,12 @@ public class ComentarioApplicationService implements ComentarioService {
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		Comentario comentario = detalhaComentario(idComentario);
-		comentario.pertenceUsuario(usuario, postagem);
+		comentario.pertencePost(postagem);
+		comentario.pertenceUsuario(usuario);		
 		comentarioRepository.removeComentario(comentario);
 		postagem.reduzQuantidadeComentarios();
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] ComentarioApplicationService - removeComentario");
-	}
-
-	@Override
-	public void usuarioLike(String usuarioEmail, UUID idConteudo, UUID idPostagem, UUID idComentario) {
-		log.info("[inicia] ComentarioApplicationService - usuarioLike");
-		log.info("[usuarioEmail] {}", usuarioEmail);
-		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
-		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
-		Comentario comentario = detalhaComentario(idComentario);
-		comentario.pertenceUsuario(usuario, postagem);
-		comentario.like(usuario);
-		comentarioRepository.salvaComentario(comentario);
-		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
 	}
 
 	@Override
@@ -86,7 +73,8 @@ public class ComentarioApplicationService implements ComentarioService {
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(emailUsuario);
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		Comentario comentario = detalhaComentario(idComentario);
-		comentario.pertenceUsuario(usuario, postagem);
+		comentario.pertencePost(postagem);
+		comentario.pertenceUsuario(usuario);		
 		comentario.alteraComentario(comentarioRequest);
 		comentarioRepository.salvaComentario(comentario);
 		log.info("[finaliza] ComentarioApplicationService - alteraComentario");
@@ -137,4 +125,33 @@ public class ComentarioApplicationService implements ComentarioService {
 		return ComentarioListResponse.converte(comentarios);
 	}
 
+	@Override
+	public void usuarioLike(String usuarioEmail, UUID idConteudo, UUID idPostagem, UUID idComentario) {
+		log.info("[inicia] ComentarioApplicationService - usuarioLike");
+		log.info("[usuarioEmail] {}", usuarioEmail);
+		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
+		Comentario comentario = detalhaComentario(idComentario);
+		comentario.pertencePost(postagem);
+		comentario.pertenceUsuario(usuario);
+		comentario.like(usuario);
+		comentarioRepository.salvaComentario(comentario);
+		log.info("[finaliza] ComentarioApplicationService - usuarioLike");
+	}
+	
+	@Override
+	public void usuarioDeslike(String usuarioEmail, UUID idConteudo, UUID idPostagem, UUID idComentario) {
+		log.info("[inicia] ComentarioApplicationService - usuarioDeslike");
+		log.info("[usuarioEmail] {}", usuarioEmail);
+		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
+		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
+		Comentario comentario = detalhaComentario(idComentario);
+		comentario.pertencePost(postagem);
+		comentario.pertenceUsuario(usuario);
+		comentario.deslike(usuario);
+		comentarioRepository.salvaComentario(comentario);
+		log.info("[finaliza] ComentarioApplicationService - usuarioDeslike");
+	}
 }

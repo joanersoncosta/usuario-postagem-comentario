@@ -114,8 +114,13 @@ public class Comentario {
 		this.descricao = comentarioRequest.getDescricao();
 	}
 
-	public void pertenceUsuario(Usuario usuario, Postagem postagem) {
-		if (!idUsuario.equals(usuario.getIdUsuario()) && idPostagem.equals(postagem.getIdPostagem()))
-			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é o dono do Comentário!");
+	public void pertenceUsuario(Usuario usuario) {
+		if (!idUsuario.equals(usuario.getIdUsuario()))
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Usuário não é dono do Comentário!");
+	}
+	
+	public void pertencePost(Postagem postagem) {
+		if (!idPostagem.equals(postagem.getIdPostagem()))
+			throw APIException.build(HttpStatus.UNAUTHORIZED, "Comentário não pertence a este Post!");
 	}
 }

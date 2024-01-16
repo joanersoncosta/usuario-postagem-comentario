@@ -30,10 +30,6 @@ public interface ComentarioAPI {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	void removeComentario(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
 
-	@PatchMapping(value = "/{idComentario}/like")
-	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void usuarioLike(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
-
 	@PatchMapping(value = "/{idComentario}/altera")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void alteraComentario(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario, @RequestBody @Valid ComentarioAlteracaoRequest comentarioRequest);
@@ -45,5 +41,13 @@ public interface ComentarioAPI {
 	@GetMapping(value = "/busca-comentarios")
 	@ResponseStatus(code = HttpStatus.OK)
 	List<ComentarioListResponse> buscaComentarios(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem);
+
+	@PatchMapping(value = "/{idComentario}/like")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void usuarioLike(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
+
+	@PatchMapping(value = "/{idComentario}/deslike")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	void usuarioDeslike(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario);
 
 }

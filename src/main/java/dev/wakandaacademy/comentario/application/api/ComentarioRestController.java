@@ -34,13 +34,6 @@ public class ComentarioRestController implements ComentarioAPI {
 	}
 
 	@Override
-	public void usuarioLike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario) {
-		log.info("[inicia] ComentarioRestController - usuarioLike");
-		comentarioService.usuarioLike(email, idConteudo, idPostagem, idComentario);
-		log.info("[finaliza] ComentarioRestController - usuarioLike");
-	}
-
-	@Override
 	public void alteraComentario(String email, UUID idConteudo, UUID idPostagem, UUID idComentario,
 			ComentarioAlteracaoRequest comentarioRequest) {
 		log.info("[inicia] ComentarioRestController - alteraComentario");
@@ -63,5 +56,19 @@ public class ComentarioRestController implements ComentarioAPI {
 		List<ComentarioListResponse> comentarios = comentarioService.buscaComentarios(email, idConteudo, idPostagem);
 		log.info("[finaliza] ComentarioRestController - buscaPostagemComComentarios");
 		return comentarios;
+	}
+	
+	@Override
+	public void usuarioLike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario) {
+		log.info("[inicia] ComentarioRestController - usuarioLike");
+		comentarioService.usuarioLike(email, idConteudo, idPostagem, idComentario);
+		log.info("[finaliza] ComentarioRestController - usuarioLike");
+	}
+	
+	@Override
+	public void usuarioDeslike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario) {
+		log.info("[inicia] ComentarioRestController - usuarioDeslike");
+		comentarioService.usuarioDeslike(email, idConteudo, idPostagem, idComentario);
+		log.info("[finaliza] ComentarioRestController - usuarioDeslike");
 	}
 }
