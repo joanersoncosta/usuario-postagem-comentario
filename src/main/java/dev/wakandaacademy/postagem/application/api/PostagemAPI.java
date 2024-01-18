@@ -24,7 +24,7 @@ public interface PostagemAPI {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	PostagemIdResponse criarPostagem(@PathParam(value = "email") String email,
+	PostagemIdResponse criaPostagem(@PathParam(value = "email") String email,
 			@PathVariable(value = "idConteudo") UUID idConteudo, @RequestBody @Valid PostagemRequest postagemRequest);
 
 	@GetMapping(value = "/{idPostagem}/busca-postagem")
@@ -40,7 +40,7 @@ public interface PostagemAPI {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	void alteraPostPorId(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo,
 			@PathVariable(value = "idPostagem") UUID idPostagem,
-			@RequestBody @Valid PostagemAlteracaoRequest postagemAlteracaoRequest);
+			@RequestBody @Valid EditaPostagemRequest editaPostagemRequest);
 
 	@DeleteMapping(value = "/{idPostagem}/deleta-post")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)

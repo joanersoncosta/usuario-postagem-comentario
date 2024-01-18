@@ -8,13 +8,11 @@ import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.http.HttpStatus;
 
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
-import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
+import dev.wakandaacademy.postagem.application.api.EditaPostagemRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
 import dev.wakandaacademy.postagem.domain.enuns.StatusLikePostagem;
@@ -35,7 +33,6 @@ import lombok.NoArgsConstructor;
 public class Postagem {
 
 	@Id
-	@MongoId(value = FieldType.STRING)
 	private UUID idPostagem;
 	private UUID idConteudo;
 	@Indexed
@@ -59,7 +56,7 @@ public class Postagem {
 		this.idPostagem = UUID.randomUUID();
 		this.idConteudo = idConteudo;
 		this.idUsuario = usuario.getIdUsuario();
-		this.publicador = usuario.getNome();
+		this.publicador = getUserName(usuario.getEmail());
 		this.dataPostagem = LocalDateTime.now();
 		this.titlo = postagemRequest.getTitlo();
 		this.descricao = postagemRequest.getDescricao();
@@ -69,6 +66,11 @@ public class Postagem {
 		this.deslike = 0;
 		this.likes = new HashSet<>();
 		this.deslikes = new HashSet<>();
+	}
+
+	private String getUserName(String email) {
+		String[] nome = email.split("@");
+		return this.publicador = nome[0];
 	}
 
 	public void pertenceUsuario(Usuario usuarioEmail) {
@@ -83,9 +85,9 @@ public class Postagem {
 		}
 	}
 
-	public void alteraPostagem(PostagemAlteracaoRequest postagemAlteracaoRequest) {
-		this.titlo = postagemAlteracaoRequest.getTitlo();
-		this.descricao = postagemAlteracaoRequest.getDescricao();
+	public void alteraPostagem(EditaPostagemRequest editaPostagemRequest) {
+		this.titlo = editaPostagemRequest.getTitlo();
+		this.descricao = editaPostagemRequest.getDescricao();
 	}
 
 	public void ativaPostagem() {

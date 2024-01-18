@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import dev.wakandaacademy.comentario.domain.Comentario;
+import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
 import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
@@ -51,9 +52,16 @@ public class PostagemInfraRepository implements PostagemRepository {
 	}
 
 	@Override
-	public void deletaPost(Postagem postagem) {
+	public void deletaPost(Conteudo conteudo, Postagem postagem) {
 		log.info("[inicia] PostagemInfraRepository - deletaPost");
-		removerComentariosAssociados(postagem);
+		removeComentariosAssociados(postagem);
+		
+		Query queryConteudo = new Query();
+		queryConteudo.addCriteria(Criteria.where("idConteudo").is(conteudo.getIdConteudo()));
+		Update update = new Update();
+		update.set("quantidadePostagem", conteudo.getQuantidadePostagem() - 1);
+		mongoTemplate.updateFirst(queryConteudo, update, Conteudo.class);
+
 		Query queryPost = new Query();
 		queryPost.addCriteria(Criteria.where("idPostagem").is(postagem.getIdPostagem()));
 		mongoTemplate.remove(queryPost, Postagem.class);
@@ -83,7 +91,7 @@ public class PostagemInfraRepository implements PostagemRepository {
 		return comentarios;
 	}
 	
-	private void removerComentariosAssociados(Postagem postagem) {
+	private void removeComentariosAssociados(Postagem postagem) {
 		Query queryComentario = new Query();
 		queryComentario.addCriteria(Criteria.where("idPostagem").is(postagem.getIdPostagem()));
 		mongoTemplate.remove(queryComentario, Comentario.class);

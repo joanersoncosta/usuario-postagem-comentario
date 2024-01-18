@@ -10,7 +10,7 @@ import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
-import dev.wakandaacademy.postagem.application.api.PostagemAlteracaoRequest;
+import dev.wakandaacademy.postagem.application.api.EditaPostagemRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemIdResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemRequest;
 import dev.wakandaacademy.postagem.application.api.PostagemResponse;
@@ -31,8 +31,8 @@ public class PostagemApplicationService implements PostagemService {
 	private final ConteudoRepository  conteudoRepository;
 
 	@Override
-	public PostagemIdResponse criarPostagem(String usuarioEmail, UUID idConteudo, PostagemRequest postagemRequest) {
-		log.info("[inicia] PostagemApplicationService - criarPostagem");
+	public PostagemIdResponse criaPostagem(String usuarioEmail, UUID idConteudo, PostagemRequest postagemRequest) {
+		log.info("[inicia] PostagemApplicationService - criaPostagem");
 		log.info("[usuarioEmail] {}", usuarioEmail);
 		log.info("[idConteudo], ", idConteudo);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
@@ -41,7 +41,7 @@ public class PostagemApplicationService implements PostagemService {
 		Postagem postagem = postagemRepository.salvaPostagem(new Postagem(usuario, conteudo.getIdConteudo(), postagemRequest));
 		conteudo.incrementaQuantidadePostagem();
 		conteudoRepository.salvaConteudo(conteudo);
-		log.info("[finaliza] PostagemApplicationService - criarPostagem");
+		log.info("[finaliza] PostagemApplicationService - criaPostagem");
 		return PostagemIdResponse.builder().idPostagem(postagem.getIdPostagem()).build();
 	}
 
@@ -67,14 +67,14 @@ public class PostagemApplicationService implements PostagemService {
 	
 	@Override
 	public void alteraPostPorId(String usuarioEmail, UUID idConteudo, UUID idPostagem,
-			PostagemAlteracaoRequest postagemAlteracaoRequest) {
+			EditaPostagemRequest editaPostagemRequest) {
 		log.info("[inicia] PostagemApplicationService - alteraPostPorId");
 		log.info("[usuarioEmail] {}", usuarioEmail);
 		log.info("[idConteudo] {}, [idPostagem] {}", idConteudo, idPostagem);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		postagem.pertenceUsuario(usuario);
-		postagem.alteraPostagem(postagemAlteracaoRequest);
+		postagem.alteraPostagem(editaPostagemRequest);
 		postagemRepository.salvaPostagem(postagem);
 		log.info("[finaliza] PostagemApplicationService - alteraPostPorId");
 	}
@@ -85,9 +85,12 @@ public class PostagemApplicationService implements PostagemService {
 		log.info("[usuarioEmail] {}", usuarioEmail);
 		log.info("[idConteudo] {}, [idPostagem] {}", idConteudo, idPostagem);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
+		Conteudo conteudo = conteudoRepository.buscaConteudoPorId(idConteudo)
+				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Conteúdo não encontrado!"));
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		postagem.pertenceUsuario(usuario);
-		postagemRepository.deletaPost(postagem);
+		postagemRepository.deletaPost(conteudo, postagem);
+//		conteudo.reduzQuantidadePostagem();
 		log.info("[finaliza] PostagemApplicationService - deletaPostPorId");
 	}
 

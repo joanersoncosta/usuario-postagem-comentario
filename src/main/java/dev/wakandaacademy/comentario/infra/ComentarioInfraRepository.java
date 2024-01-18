@@ -7,10 +7,13 @@ import java.util.UUID;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
 import dev.wakandaacademy.comentario.domain.Comentario;
+import dev.wakandaacademy.conteudo.domian.Conteudo;
+import dev.wakandaacademy.postagem.domain.Postagem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -38,9 +41,17 @@ public class ComentarioInfraRepository implements ComentarioRepository {
 	}
 
 	@Override
-	public void removeComentario(Comentario comentario) {
+	public void removeComentario(Postagem postagem, Comentario comentario) {
 		log.info("[inicia] ComentarioInfraRepository - removeComentario");
-		comentarioSpringDataMongoRepository.delete(comentario);
+		Query queryPost = new Query();
+		queryPost.addCriteria(Criteria.where("idPostagem").is(postagem.getIdPostagem()));
+		Update update = new Update();
+		update.set("quantidadeComentarios", postagem.getQuantidadeComentarios() - 1);
+		mongoTemplate.updateFirst(queryPost, update, Postagem.class);
+
+		Query queryComentario = new Query();
+		queryComentario.addCriteria(Criteria.where("idComentario").is(comentario.getIdComentario()));
+		mongoTemplate.remove(queryComentario, Comentario.class);
 		log.info("[finaliza] ComentarioInfraRepository - removeComentario");
 	}
 

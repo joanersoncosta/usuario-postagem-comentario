@@ -6,11 +6,11 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioResponse;
+import dev.wakandaacademy.comentario.application.api.EditaComentarioRequest;
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
 import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
@@ -58,15 +58,13 @@ public class ComentarioApplicationService implements ComentarioService {
 		Comentario comentario = detalhaComentario(idComentario);
 		comentario.pertencePost(postagem);
 		comentario.pertenceUsuario(usuario);		
-		comentarioRepository.removeComentario(comentario);
-		postagem.reduzQuantidadeComentarios();
-		postagemRepository.salvaPostagem(postagem);
+		comentarioRepository.removeComentario(postagem, comentario);
 		log.info("[finaliza] ComentarioApplicationService - removeComentario");
 	}
 
 	@Override
 	public void alteraComentario(String emailUsuario, UUID idConteudo, UUID idPostagem, UUID idComentario,
-			ComentarioAlteracaoRequest comentarioRequest) {
+			EditaComentarioRequest comentarioRequest) {
 		log.info("[inicia] ComentarioApplicationService - alteraComentario");
 		log.info("[emailUsuario] {}", emailUsuario);
 		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
@@ -106,9 +104,10 @@ public class ComentarioApplicationService implements ComentarioService {
 		log.info("[usuarioEmail] {}", usuarioEmail);
 		log.info("[idConteudo] {}, [idPostagem] {}, [idComentario] {}", idConteudo, idPostagem, idComentario);
 		usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
-		detalhaPostagem(idConteudo, idPostagem);
+		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		Comentario comentario = comentarioRepository.buscaComentario(idComentario)
 				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Comentário não encontrado"));
+		comentario.pertencePost(postagem);
 		log.info("[finaliza] ComentarioApplicationService - buscaComentarioPorId");
 		return ComentarioResponse.converte(comentario);
 	}

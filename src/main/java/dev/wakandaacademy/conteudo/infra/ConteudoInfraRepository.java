@@ -10,9 +10,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import dev.wakandaacademy.conteudo.application.api.ConteudoAlteracaoRequest;
+import dev.wakandaacademy.comentario.domain.Comentario;
+import dev.wakandaacademy.conteudo.application.api.EditaConteudoRequest;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
+import dev.wakandaacademy.postagem.domain.Postagem;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -60,21 +62,37 @@ public class ConteudoInfraRepository implements ConteudoRepository {
 	@Override
 	public void deletaConteudo(Conteudo conteudo) {
 		log.info("[start] ConteudoInfraRepository - deletaConteudo");
-		conteudoSpringDataMongoRepository.delete(conteudo);
+		removeComentariosAssociados(conteudo.getIdConteudo());
+		removePostsAssociados(conteudo.getIdConteudo());
+		Query queryConteudo = new Query();
+		queryConteudo.addCriteria(Criteria.where("idConteudo").is(conteudo.getIdConteudo()));
+		mongoTemplate.remove(queryConteudo, Conteudo.class);
 		log.info("[finish] ConteudoInfraRepository - deletaConteudo");
 	}
 
 	@Override
-	public void editarConteudoPorId(Conteudo conteudo, ConteudoAlteracaoRequest conteudoAlteracaoRequest) {
-		log.info("[start] ConteudoInfraRepository - editarConteudoPorId");
+	public void editaConteudoPorId(Conteudo conteudo, EditaConteudoRequest editaConteudoRequest) {
+		log.info("[start] ConteudoInfraRepository - editaConteudoPorId");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("IdConteudo").is(conteudo.getIdConteudo()));
 
 		Update update = new Update();
-		update.set("descricao", conteudoAlteracaoRequest.getDescricao());
+		update.set("descricao", editaConteudoRequest.getDescricao());
 
 		mongoTemplate.updateFirst(query, update, Conteudo.class);
-		log.info("[finish] ConteudoInfraRepository - editarConteudoPorId");
+		log.info("[finish] ConteudoInfraRepository - editaConteudoPorId");
+	}
+	
+	private void removeComentariosAssociados(UUID idConteudo) {
+		Query queryComentario = new Query();
+		queryComentario.addCriteria(Criteria.where("idConteudo").is(idConteudo));
+		mongoTemplate.remove(queryComentario, Comentario.class);
+	}
+
+	private void removePostsAssociados(UUID idConteudo) {
+		Query queryComentario = new Query();
+		queryComentario.addCriteria(Criteria.where("idConteudo").is(idConteudo));
+		mongoTemplate.remove(queryComentario, Postagem.class);
 	}
 
 }

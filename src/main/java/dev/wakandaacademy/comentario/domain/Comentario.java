@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.http.HttpStatus;
 
-import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
+import dev.wakandaacademy.comentario.application.api.EditaComentarioRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.comentario.domain.enuns.StatusLikeComentario;
 import dev.wakandaacademy.handler.APIException;
@@ -58,7 +58,7 @@ public class Comentario {
 		this.idPostagem = postagem.getIdPostagem();
 		this.idUsuario = usuario.getIdUsuario();
 		this.publicador = postagem.getPublicador();
-		this.comentarista = usuario.getNome();
+		this.comentarista = getUserName(usuario.getEmail());
 		this.dataCriacaoComentario = LocalDateTime.now();
 		this.descricao = comentarioRequest.getDescricao();
 		this.like = 0;
@@ -66,6 +66,11 @@ public class Comentario {
 		this.deslikes = new HashSet<>();
 	}
 
+	private String getUserName(String email) {
+		String[] nome = email.split("@");
+		return this.publicador = nome[0];
+	}
+	
 	public void like(Usuario usuarioLike) {
 		var likePostagem = likeUsuario(usuarioLike);
 		var deslikeExistente = deslikeUsuario(usuarioLike);
@@ -110,7 +115,7 @@ public class Comentario {
 		return likeUsuario;
 	}
 
-	public void alteraComentario(ComentarioAlteracaoRequest comentarioRequest) {
+	public void alteraComentario(EditaComentarioRequest comentarioRequest) {
 		this.descricao = comentarioRequest.getDescricao();
 	}
 

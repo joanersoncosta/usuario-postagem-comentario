@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 @Getter
-public class ComentarioAlteracaoRequest {
+public class EditaComentarioRequest {
 	@NotBlank
 	@Size(message = "Campo descrição comentario não pode estar vazio!", min = 3, max = 250)
 	private String descricao;

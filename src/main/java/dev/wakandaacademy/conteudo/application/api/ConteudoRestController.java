@@ -56,10 +56,10 @@ public class ConteudoRestController implements ConteudoAPI {
 	}
 
 	@Override
-	public void editarConteudoPorId(String email, UUID idConteudo, ConteudoAlteracaoRequest conteudoAlteracaoRequest) {
-		log.info("[inicia] ConteudoRestController - editarConteudoPorId");
-		conteudoService.editarConteudoPorId(email, idConteudo, conteudoAlteracaoRequest);
-		log.info("[finaliza] ConteudoRestController - editarConteudoPorId");
+	public void editaConteudoPorId(String email, UUID idConteudo, EditaConteudoRequest editaConteudoRequest) {
+		log.info("[inicia] ConteudoRestController - editaConteudoPorId");
+		conteudoService.editaConteudoPorId(email, idConteudo, editaConteudoRequest);
+		log.info("[finaliza] ConteudoRestController - editaConteudoPorId");
 	}
 
 }

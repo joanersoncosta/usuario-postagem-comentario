@@ -32,7 +32,7 @@ public interface ComentarioAPI {
 
 	@PatchMapping(value = "/{idComentario}/altera")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	void alteraComentario(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario, @RequestBody @Valid ComentarioAlteracaoRequest comentarioRequest);
+	void alteraComentario(@PathParam(value = "email") String email, @PathVariable(value = "idConteudo") UUID idConteudo, @PathVariable(value = "idPostagem") UUID idPostagem, @PathVariable(value = "idComentario") UUID idComentario, @RequestBody @Valid EditaComentarioRequest comentarioRequest);
 
 	@GetMapping(value = "/{idComentario}/busca-comentario")
 	@ResponseStatus(code = HttpStatus.OK)

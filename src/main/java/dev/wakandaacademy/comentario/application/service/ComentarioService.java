@@ -3,7 +3,7 @@ package dev.wakandaacademy.comentario.application.service;
 import java.util.List;
 import java.util.UUID;
 
-import dev.wakandaacademy.comentario.application.api.ComentarioAlteracaoRequest;
+import dev.wakandaacademy.comentario.application.api.EditaComentarioRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
@@ -16,7 +16,7 @@ public interface ComentarioService {
 	Comentario detalhaComentario(UUID idComentario);
 	ComentarioResponse buscaComentarioPorId(String email, UUID idConteudo, UUID idPostagem, UUID idComentario);
 	void alteraComentario(String email, UUID idConteudo, UUID idPostagem, UUID idComentario,
-			ComentarioAlteracaoRequest comentarioRequest);
+			EditaComentarioRequest comentarioRequest);
 	List<ComentarioListResponse> buscaComentarios(String usuarioEmail, UUID idConteudo, UUID idPostagem);
 	void usuarioLike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario);
 	void usuarioDeslike(String email, UUID idConteudo, UUID idPostagem, UUID idComentario);

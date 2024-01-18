@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class ConteudoAlteracaoRequest {
+public class EditaConteudoRequest {
 	@NotBlank(message = "Campo descricao não pode estar vazio.")
 	@Size(min = 3, max = 50)
 	private String descricao;

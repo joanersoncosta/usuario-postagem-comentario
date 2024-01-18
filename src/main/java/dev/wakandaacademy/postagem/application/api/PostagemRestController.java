@@ -17,10 +17,10 @@ public class PostagemRestController implements PostagemAPI {
 	private final PostagemService postagemService;
 
 	@Override
-	public PostagemIdResponse criarPostagem(String email, UUID idConteudo, PostagemRequest postagemRequest) {
-		log.info("[inicia] PostagemRestController - criarPostagem");
-		PostagemIdResponse postagemIdResponse = postagemService.criarPostagem(email, idConteudo, postagemRequest);
-		log.info("[finaliza] PostagemRestController - criarPostagem");
+	public PostagemIdResponse criaPostagem(String email, UUID idConteudo, PostagemRequest postagemRequest) {
+		log.info("[inicia] PostagemRestController - criaPostagem");
+		PostagemIdResponse postagemIdResponse = postagemService.criaPostagem(email, idConteudo, postagemRequest);
+		log.info("[finaliza] PostagemRestController - criaPostagem");
 		return postagemIdResponse;
 	}
 
@@ -41,9 +41,9 @@ public class PostagemRestController implements PostagemAPI {
 	}
 
 	@Override
-	public void alteraPostPorId(String email, UUID idConteudo, UUID idPostagem, PostagemAlteracaoRequest postagemAlteracaoRequest) {
+	public void alteraPostPorId(String email, UUID idConteudo, UUID idPostagem, EditaPostagemRequest editaPostagemRequest) {
 		log.info("[inicia] PostagemRestController - alteraPostPorId");
-		postagemService.alteraPostPorId(email, idConteudo, idPostagem, postagemAlteracaoRequest);
+		postagemService.alteraPostPorId(email, idConteudo, idPostagem, editaPostagemRequest);
 		log.info("[finaliza] PostagemRestController - alteraPostPorId");
 	}
 

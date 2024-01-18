@@ -35,7 +35,7 @@ public class ComentarioRestController implements ComentarioAPI {
 
 	@Override
 	public void alteraComentario(String email, UUID idConteudo, UUID idPostagem, UUID idComentario,
-			ComentarioAlteracaoRequest comentarioRequest) {
+			EditaComentarioRequest comentarioRequest) {
 		log.info("[inicia] ComentarioRestController - alteraComentario");
 		comentarioService.alteraComentario(email, idConteudo, idPostagem, idComentario, comentarioRequest);
 		log.info("[finaliza] ComentarioRestController - alteraComentario");

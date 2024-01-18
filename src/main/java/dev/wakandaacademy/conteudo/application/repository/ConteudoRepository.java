@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import dev.wakandaacademy.conteudo.application.api.ConteudoAlteracaoRequest;
+import dev.wakandaacademy.conteudo.application.api.EditaConteudoRequest;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 
 public interface ConteudoRepository {
@@ -19,6 +19,6 @@ public interface ConteudoRepository {
 
 	void deletaConteudo(Conteudo conteudo);
 
-	void editarConteudoPorId(Conteudo conteudo, ConteudoAlteracaoRequest conteudoAlteracaoRequest);
+	void editaConteudoPorId(Conteudo conteudo, EditaConteudoRequest editaConteudoRequest);
 
 }
