@@ -1,10 +1,12 @@
 package dev.wakandaacademy.conteudo.application.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +20,7 @@ import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
 import dev.wakandaacademy.conteudo.application.api.ConteudoResponse;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
+import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.usuario.application.repository.UsuarioRepository;
 import dev.wakandaacademy.usuario.domain.Usuario;
 
@@ -44,7 +47,7 @@ class ConteudoApplicationServiceTest {
 		assertThat(response).isNotNull();
 		assertThat(ConteudoIdResponse.class).isEqualTo(response.getClass());
 	}
-	
+
 	@Test
 	void buscaConteudo_ComIdValido_RetornaConteudo() {
 		Conteudo conteudo = DataHelper.createConteudo();
@@ -56,4 +59,10 @@ class ConteudoApplicationServiceTest {
 		assertThat(ConteudoResponse.class).isEqualTo(response.getClass());
 	}
 
+	@Test
+	void buscaConteudo_ComIdInexistente_RetornaErro() {
+		when(conteudoRepository.buscaConteudoPorId(any())).thenThrow(APIException.class);
+
+		assertThatThrownBy(() -> conteudoApplicationService.buscaConteudoPorId(UUID.randomUUID())).isInstanceOf(APIException.class);
+	}
 }
