@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
@@ -111,5 +114,18 @@ class ConteudoApplicationServiceTest {
 		List<ConteudoUsuarioListResponse> response = conteudoApplicationService.buscaConteudosDoUsuario(usuario.getIdUsuario());
 		
 		assertThat(response).isEmpty();
+	}
+	
+	@Test
+	void deletaConteudo_ComIdValido() {
+		Usuario usuario = mock(Usuario.class);
+		Conteudo conteudo = mock(Conteudo.class);
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		
+		conteudoApplicationService.deletaConteudoPorId(usuario.getEmail(), conteudo.getIdConteudo());
+		verify(conteudo).pertenceUsuario(usuario);
+		verify(conteudoRepository, times(1)).deletaConteudo(conteudo);
 	}
 }
