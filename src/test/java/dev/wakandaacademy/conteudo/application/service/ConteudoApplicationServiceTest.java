@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import dev.wakandaacademy.DataHelper;
 import dev.wakandaacademy.conteudo.application.api.ConteudoIdResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
+import dev.wakandaacademy.conteudo.application.api.ConteudoResponse;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.usuario.application.repository.UsuarioRepository;
@@ -29,7 +32,7 @@ class ConteudoApplicationServiceTest {
 	private ConteudoRepository conteudoRepository;
 
 	@Test
-	void salvaConteudo_ComDadosValidos() {
+	void salvaConteudo_ComDadosValidos_RetornaIdConteudo() {
 		Usuario usuario = DataHelper.createUsuario();
 		ConteudoRequest request = DataHelper.conteudoRequest();
 		Conteudo conteudo = DataHelper.createConteudo();
@@ -40,7 +43,17 @@ class ConteudoApplicationServiceTest {
 
 		assertThat(response).isNotNull();
 		assertThat(ConteudoIdResponse.class).isEqualTo(response.getClass());
+	}
+	
+	@Test
+	void buscaConteudo_ComIdValido_RetornaConteudo() {
+		Conteudo conteudo = DataHelper.createConteudo();
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
 
+		ConteudoResponse response = conteudoApplicationService.buscaConteudoPorId(conteudo.getIdConteudo());
+
+		assertThat(response).isNotNull();
+		assertThat(ConteudoResponse.class).isEqualTo(response.getClass());
 	}
 
 }
