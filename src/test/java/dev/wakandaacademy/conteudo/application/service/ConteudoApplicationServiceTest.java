@@ -1,10 +1,12 @@
 package dev.wakandaacademy.conteudo.application.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,9 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 import dev.wakandaacademy.DataHelper;
 import dev.wakandaacademy.conteudo.application.api.ConteudoIdResponse;
+import dev.wakandaacademy.conteudo.application.api.ConteudoListResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
 import dev.wakandaacademy.conteudo.application.api.ConteudoResponse;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
@@ -61,8 +65,26 @@ class ConteudoApplicationServiceTest {
 
 	@Test
 	void buscaConteudo_ComIdInexistente_RetornaErro() {
-		when(conteudoRepository.buscaConteudoPorId(any())).thenThrow(APIException.class);
+		Conteudo conteudo = DataHelper.createConteudo();
+//		when(conteudoRepository.buscaConteudoPorId(any())).thenThrow(APIException.class);
+//
+//		assertThatThrownBy(() -> conteudoApplicationService.buscaConteudoPorId(UUID.randomUUID())).isInstanceOf(APIException.class);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
 
-		assertThatThrownBy(() -> conteudoApplicationService.buscaConteudoPorId(UUID.randomUUID())).isInstanceOf(APIException.class);
+		APIException ex = assertThrows(APIException.class,
+				() -> conteudoApplicationService.buscaConteudoPorId(UUID.randomUUID()));
+		assertEquals("Conteudo não encontrado.", ex.getMessage());
+		assertEquals(HttpStatus.NOT_FOUND, ex.getStatusException());
+	}
+	
+	@Test
+	void buscaConteudo_RetornaListConteudo() {
+		List<Conteudo> conteudosList = DataHelper.createListConteudo();
+		
+		when(conteudoRepository.buscaConteudos()).thenReturn(conteudosList);
+		List<ConteudoListResponse> response = conteudoApplicationService.buscaConteudos();
+		
+		assertThat(response).isNotEmpty();
+		assertThat(response).hasSize(4);
 	}
 }
