@@ -18,6 +18,7 @@ public class DataHelper {
 	public static final UUID ID_USUARIO_INVALIDO = UUID.fromString("b92ee6fa-9ae9-45ac-afe0-fb8e4460d839");
 	public static final UUID ID_CONTEUDO_VALIDO = UUID.fromString("aa774eb6-55d5-4867-ac34-78f3f017435f");
 	public static final Usuario USUARIO = createUsuario();
+	public static final Conteudo CONTEUDO1 = createConteudo();
 
 	public static Usuario createUsuario() {
 		return Usuario.builder().idUsuario(ID_USUARIO_VALIDO).nome("nome").email("exemplo@gmail.com")
@@ -53,7 +54,7 @@ public class DataHelper {
 
 	public static List<Conteudo> createListConteudo() {
 		return List.of(
-				createConteudo(),
+				CONTEUDO1,
 				Conteudo.builder().idConteudo(UUID.randomUUID()).idUsuario(USUARIO.getIdUsuario())
 						.autor(USUARIO.getNome()).descricao("exemplo 2").categoria(ConteudoCategoria.TECNOLOGIA)
 						.quantidadePostagem(0)

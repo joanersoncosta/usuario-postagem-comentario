@@ -22,6 +22,7 @@ import dev.wakandaacademy.conteudo.application.api.ConteudoIdResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoListResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
 import dev.wakandaacademy.conteudo.application.api.ConteudoResponse;
+import dev.wakandaacademy.conteudo.application.api.ConteudoUsuarioListResponse;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
@@ -86,5 +87,18 @@ class ConteudoApplicationServiceTest {
 		
 		assertThat(response).isNotEmpty();
 		assertThat(response).hasSize(4);
+	}
+	
+	@Test
+	void buscaConteudo_ComIdUsuarioValido_RetornaListConteudo() {
+		Usuario usuario = DataHelper.createUsuario();
+		List<Conteudo> conteudosList = DataHelper.createListConteudo();
+		
+		when(conteudoRepository.buscaConteudosDoUsuario(any())).thenReturn(conteudosList);
+		List<ConteudoUsuarioListResponse> response = conteudoApplicationService.buscaConteudosDoUsuario(usuario.getIdUsuario());
+		
+		assertThat(response).isNotEmpty();
+		assertThat(response).hasSize(4);
+		assertThat(response.get(0).getIdUsuario()).isEqualTo(usuario.getIdUsuario());
 	}
 }
