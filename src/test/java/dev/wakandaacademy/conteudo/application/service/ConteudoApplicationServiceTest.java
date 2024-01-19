@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -100,5 +101,15 @@ class ConteudoApplicationServiceTest {
 		assertThat(response).isNotEmpty();
 		assertThat(response).hasSize(4);
 		assertThat(response.get(0).getIdUsuario()).isEqualTo(usuario.getIdUsuario());
+	}
+	
+	@Test
+	void buscaConteudo_ComIdUsuarioValido_RetornaListVazia() {
+		Usuario usuario = DataHelper.createUsuario();
+		
+		when(conteudoRepository.buscaConteudosDoUsuario(any())).thenReturn(Collections.emptyList());
+		List<ConteudoUsuarioListResponse> response = conteudoApplicationService.buscaConteudosDoUsuario(usuario.getIdUsuario());
+		
+		assertThat(response).isEmpty();
 	}
 }
