@@ -1,5 +1,8 @@
 package dev.wakandaacademy.usuario.domain.enuns;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum Sexo {
 	FEMININO("FEMININO"), MASCULINO("MASCULINO");
 	
@@ -13,12 +16,8 @@ public enum Sexo {
 		return this.sexo;
 	}
 	
-	public static Sexo verificaValor(String sexo){
-		for (Sexo valorCorrespondente: Sexo.values()) {
-			if(valorCorrespondente.getSexo() == sexo) {
-				return valorCorrespondente;
-			}
-		}
-		throw new IllegalArgumentException("Valor invalido");
+	public static Optional<Sexo> validaSexo(Sexo sexo) {
+		return Arrays.stream(values()).filter(valorCorrespondente -> valorCorrespondente.getSexo().equals(sexo))
+				.findFirst();
 	}
 }

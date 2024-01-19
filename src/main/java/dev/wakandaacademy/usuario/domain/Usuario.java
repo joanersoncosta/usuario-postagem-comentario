@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.http.HttpStatus;
 
+import dev.wakandaacademy.handler.APIException;
 import dev.wakandaacademy.usuario.application.api.UsuarioNovoRequest;
 import dev.wakandaacademy.usuario.domain.enuns.Sexo;
 import jakarta.validation.constraints.Email;
@@ -17,6 +17,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@EqualsAndHashCode(of = "idUsuario")
 @Document(collection = "Usuario")
 public class Usuario {
 
@@ -38,7 +40,7 @@ public class Usuario {
 	@NotBlank
 	private String telefone;
 	@NotNull
-	private String sexo;
+	private Sexo sexo;
 	@NotNull
 	private String dataNascimento;
 	
@@ -50,20 +52,14 @@ public class Usuario {
 		this.nome = pessoaRequest.getNome();
 		this.email = pessoaRequest.getEmail();
 		this.telefone = pessoaRequest.getTelefone();
-		this.sexo = setSexo(pessoaRequest.getSexo());
+		this.sexo = retornaSexo(pessoaRequest.getSexo());
 		this.dataNascimento = pessoaRequest.getDataNascimento();
 		this.momentoDoDacastro = LocalDateTime.now();
 	}
 
-	public String getSexo() {
-		return this.sexo;
-	}
-
-	public String setSexo(Sexo sexo) {
-		if (sexo != null) {
-			this.sexo = sexo.getSexo();
-		}
-		return this.sexo;
+	private Sexo retornaSexo(Sexo sexo) {
+		return Sexo.validaSexo(sexo)
+	            .orElseThrow(() -> APIException.build(HttpStatus.BAD_REQUEST, "Valor inválido."));
 	}
 
 }

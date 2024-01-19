@@ -3,6 +3,7 @@ package dev.wakandaacademy.usuario.application.api;
 import java.util.UUID;
 
 import dev.wakandaacademy.usuario.domain.Usuario;
+import dev.wakandaacademy.usuario.domain.enuns.Sexo;
 import lombok.Value;
 
 @Value
@@ -11,7 +12,7 @@ public class UsuarioCriadoResponse {
 	private final String nome;
 	private final String email;
 	private final String telefone;
-	private final String sexo;
+	private final Sexo sexo;
 	private final String dataNascimento;
 
 	public UsuarioCriadoResponse(Usuario usuario) {

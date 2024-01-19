@@ -18,7 +18,7 @@ public class UsuarioNovoRequest {
 	private String nome;
 	@NotBlank
 	private String telefone;
-	@NotNull
+	@NotBlank
 	private Sexo sexo;
 	@NotNull
 	private String dataNascimento;
