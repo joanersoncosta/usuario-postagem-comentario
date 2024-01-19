@@ -27,6 +27,7 @@ import dev.wakandaacademy.conteudo.application.api.ConteudoListResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
 import dev.wakandaacademy.conteudo.application.api.ConteudoResponse;
 import dev.wakandaacademy.conteudo.application.api.ConteudoUsuarioListResponse;
+import dev.wakandaacademy.conteudo.application.api.EditaConteudoRequest;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
@@ -127,5 +128,18 @@ class ConteudoApplicationServiceTest {
 		conteudoApplicationService.deletaConteudoPorId(usuario.getEmail(), conteudo.getIdConteudo());
 		verify(conteudo).pertenceUsuario(usuario);
 		verify(conteudoRepository, times(1)).deletaConteudo(conteudo);
+	}
+	
+	@Test
+	void editaConteudo_ComIdValido() {
+		Usuario usuario = DataHelper.createUsuario();
+		Conteudo conteudo = mock(Conteudo.class);
+		EditaConteudoRequest request = DataHelper.editaConteudoRequest();
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		
+		conteudoApplicationService.editaConteudoPorId(usuario.getEmail(), conteudo.getIdConteudo(), request);
+		verify(conteudo).pertenceUsuario(usuario);
+		verify(conteudoRepository, times(1)).editaConteudoPorId(conteudo, request);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
+import dev.wakandaacademy.conteudo.application.api.EditaConteudoRequest;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.conteudo.domian.enuns.ConteudoCategoria;
 import dev.wakandaacademy.credencial.domain.Credencial;
@@ -50,6 +51,10 @@ public class DataHelper {
 
 	public static ConteudoRequest conteudoRequest() {
 		return new ConteudoRequest("exemplo 1", "TECNOLOGIA");
+	}
+	
+	public static EditaConteudoRequest editaConteudoRequest() {
+		return new EditaConteudoRequest("exemplo 1");
 	}
 
 	public static List<Conteudo> createListConteudo() {
