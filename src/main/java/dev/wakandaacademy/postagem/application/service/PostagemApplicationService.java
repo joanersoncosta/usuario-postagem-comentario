@@ -34,7 +34,7 @@ public class PostagemApplicationService implements PostagemService {
 	public PostagemIdResponse criaPostagem(String usuarioEmail, UUID idConteudo, PostagemRequest postagemRequest) {
 		log.info("[inicia] PostagemApplicationService - criaPostagem");
 		log.info("[usuarioEmail] {}", usuarioEmail);
-		log.info("[idConteudo], ", idConteudo);
+		log.info("[idConteudo] {}", idConteudo);
 		Usuario usuario = usuarioRepository.buscaUsuarioPorEmail(usuarioEmail);
 		Conteudo conteudo = conteudoRepository.buscaConteudoPorId(idConteudo)
 				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Conteúdo não encontrado!"));
@@ -48,7 +48,7 @@ public class PostagemApplicationService implements PostagemService {
 	@Override
 	public List<PostagemUsuarioListResponse> buscaPostagens(UUID idConteudo) {
 		log.info("[inicia] PostagemApplicationService - buscaPostagens");
-		log.info("[idConteudo], ", idConteudo);
+		log.info("[idConteudo] {}", idConteudo);
 		List<Postagem> postagens = postagemRepository.buscaPostagens(idConteudo);
 		log.info("[finaliza] PostagemApplicationService - buscaPostagens");
 		return PostagemUsuarioListResponse.converte(postagens);
@@ -59,10 +59,8 @@ public class PostagemApplicationService implements PostagemService {
 		log.info("[inicia] PostagemApplicationService - buscaPostagemPorId");
 		log.info("[idConteudo] {}, [idPostagem] {}", idConteudo, idPostagem);
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
-		usuarioAtivaPostagem(idConteudo, idPostagem);
-		List<Comentario> comentarios = postagemRepository.buscaComentarios(postagem.getIdPostagem());
 		log.info("[finaliza] PostagemApplicationService - buscaPostagemPorId");
-		return PostagemResponse.converte(postagem, comentarios);
+		return PostagemResponse.converte(postagem);
 	}
 	
 	@Override
@@ -90,19 +88,18 @@ public class PostagemApplicationService implements PostagemService {
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		postagem.pertenceUsuario(usuario);
 		postagemRepository.deletaPost(conteudo, postagem);
-//		conteudo.reduzQuantidadePostagem();
 		log.info("[finaliza] PostagemApplicationService - deletaPostPorId");
 	}
 
 	@Override
 	public void usuarioAtivaPostagem(UUID idConteudo, UUID idPostagem) {
-		log.info("[inicia] PostagemApplicationService - postagemUsuarioLike");
+		log.info("[inicia] PostagemApplicationService - usuarioAtivaPostagem");
 		log.info("[idConteudo] {}, [idPostagem] {}", idConteudo, idPostagem);
 		Postagem postagem = detalhaPostagem(idConteudo, idPostagem);
 		postagemRepository.desativaPostagem(idConteudo);
 		postagem.ativaPostagem();
 		postagemRepository.salvaPostagem(postagem);
-		log.info("[finaliza] PostagemApplicationService - postagemUsuarioLike");
+		log.info("[finaliza] PostagemApplicationService - usuarioAtivaPostagem");
 	}
 
 	@Override
@@ -131,13 +128,13 @@ public class PostagemApplicationService implements PostagemService {
 
 	@Override
 	public Postagem detalhaPostagem(UUID idConteudo, UUID idPostagem) {
-		log.info("[inicia] PostagemApplicationService - usuarioDeslikePostagem");
+		log.info("[inicia] PostagemApplicationService - detalhaPostagem");
 		Conteudo conteudo = conteudoRepository.buscaConteudoPorId(idConteudo)
 				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Conteúdo não encontrado!"));
 		Postagem postagem = postagemRepository.buscaPostagemPorId(idPostagem)
 				.orElseThrow(() -> APIException.build(HttpStatus.NOT_FOUND, "Post não encontrado!"));
 		postagem.pertenceConteudo(conteudo);
-		log.info("[finaliza] PostagemApplicationService - usuarioDeslikePostagem");
+		log.info("[finaliza] PostagemApplicationService - detalhaPostagem");
 		return postagem;
 	}
 }

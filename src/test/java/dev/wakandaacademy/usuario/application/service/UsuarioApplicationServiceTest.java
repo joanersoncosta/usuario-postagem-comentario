@@ -40,7 +40,7 @@ class UsuarioApplicationServiceTest {
 	@Test
 	void salvaUsuario() {
 		UsuarioNovoRequest request = DataHelper.createUsuarioRequest();
-		Usuario usuarioNovo = DataHelper.createUsuarioRequest(request);
+		Usuario usuarioNovo = DataHelper.createUsuario();
 
 		when(usuarioRepository.salvaUsuario(usuarioNovo)).thenReturn(usuario);
 		UsuarioIdResponse response = UsuarioApplicationService.criaNovoUsuario(request);
