@@ -171,17 +171,41 @@ class PostagemApplicationServiceTest {
 	void likePostagem_comIdValido() {
 		Usuario usuario = DataHelper.createUsuario();
 		Conteudo conteudo = DataHelper.createConteudo();
+		Postagem postagem = DataHelper.createPostagem();
 		Postagem postagemMock = mock(Postagem.class);
 		
 		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
 		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
 		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
 
-		postagemApplicationService.usuarioLikePostagem(usuario.getEmail(), conteudo.getIdConteudo(), postagemMock.getIdPostagem());
+		postagemApplicationService.usuarioLikePostagem(usuario.getEmail(), conteudo.getIdConteudo(), postagem.getIdPostagem());
 		
 		verify(postagemMock).pertenceConteudo(conteudo);
 		verify(postagemMock).likePostagem(usuario);
 		verify(postagemRepository, times(1)).salvaPostagem(postagemMock);
+		
+		assertEquals(postagem.getLike(), 0);
+	}
+	
+	@Test
+	void deslikePostagem_comIdValido() {
+		Usuario usuario = DataHelper.createUsuario();
+		Conteudo conteudo = DataHelper.createConteudo();
+		Postagem postagem = DataHelper.createPostagem();
+
+		Postagem postagemMock = mock(Postagem.class);
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
+
+		postagemApplicationService.usuarioDeslikePostagem(usuario.getEmail(), conteudo.getIdConteudo(), postagem.getIdPostagem());
+		
+		verify(postagemMock).pertenceConteudo(conteudo);
+		verify(postagemMock).deslikePostagem(usuario);
+		verify(postagemRepository, times(1)).salvaPostagem(postagemMock);
+		
+		assertEquals(postagem.getDeslike(), 0);
 	}
 	
 	@Test
