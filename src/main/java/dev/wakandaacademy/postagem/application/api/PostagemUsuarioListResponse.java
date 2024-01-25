@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import dev.wakandaacademy.postagem.domain.Postagem;
 import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value

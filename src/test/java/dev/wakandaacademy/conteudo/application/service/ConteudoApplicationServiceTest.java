@@ -79,7 +79,10 @@ class ConteudoApplicationServiceTest {
 
 		APIException ex = assertThrows(APIException.class,
 				() -> conteudoApplicationService.buscaConteudoPorId(UUID.randomUUID()));
-		assertEquals("Conteudo não encontrado.", ex.getMessage());
+		
+		verify(conteudoRepository, times(1)).buscaConteudoPorId(any());
+
+		assertEquals("Conteudo não encontrado", ex.getMessage());
 		assertEquals(HttpStatus.NOT_FOUND, ex.getStatusException());
 	}
 	
