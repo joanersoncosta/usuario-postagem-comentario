@@ -166,7 +166,24 @@ class PostagemApplicationServiceTest {
 
 //		assertEquals(postagemMock.getStatusAtivacao(), StatusAtivacaoPostagem.ATIVO);
 	}
+	
+	@Test
+	void likePostagem_comIdValido() {
+		Usuario usuario = DataHelper.createUsuario();
+		Conteudo conteudo = DataHelper.createConteudo();
+		Postagem postagemMock = mock(Postagem.class);
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
 
+		postagemApplicationService.usuarioLikePostagem(usuario.getEmail(), conteudo.getIdConteudo(), postagemMock.getIdPostagem());
+		
+		verify(postagemMock).pertenceConteudo(conteudo);
+		verify(postagemMock).likePostagem(usuario);
+		verify(postagemRepository, times(1)).salvaPostagem(postagemMock);
+	}
+	
 	@Test
 	void teste(){
 		System.out.println(UUID.randomUUID());
