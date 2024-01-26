@@ -204,6 +204,32 @@ class ComentarioApplicationServiceTest {
 
 	@Test
 	void testUsuarioDeslike() {
+		Usuario usuario = DataHelper.createUsuario();
+		Conteudo conteudo = DataHelper.createConteudo();
+		Postagem postagemMock = mock(Postagem.class);
+		Comentario comentarioMock = mock(Comentario.class);
+
+		String emailUsuario = DataHelper.createUsuario().getEmail();
+		UUID idPostagem = DataHelper.createPostagem().getIdPostagem();
+		UUID idConteudo = DataHelper.createConteudo().getIdConteudo();
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
+		when(comentarioRepository.buscaComentario(any())).thenReturn(Optional.of(comentarioMock));
+
+		comentarioApplicationService.usuarioDeslike(emailUsuario, idConteudo, idPostagem, idConteudo);
+		
+		Comentario retornoComentario = DataHelper.getComentario();
+		
+		verify(postagemMock).pertenceConteudo(conteudo);
+		verify(comentarioMock).pertencePost(postagemMock);
+		verify(comentarioMock).pertenceUsuario(usuario);
+		verify(comentarioMock).deslike(usuario);
+		verify(comentarioRepository, times(1)).salvaComentario(comentarioMock);
+		
+		assertEquals(retornoComentario.getDeslike(), 3);
+
 	}
 
 }
