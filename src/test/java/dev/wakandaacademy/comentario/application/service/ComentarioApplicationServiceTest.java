@@ -68,6 +68,26 @@ class ComentarioApplicationServiceTest {
 
 	@Test
 	void testRemoveComentario() {
+		Usuario usuario = DataHelper.createUsuario();
+		Comentario comentario = DataHelper.createComentario();
+		Postagem postagem = DataHelper.createPostagem();
+		Conteudo conteudo = DataHelper.createConteudo();
+		
+		Postagem postagemMock = mock(Postagem.class);
+		Comentario comentarioMock = mock(Comentario.class);
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
+		when(comentarioRepository.buscaComentario(any())).thenReturn(Optional.of(comentarioMock));
+
+		comentarioApplicationService.removeComentario(usuario.getEmail(), conteudo.getIdConteudo(), postagem.getIdPostagem(), comentario.getIdComentario());
+		
+		verify(comentarioMock).pertencePost(postagemMock);
+		verify(comentarioMock).pertenceUsuario(usuario);
+		verify(comentarioRepository, times(1)).removeComentario(postagemMock, comentarioMock);
+
+		assertEquals(postagemMock.getQuantidadeComentarios(), 0);
 	}
 
 	@Test
