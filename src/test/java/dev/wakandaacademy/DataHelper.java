@@ -81,7 +81,7 @@ public class DataHelper {
 	}
 
 	public static Postagem createPostagem() {
-		return Postagem.builder().idPostagem(ID_POSTAGEM_VALIDO).idConteudo(CONTEUDO.getIdConteudo())
+		return Postagem.builder().idPostagem(ID_POSTAGEM_VALIDO).idConteudo(ID_CONTEUDO_VALIDO)
 				.idUsuario(USUARIO.getIdUsuario()).publicador(publicador).dataPostagem(LocalDateTime.now())
 				.titlo("Exemplo 1").descricao("Teste salva Postagem 1").statusAtivacao(StatusAtivacaoPostagem.INATIVA)
 				.quantidadeComentarios(0).like(0).deslike(0).build();

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import dev.wakandaacademy.DataHelper;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
+import dev.wakandaacademy.comentario.application.api.ComentarioResponse;
 import dev.wakandaacademy.comentario.application.api.EditaComentarioRequest;
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
 import dev.wakandaacademy.comentario.domain.Comentario;
@@ -118,6 +120,29 @@ class ComentarioApplicationServiceTest {
 
 	@Test
 	void testBuscaComentarioPorId() {
+		Usuario usuario = DataHelper.createUsuario();
+		Conteudo conteudo = DataHelper.createConteudo();
+		Postagem postagemMock = mock(Postagem.class);
+		Comentario comentarioMock = mock(Comentario.class);
+
+		
+		String emailUsuario = DataHelper.createUsuario().getEmail();
+		UUID idComentario = DataHelper.createComentario().getIdComentario();
+		UUID idPostagem = DataHelper.createPostagem().getIdPostagem();
+		UUID idConteudo = DataHelper.createConteudo().getIdConteudo();
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
+		when(comentarioRepository.buscaComentario(any())).thenReturn(Optional.of(comentarioMock));
+
+		ComentarioResponse response = comentarioApplicationService.buscaComentarioPorId(emailUsuario, idConteudo, idPostagem, idComentario);
+		
+		verify(postagemMock).pertenceConteudo(conteudo);
+		verify(comentarioMock).pertencePost(postagemMock);
+		
+		assertNotNull(response);
+		assertEquals(ComentarioResponse.class, response.getClass());
 	}
 
 	@Test
