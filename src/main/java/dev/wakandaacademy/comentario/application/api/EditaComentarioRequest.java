@@ -2,8 +2,10 @@ package dev.wakandaacademy.comentario.application.api;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public class EditaComentarioRequest {
 	@NotBlank

@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import dev.wakandaacademy.DataHelper;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
+import dev.wakandaacademy.comentario.application.api.EditaComentarioRequest;
 import dev.wakandaacademy.comentario.application.repository.ComentarioRepository;
 import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
@@ -92,6 +93,27 @@ class ComentarioApplicationServiceTest {
 
 	@Test
 	void testAlteraComentario() {
+		Usuario usuario = DataHelper.createUsuario();
+		Comentario comentario = DataHelper.createComentario();
+		Postagem postagem = DataHelper.createPostagem();
+		Conteudo conteudo = DataHelper.createConteudo();
+		
+		Postagem postagemMock = mock(Postagem.class);
+		Comentario comentarioMock = mock(Comentario.class);
+		EditaComentarioRequest request = DataHelper.createEditaComentario();
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
+		when(comentarioRepository.buscaComentario(any())).thenReturn(Optional.of(comentarioMock));
+
+		comentarioApplicationService.alteraComentario(usuario.getEmail(), conteudo.getIdConteudo(), postagem.getIdPostagem(), comentario.getIdComentario(), request);
+		
+		verify(postagemMock).pertenceConteudo(conteudo);
+		verify(comentarioMock).pertencePost(postagemMock);
+		verify(comentarioMock).pertenceUsuario(usuario);
+		verify(comentarioMock).alteraComentario(request);
+		verify(comentarioRepository, times(1)).salvaComentario(comentarioMock);
 	}
 
 	@Test

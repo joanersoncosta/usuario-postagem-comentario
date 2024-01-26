@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
+import dev.wakandaacademy.comentario.application.api.EditaComentarioRequest;
 import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.conteudo.application.api.ConteudoRequest;
 import dev.wakandaacademy.conteudo.application.api.EditaConteudoRequest;
@@ -139,5 +140,9 @@ public class DataHelper {
 						.idPostagem(ID_POSTAGEM_VALIDO).idUsuario(ID_USUARIO_VALIDO).publicador(publicador)
 						.comentarista(comentarista).dataCriacaoComentario(LocalDateTime.now()).descricao("Exemplo 3")
 						.like(0).deslike(0).build());
+	}
+
+	public static EditaComentarioRequest createEditaComentario() {
+		return new EditaComentarioRequest("Teste Edita Tarefa");
 	}
 }
