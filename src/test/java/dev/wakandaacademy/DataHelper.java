@@ -88,19 +88,10 @@ public class DataHelper {
 	}
 
 	public static List<Postagem> createListPostagem() {
-		return List.of(createPostagem(), 
-				Postagem.builder()
-				.idPostagem(UUID.randomUUID())
-				.idConteudo(CONTEUDO.getIdConteudo())
-				.idUsuario(USUARIO.getIdUsuario())
-				.publicador(publicador)
-				.dataPostagem(LocalDateTime.now())
-				.titlo("Exemplo 2")
-				.descricao("Teste salva Postagem 2")
-				.statusAtivacao(StatusAtivacaoPostagem.INATIVA)
-				.quantidadeComentarios(0)
-				.like(0)
-				.deslike(0).build(),
+		return List.of(createPostagem(), Postagem.builder().idPostagem(UUID.randomUUID())
+				.idConteudo(CONTEUDO.getIdConteudo()).idUsuario(USUARIO.getIdUsuario()).publicador(publicador)
+				.dataPostagem(LocalDateTime.now()).titlo("Exemplo 2").descricao("Teste salva Postagem 2")
+				.statusAtivacao(StatusAtivacaoPostagem.INATIVA).quantidadeComentarios(0).like(0).deslike(0).build(),
 				Postagem.builder().idPostagem(UUID.randomUUID()).idConteudo(CONTEUDO.getIdConteudo())
 						.idUsuario(USUARIO.getIdUsuario()).publicador(publicador).dataPostagem(LocalDateTime.now())
 						.titlo("Exemplo 3").descricao("Teste salva Postagem 3")
@@ -115,7 +106,7 @@ public class DataHelper {
 	public static EditaPostagemRequest editaPostagemRequest() {
 		return new EditaPostagemRequest("Exemplo 4", "Teste salva Postagem 4");
 	}
-	
+
 	private static String getUserName(String email) {
 		String[] nome = email.split("@");
 		return publicador = nome[0];
@@ -132,7 +123,7 @@ public class DataHelper {
 	}
 
 	public static List<Comentario> createListComentario() {
-		return List.of(COMENTARIO,
+		return List.of(createComentario(),
 				Comentario.builder().idComentario(UUID.randomUUID()).idConteudo(ID_CONTEUDO_VALIDO)
 						.idPostagem(ID_POSTAGEM_VALIDO).publicador(publicador).comentarista(comentarista)
 						.dataCriacaoComentario(LocalDateTime.now()).descricao("Exemplo 2").like(0).deslike(0).build(),
@@ -144,5 +135,18 @@ public class DataHelper {
 
 	public static EditaComentarioRequest createEditaComentario() {
 		return new EditaComentarioRequest("Teste Edita Tarefa");
+	}
+
+	public static Postagem getAtivaPostagem() {
+		return Postagem.builder().idPostagem(ID_POSTAGEM_VALIDO).idConteudo(ID_CONTEUDO_VALIDO)
+				.idUsuario(USUARIO.getIdUsuario()).publicador(publicador).dataPostagem(LocalDateTime.now())
+				.titlo("Teste Ativa Postagem").descricao("Teste Ativa Postagem")
+				.statusAtivacao(StatusAtivacaoPostagem.ATIVO).quantidadeComentarios(0).like(0).deslike(0).build();
+	}
+
+	public static Comentario getComentario() {
+		return Comentario.builder().idComentario(ID_COMENTARIO_VALIDO).idConteudo(ID_CONTEUDO_VALIDO)
+				.idPostagem(ID_POSTAGEM_VALIDO).publicador(publicador).comentarista(comentarista)
+				.dataCriacaoComentario(LocalDateTime.now()).descricao("Teste like").like(1).deslike(3).build();
 	}
 }

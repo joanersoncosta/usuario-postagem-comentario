@@ -31,6 +31,7 @@ import dev.wakandaacademy.postagem.application.api.PostagemResponse;
 import dev.wakandaacademy.postagem.application.api.PostagemUsuarioListResponse;
 import dev.wakandaacademy.postagem.application.repository.PostagemRepository;
 import dev.wakandaacademy.postagem.domain.Postagem;
+import dev.wakandaacademy.postagem.domain.enuns.StatusAtivacaoPostagem;
 import dev.wakandaacademy.usuario.application.repository.UsuarioRepository;
 import dev.wakandaacademy.usuario.domain.Usuario;
 
@@ -159,12 +160,14 @@ class PostagemApplicationServiceTest {
 
 		postagemApplicationService.usuarioAtivaPostagem(conteudo.getIdConteudo(), postagemMock.getIdPostagem());
 		
+		Postagem retornoPostagem = DataHelper.getAtivaPostagem();
+		
 		verify(postagemMock).pertenceConteudo(conteudo);
 		verify(postagemRepository, times(1)).desativaPostagem(conteudo.getIdConteudo());
 		verify(postagemMock).ativaPostagem();
 		verify(postagemRepository, times(1)).salvaPostagem(postagemMock);
 
-//		assertEquals(postagemMock.getStatusAtivacao(), StatusAtivacaoPostagem.ATIVO);
+		assertEquals(retornoPostagem.getStatusAtivacao(), StatusAtivacaoPostagem.ATIVO);
 	}
 	
 	@Test

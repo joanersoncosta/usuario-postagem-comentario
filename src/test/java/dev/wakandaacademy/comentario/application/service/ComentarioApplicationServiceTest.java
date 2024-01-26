@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.wakandaacademy.DataHelper;
 import dev.wakandaacademy.comentario.application.api.ComentarioIdResponse;
+import dev.wakandaacademy.comentario.application.api.ComentarioListResponse;
 import dev.wakandaacademy.comentario.application.api.ComentarioRequest;
 import dev.wakandaacademy.comentario.application.api.ComentarioResponse;
 import dev.wakandaacademy.comentario.application.api.EditaComentarioRequest;
@@ -44,6 +46,7 @@ class ComentarioApplicationServiceTest {
 	private ConteudoRepository conteudoRepository;
 	@Mock
 	private ComentarioRepository comentarioRepository;
+	private List<ComentarioListResponse> buscaComentarios;
 
 	@Test
 	void testAdicionaComentario() {
@@ -124,7 +127,6 @@ class ComentarioApplicationServiceTest {
 		Conteudo conteudo = DataHelper.createConteudo();
 		Postagem postagemMock = mock(Postagem.class);
 		Comentario comentarioMock = mock(Comentario.class);
-
 		
 		String emailUsuario = DataHelper.createUsuario().getEmail();
 		UUID idComentario = DataHelper.createComentario().getIdComentario();
@@ -147,10 +149,57 @@ class ComentarioApplicationServiceTest {
 
 	@Test
 	void testBuscaComentarios() {
+		Usuario usuario = DataHelper.createUsuario();
+		Conteudo conteudo = DataHelper.createConteudo();
+		List<Comentario> listComentario = DataHelper.createListComentario();
+		Postagem postagemMock = mock(Postagem.class);
+		
+		String emailUsuario = DataHelper.createUsuario().getEmail();
+		UUID idPostagem = DataHelper.createPostagem().getIdPostagem();
+		UUID idConteudo = DataHelper.createConteudo().getIdConteudo();
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
+		when(comentarioRepository.buscaComentarios(any())).thenReturn(listComentario);
+
+		List<ComentarioListResponse> response = comentarioApplicationService.buscaComentarios(emailUsuario, idConteudo, idPostagem);
+		
+		verify(postagemMock).pertenceConteudo(conteudo);
+		verify(comentarioRepository, times(1)).buscaComentarios(idPostagem);
+
+		assertNotNull(response);
+		assertEquals(response, 3);
+		assertEquals(ComentarioListResponse.class, response.getClass());
 	}
 
 	@Test
 	void testUsuarioLike() {
+		Usuario usuario = DataHelper.createUsuario();
+		Conteudo conteudo = DataHelper.createConteudo();
+		Postagem postagemMock = mock(Postagem.class);
+		Comentario comentarioMock = mock(Comentario.class);
+
+		String emailUsuario = DataHelper.createUsuario().getEmail();
+		UUID idPostagem = DataHelper.createPostagem().getIdPostagem();
+		UUID idConteudo = DataHelper.createConteudo().getIdConteudo();
+		
+		when(usuarioRepository.buscaUsuarioPorEmail(any())).thenReturn(usuario);
+		when(conteudoRepository.buscaConteudoPorId(any())).thenReturn(Optional.of(conteudo));
+		when(postagemRepository.buscaPostagemPorId(any())).thenReturn(Optional.of(postagemMock));
+		when(comentarioRepository.buscaComentario(any())).thenReturn(Optional.of(comentarioMock));
+
+		comentarioApplicationService.usuarioLike(emailUsuario, idConteudo, idPostagem, idConteudo);
+		
+		Comentario retornoComentario = DataHelper.getComentario();
+		
+		verify(postagemMock).pertenceConteudo(conteudo);
+		verify(comentarioMock).pertencePost(postagemMock);
+		verify(comentarioMock).pertenceUsuario(usuario);
+		verify(comentarioMock).like(usuario);
+		verify(comentarioRepository, times(1)).salvaComentario(comentarioMock);
+		
+		assertEquals(retornoComentario.getLike(), 1);
 	}
 
 	@Test
