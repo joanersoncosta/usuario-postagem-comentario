@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import dev.wakandaacademy.comentario.domain.Comentario;
 import dev.wakandaacademy.conteudo.application.repository.ConteudoRepository;
 import dev.wakandaacademy.conteudo.domian.Conteudo;
 import dev.wakandaacademy.handler.APIException;
